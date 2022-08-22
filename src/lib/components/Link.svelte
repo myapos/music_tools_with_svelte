@@ -18,7 +18,14 @@
 	});
 </script>
 
-<a href={url} class="hover:text-blue-50" {target} class:text-red-400={isActive}>{description} </a>
+<a
+	href={url}
+	class="hover:text-blue-50 p-5"
+	{target}
+	class:text-orange-300={isActive}
+	class:bg-red-800={isActive}
+	>{description}
+</a>
 
 <style>
 </style>

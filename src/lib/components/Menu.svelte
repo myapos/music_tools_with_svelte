@@ -2,7 +2,7 @@
 	import Link from './Link.svelte';
 </script>
 
-<nav class="flex justify-between p-5 bg-blue-600 text-blue-200 w-full">
+<nav class="flex justify-between bg-blue-600 text-blue-200 w-full">
 	<Link url="/" description="E-tuner" />
 	<Link url="/metronome" description="Metronome" />
 	<Link url="/tone_giver" description="Tone Giver" />
