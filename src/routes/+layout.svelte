@@ -4,16 +4,11 @@
 	import Footer from '$lib/components/Footer.svelte';
 </script>
 
+<svelte:head>
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+</svelte:head>
+
 <Menu />
-<!-- <nav class="flex justify-between p-5 bg-blue-600 text-blue-200">
-	<a href="/">E-tuner</a>
-	<a href="/metronome">Metronome</a>
-	<a href="/tone_giver">Tone Giver</a>
-	<a href="/manual">Manual</a>
-	<a href="/links">Links</a>
-	<a href="/terms">Terms Of Use</a>
-	<a href="/about">About</a>
-</nav> -->
 
 <main class="flex justify-center items-center flex-col">
 	<slot />
@@ -29,5 +24,6 @@
 	:global(body) {
 		/* this will apply to <body> */
 		height: 100vh;
+		font-family: Roboto;
 	}
 </style>
