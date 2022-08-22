@@ -39,5 +39,6 @@
 		height: 100vh;
 		font-family: Roboto;
 		background-color: #2563eb30;
+		min-width: 640px;
 	}
 </style>
