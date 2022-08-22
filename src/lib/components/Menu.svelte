@@ -3,13 +3,13 @@
 </script>
 
 <nav class="flex justify-between p-5 bg-blue-600 text-blue-200 w-full">
-	<Link target="/" description="E-tuner" />
-	<Link target="/metronome" description="Metronome" />
-	<Link target="/tone_giver" description="Tone Giver" />
-	<Link target="/manual" description="Manual" />
-	<Link target="/links" description="Links" />
-	<Link target="/terms" description="Terms Of Use" />
-	<Link target="/about" description="About" />
+	<Link url="/" description="E-tuner" />
+	<Link url="/metronome" description="Metronome" />
+	<Link url="/tone_giver" description="Tone Giver" />
+	<Link url="/manual" description="Manual" />
+	<Link url="/links" description="Links" />
+	<Link url="/terms" description="Terms Of Use" />
+	<Link url="/about" description="About" />
 </nav>
 
 <style>

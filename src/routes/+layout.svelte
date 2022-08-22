@@ -1,6 +1,7 @@
 <script>
 	import '../app.css';
 	import Menu from '$lib/components/Menu.svelte';
+	import Footer from '$lib/components/Footer.svelte';
 </script>
 
 <Menu />
@@ -14,15 +15,11 @@
 	<a href="/about">About</a>
 </nav> -->
 
-<main class="flex justify-center items-center">
+<main class="flex justify-center items-center flex-col">
 	<slot />
 </main>
 
-<footer class="flex justify-center p-5 fixed bottom-0 bg-blue-600 text-blue-200 w-full">
-	<h2>
-		Copyright 2022:<a href="mailto:myapos@yahoo.com">Myron Apostolakis </a>
-	</h2>
-</footer>
+<Footer />
 
 <style>
 	main {
