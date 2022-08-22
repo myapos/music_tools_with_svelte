@@ -1,3 +1,7 @@
+<script>
+	import '../app.css';
+</script>
+
 <nav>
 	<a href="/">E-tuner</a>
 	<a href="/metronome">Metronome</a>
@@ -10,8 +14,12 @@
 
 <slot />
 
+<slot name="test" />
 <footer>
 	<h2>
 		Copyright 2022:<a href="mailto:myapos@yahoo.com">Myron Apostolakis </a>
 	</h2>
 </footer>
+
+<style>
+</style>
