@@ -1,13 +1,10 @@
-<script>
+<script lang="ts">
 	import Icon from 'svelte-icons-pack/Icon.svelte';
 	import FaSolidBars from 'svelte-icons-pack/fa/FaSolidBars';
 	import Sidebar from './Sidebar.svelte';
-	let isOpen = false;
 
-	const onClick = () => {
-		isOpen = !isOpen;
-		console.log('clicked', isOpen);
-	};
+	export let isOpen: Boolean;
+	export let onClick: svelte.JSX.MouseEventHandler<HTMLDivElement>;
 </script>
 
 <div

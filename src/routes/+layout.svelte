@@ -1,34 +1,61 @@
-<script>
+<script lang="ts">
 	import '../app.css';
 	import { Circle } from 'svelte-loading-spinners';
+	import { onMount } from 'svelte';
+
 	import Menu from '$lib/components/Menu.svelte';
 	import MobileMenu from '$lib/components/MobileMenu.svelte';
 	import Footer from '$lib/components/Footer.svelte';
-	import { onMount } from 'svelte';
+	import breakpoints from '$lib/constants/breakpoints';
 
 	let isLoading = true;
+	let screenWidth: Number;
+
 	onMount(() => {
 		isLoading = false;
 	});
+
+	let isOpen = false;
+
+	const toggle = () => {
+		isOpen = !isOpen;
+	};
+	const onClick = () => {
+		toggle();
+	};
+
+	const onClickOnTheRestArea = () => {
+		const isSmallerThanTablet = screenWidth <= breakpoints.md;
+
+		if (isOpen && isSmallerThanTablet) {
+			toggle();
+		}
+	};
 </script>
 
 <svelte:head>
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
 </svelte:head>
 
+<svelte:window bind:innerWidth={screenWidth} />
 {#if isLoading}
 	<main class="flex justify-center items-center w-full h-screen flex-col">
 		<Circle size="60" color="#FF3E00" unit="px" duration="1s" />
 	</main>
 {:else}
 	<Menu />
-	<MobileMenu />
+	<MobileMenu bind:isOpen {onClick} />
 
-	<main class="flex justify-center items-center flex-col">
+	<main class="flex justify-center items-center flex-col" on:click={onClickOnTheRestArea}>
 		<slot />
 	</main>
 
-	<Footer />
+	<footer
+		class="flex justify-center p-5 fixed bottom-0 bg-blue-600 text-blue-200 w-full"
+		on:click={onClickOnTheRestArea}
+	>
+		<Footer />
+	</footer>
 {/if}
 
 <style>
