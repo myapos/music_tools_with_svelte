@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+	--menu-text-blue-200: rgb(191 219 254);
+}

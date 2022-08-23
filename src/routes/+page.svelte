@@ -1,6 +1,6 @@
-<h1>Instrument tuner</h1>
+<h1 class="md:text-xl">Instrument tuner</h1>
 
-<p>
+<p class="md:text-xl md:text-justify md:tracking-wide">
 	Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
 	the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
 	type and scrambled it to make a type specimen book. It has survived not only five centuries, but
@@ -9,7 +9,7 @@
 	with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 </p>
 
-<p>
+<p class="md:text-xl md:text-justify md:tracking-wide">
 	Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
 	the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
 	type and scrambled it to make a type specimen book. It has survived not only five centuries, but
@@ -17,3 +17,9 @@
 	the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently
 	with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 </p>
+
+<style>
+	p {
+		padding: 1rem;
+	}
+</style>

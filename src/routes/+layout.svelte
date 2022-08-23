@@ -2,6 +2,7 @@
 	import '../app.css';
 	import { Circle } from 'svelte-loading-spinners';
 	import Menu from '$lib/components/Menu.svelte';
+	import MobileMenu from '$lib/components/MobileMenu.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import { onMount } from 'svelte';
 
@@ -21,6 +22,7 @@
 	</main>
 {:else}
 	<Menu />
+	<MobileMenu />
 
 	<main class="flex justify-center items-center flex-col">
 		<slot />
