@@ -9,7 +9,7 @@
 	import breakpoints from '$lib/constants/breakpoints';
 
 	let isLoading = true;
-	let screenWidth: Number;
+	let screenWidth: number;
 
 	onMount(() => {
 		isLoading = false;
@@ -46,12 +46,15 @@
 	<Menu />
 	<MobileMenu bind:isOpen {onClick} />
 
-	<main class="flex justify-center items-center flex-col" on:click={onClickOnTheRestArea}>
+	<main
+		class="flex justify-center items-center flex-col overflow-auto md:h-auto "
+		on:click={onClickOnTheRestArea}
+	>
 		<slot />
 	</main>
 
 	<footer
-		class="flex justify-center p-5 fixed bottom-0 bg-blue-600 text-blue-200 w-full"
+		class="flex justify-center fixed bottom-0 bg-blue-600 text-blue-200 w-full md:mt-30"
 		on:click={onClickOnTheRestArea}
 	>
 		<Footer />
@@ -59,10 +62,6 @@
 {/if}
 
 <style>
-	main {
-		height: 80vh;
-	}
-
 	:global(body) {
 		/* this will apply to <body> */
 		height: 100vh;
