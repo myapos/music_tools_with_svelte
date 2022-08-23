@@ -1,16 +1,10 @@
 <script lang="ts">
 	import Link from './Link.svelte';
+	import links from '$lib/constants/links';
 </script>
 
 <nav class="flex justify-evenly bg-blue-600 text-blue-200 w-full md:hidden">
-	<Link url="/" description="E-tuner" />
-	<Link url="/metronome" description="Metronome" />
-	<Link url="/tone_giver" description="Tone Giver" />
-	<Link url="/manual" description="Manual" />
-	<Link url="/links" description="Links" />
-	<Link url="/terms" description="Terms Of Use" />
-	<Link url="/about" description="About" />
+	{#each links as link}
+		<Link url={link.url} description={link.description} />
+	{/each}
 </nav>
-
-<style>
-</style>
