@@ -2,7 +2,7 @@
 	import Icon from 'svelte-icons-pack/Icon.svelte';
 	import FaSolidBars from 'svelte-icons-pack/fa/FaSolidBars';
 	import Sidebar from './Sidebar.svelte';
-	$: isOpen = false;
+	let isOpen = false;
 
 	const onClick = () => {
 		isOpen = !isOpen;

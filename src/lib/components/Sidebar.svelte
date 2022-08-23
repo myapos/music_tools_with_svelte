@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { slide } from 'svelte/transition';
 	import links from '$lib/constants/links';
 	import Link from './Link.svelte';
 	import Icon from 'svelte-icons-pack/Icon.svelte';
@@ -11,7 +12,7 @@
 	};
 </script>
 
-<section class="flex flex-col justify-center absolute bg-blue-600 right-0 w-full">
+<section transition:slide class="flex flex-col justify-center absolute bg-blue-600 right-0 w-full">
 	<div on:click={onClick} class="self-end">
 		<Icon
 			src={FaSolidTimes}
