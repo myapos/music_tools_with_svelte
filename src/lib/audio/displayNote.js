@@ -1,26 +1,166 @@
-const displayNote = () => {
+import { notesFreq } from './constants';
+import { thresholdcolordeviation } from './constants';
+import { notesFreqDif } from './constants';
+
+function findMinimumIndex(arr) {
+	/*initializations*/
+	var tempminOfArray = 100000;
+	var tempIndex = -1;
+
+	arr.forEach((value1m, index1m) => {
+		arr[index1m].forEach((value2m, index2m) => {
+			if (typeof arr[index1m][index2m] === 'number') {
+				/**/
+
+				if (arr[index1m][index2m] <= tempminOfArray) {
+					tempminOfArray = arr[index1m][index2m];
+					tempIndex = index1m;
+				}
+			}
+		});
+	});
+	// 	$.each(arr, function (index1m, value1m) {
+	// 		$.each(arr[index1m], function (index2m, value2m) {
+	// 			/*Map contains two types of data. Notes as strings and frequencies as numbers. We check for minimum
+	// only in numbers. Then we get string of that number*/
+
+	// 			if ($.type(arr[index1m][index2m]) === 'number') {
+	// 				/**/
+
+	// 				if (arr[index1m][index2m] <= tempminOfArray) {
+	// 					tempminOfArray = arr[index1m][index2m];
+	// 					tempIndex = index1m;
+	// 				}
+	// 			}
+	// 		});
+	// 	});
+	//console.log("tempIndex:"+tempIndex);
+	return tempIndex;
+}
+
+function calculateNearestValue(goalfrequency) {
+	var minimumIndex = -1;
+
+	/*calculate difference from goalfrequency and save them in a new array. Then get the one with minimum difference from
+goal frequency*/
+
+	notesFreqDif.forEach((value1NV, index1NV) => {
+		notesFreqDif[index1NV].forEach((value2NV, index2NV) => {
+			/*Map contains two types of data. 
+			Notes as strings and frequencies as numbers. We apply difference only in numbers. 
+			Then we get string of that number */
+
+			if (typeof notesFreqDif[index1NV][index2NV] === 'number') {
+				notesFreqDif[index1NV][index2NV] = Math.abs(notesFreq[index1NV][index2NV] - goalfrequency);
+			}
+		});
+	});
+
+	//! old
+	// 	$.each(notesFreqDif, function (index1NV, value1NV) {
+	// 		$.each(notesFreqDif[index1NV], function (index2NV, value2NV) {
+	// 			/*Map contains two types of data. Notes as strings and frequencies as numbers. We apply difference
+	// only in numbers. Then we get string of that number*/
+
+	// 			if ($.type(notesFreqDif[index1NV][index2NV]) === 'number') {
+	// 				notesFreqDif[index1NV][index2NV] = Math.abs(notesFreq[index1NV][index2NV] - goalfrequency);
+	// 			}
+	// 		});
+	// 	});
+
+	//printArray(notesFreqDif);
+	minimumIndex = findMinimumIndex(notesFreqDif);
+	//console.log("minimum Index at:"+minimumIndex);
+	//console.log("nearest music tone is:"+notesFreqDif[minimumIndex][0]);
+	return minimumIndex;
+}
+
+function calculateDeviationDegrees(x) {
+	var a = 50; //a Hz symbolize maximum and minimum deviation on protractor from goal frequency -->resolution of protractor
+	const A = 90 + (90 * x) / a;
+	return A;
+}
+
+var deviation = 0; //Hz
+var thetadeviation = 135; //degrees
+
+const displayNote = (goalfrequency) => {
 	var indexf1 = -1;
 	var indexf2 = -1;
 	var nearestIndex = -1;
 
-	//goalfrequency=6644.00;
-	// console.log('goalfrequency:' + goalfrequency);
-	/*search for goal frequency in map arrays*/
+	console.log('calculating...', goalfrequency);
 
-	// 	$.each(map, function (index1, value1) {
-	// 		$.each(map[index1], function (index2, value2) {
+	notesFreq.forEach((value1, index1) => {
+		notesFreq[index1].forEach((value2, index2) => {
+			/**
+			Map contains two types of data. Notes as strings and frequencies as numbers. We check for goalfrequency
+			only in numbers. Then we get the corresponding string of that number
+			*/
+
+			if (typeof notesFreq[index1][index2] === 'number') {
+				//if value is found
+				if (notesFreq[index1][index2] == goalfrequency) {
+					console.log('found goal frequency in notesFreq[' + index1 + '][' + index2 + ']');
+					console.log('Matching note is:' + notesFreq[index1][0]);
+					// $(noteString).text(notesFreq[index1][0]);
+
+					deviation = goalfrequency - notesFreq[index1][1];
+					console.log('Tone is:' + notesFreq[index1][0] + ' with deviation:' + deviation);
+					indexf1 = index1;
+					indexf2 = index2;
+					if (Math.abs(deviation) < thresholdcolordeviation) {
+						// $('#noteString').css({ color: 'green' });
+						// $('#my_protractor').css({ border: '5px solid green' });
+					} else {
+						// $('#noteString').css({ color: '#666600' });
+						// $('#my_protractor').css({ border: '5px solid #999967' });
+					}
+				}
+				console.log('indexf1 :' + indexf1);
+			}
+		});
+	});
+
+	/*if value is not found then indexf1 and idexf2 has the default values -1. So we are searching for nearest values in notesFreq array*/
+	if (indexf1 == -1) {
+		console.log('Matching note does not exist in notesFreq. Calculating the nearest value');
+
+		nearestIndex = calculateNearestValue(goalfrequency);
+		// $(noteString).text(notesFreq[nearestIndex][0]);
+		deviation = goalfrequency - notesFreq[nearestIndex][1];
+		console.log('Nearest tone is:' + notesFreq[nearestIndex][0] + ' with deviation:' + deviation);
+		if (Math.abs(deviation) < thresholdcolordeviation) {
+			// $('#noteString').css({ color: 'green' });
+			// $('#my_protractor').css({ border: '5px solid green' });
+		} else {
+			// $('#noteString').css({ color: '#666600' });
+			// $('#my_protractor').css({ border: '5px solid #999967' });
+		}
+		/**/
+	}
+
+	thetadeviation = calculateDeviationDegrees(deviation);
+	// myRotate(thetadeviation);
+
+	//! old
+	//goalfrequency=6644.00;
+	/*search for goal frequency in notesFreq arrays*/
+
+	// 	$.each(notesFreq, function (index1, value1) {
+	// 		$.each(notesFreq[index1], function (index2, value2) {
 	// 			/*Map contains two types of data. Notes as strings and frequencies as numbers. We check for goalfrequency
 	// only in numbers. Then we get the corresponding string of that number*/
 
-	// 			if ($.type(map[index1][index2]) === 'number') {
+	// 			if ($.type(notesFreq[index1][index2]) === 'number') {
 	// 				//if value is found
-	// 				if (map[index1][index2] == goalfrequency) {
-	// 					console.log('found goal frequency in map[' + index1 + '][' + index2 + ']');
-	// 					console.log('Matching note is:' + map[index1][0]);
-	// 					$(noteString).text(map[index1][0]);
+	// 				if (notesFreq[index1][index2] == goalfrequency) {
+	// 					console.log('found goal frequency in notesFreq[' + index1 + '][' + index2 + ']');
+	// 					console.log('Matching note is:' + notesFreq[index1][0]);
+	// 					$(noteString).text(notesFreq[index1][0]);
 
-	// 					deviation = goalfrequency - map[index1][1];
-	// 					console.log('Tone is:' + map[index1][0] + ' with deviation:' + deviation);
+	// 					deviation = goalfrequency - notesFreq[index1][1];
+	// 					console.log('Tone is:' + notesFreq[index1][0] + ' with deviation:' + deviation);
 	// 					indexf1 = index1;
 	// 					indexf2 = index2;
 	// 					if (Math.abs(deviation) < thresholdcolordeviation) {
@@ -37,14 +177,14 @@ const displayNote = () => {
 	// 		});
 	// 	});
 
-	// 	/*if value is not found then indexf1 and idexf2 has the default values -1. So we are searching for nearest values in map array*/
+	// 	/*if value is not found then indexf1 and idexf2 has the default values -1. So we are searching for nearest values in notesFreq array*/
 	// 	if (indexf1 == -1) {
-	// 		console.log('Matching note does not exist in map. Calculating the nearest value');
+	// 		console.log('Matching note does not exist in notesFreq. Calculating the nearest value');
 
 	// 		nearestIndex = calculateNearestValue();
-	// 		$(noteString).text(map[nearestIndex][0]);
-	// 		deviation = goalfrequency - map[nearestIndex][1];
-	// 		console.log('Nearest tone is:' + map[nearestIndex][0] + ' with deviation:' + deviation);
+	// 		$(noteString).text(notesFreq[nearestIndex][0]);
+	// 		deviation = goalfrequency - notesFreq[nearestIndex][1];
+	// 		console.log('Nearest tone is:' + notesFreq[nearestIndex][0] + ' with deviation:' + deviation);
 	// 		if (Math.abs(deviation) < thresholdcolordeviation) {
 	// 			$('#noteString').css({ color: 'green' });
 	// 			$('#my_protractor').css({ border: '5px solid green' });

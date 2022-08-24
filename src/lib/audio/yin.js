@@ -72,9 +72,8 @@ function myYIN({
 
 		//set goal frequency
 		goalfrequency = myMedianSortedFilter[Math.round(myMedianSortedFilter.length / 2)];
-		//console.log(""+goalfrequency);
-		console.log('goalfrequency', goalfrequency);
-		displayNote();
+		console.log('raw goalfrequency', goalfrequency);
+		displayNote(goalfrequency);
 		//console.log("pitchInHertz: "+pitchInHertz);
 	}
 }
