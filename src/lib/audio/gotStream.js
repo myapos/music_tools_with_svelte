@@ -1,6 +1,16 @@
 import myYIN from './yin';
 
-function gotStream({ stream, audioContext, yinBuffer }) {
+function gotStream({
+	stream,
+	audioContext,
+	yinBuffer,
+	threshold,
+	pitchInHertz,
+	myMedianFilter,
+	count,
+	myMedianSortedFilter,
+	goalfrequency
+}) {
 	// Create an AudioNode from the stream.
 	window.source = audioContext.createMediaStreamSource(stream); //fixes bug of firefox
 	var microphone = audioContext.createMediaStreamSource(stream);
@@ -21,7 +31,17 @@ function gotStream({ stream, audioContext, yinBuffer }) {
 		yinBuffer = new Array(input.length / 2);
 		//calculate pitch with YIN algorithm
 		//console.log("audioContext.sampleRate: "+audioContext.sampleRate);
-		myYIN(input, audioContext.sampleRate);
+		myYIN({
+			pitchBuf: input,
+			sampleRate: audioContext.sampleRate,
+			yinBuffer,
+			threshold,
+			pitchInHertz,
+			myMedianFilter,
+			count,
+			myMedianSortedFilter,
+			goalfrequency
+		});
 	};
 
 	microphone.connect(myPCMProcessingNode);

@@ -1,28 +1,38 @@
 import displayNote from './displayNote';
 
-function myYIN(pitchBuf, sampleRate) {
+function myYIN({
+	pitchBuf,
+	sampleRate,
+	yinBuffer,
+	threshold,
+	pitchInHertz,
+	myMedianFilter,
+	count,
+	myMedianSortedFilter,
+	goalfrequency
+}) {
 	//console.log("Hello from my_YIN");
 	var tauEstimate = -1;
 
 	//step 2
-	difference(pitchBuf);
+	difference(pitchBuf, yinBuffer);
 
 	//step 3
-	cumulativeMeanNormalizedDifference();
+	cumulativeMeanNormalizedDifference(yinBuffer);
 
 	//step 4
 
-	tauEstimate = absoluteThreshold();
+	tauEstimate = absoluteThreshold(yinBuffer, threshold);
 
 	//step 5
 
 	if (tauEstimate != -1) {
 		//step 6
-		var localTau = bestlocal(tauEstimate);
+		var localTau = bestlocal(tauEstimate, yinBuffer);
 
 		//step 5
 		//var betterTau = parabolicInterpolation(tauEstimate);
-		var betterTau = parabolicInterpolation(localTau);
+		var betterTau = parabolicInterpolation(localTau, yinBuffer);
 
 		//conversion to Hz
 		pitchInHertz = sampleRate / betterTau;
@@ -63,6 +73,7 @@ function myYIN(pitchBuf, sampleRate) {
 		//set goal frequency
 		goalfrequency = myMedianSortedFilter[Math.round(myMedianSortedFilter.length / 2)];
 		//console.log(""+goalfrequency);
+		console.log('goalfrequency', goalfrequency);
 		displayNote();
 		//console.log("pitchInHertz: "+pitchInHertz);
 	}
@@ -72,7 +83,7 @@ function myYIN(pitchBuf, sampleRate) {
  * Implements the difference function as described
  * in step 2 of the YIN paper
  */
-function difference(difBuf) {
+function difference(difBuf, yinBuffer) {
 	var j, tau;
 	var delta;
 
@@ -92,7 +103,7 @@ function difference(difBuf) {
 	//console.log("Hello from difference");
 }
 
-function cumulativeMeanNormalizedDifference() {
+function cumulativeMeanNormalizedDifference(yinBuffer) {
 	var tau;
 	yinBuffer[0] = 1;
 	//Very small optimization in comparison with AUBIO
@@ -111,7 +122,7 @@ function cumulativeMeanNormalizedDifference() {
 
 /*** Implements step 4 of the YIN paper
  */
-function absoluteThreshold() {
+function absoluteThreshold(yinBuffer, threshold) {
 	/**/
 	var temp;
 	var sortedyinBuffer;
@@ -140,7 +151,7 @@ function absoluteThreshold() {
  * @return a better, more precise tau value.
  */
 
-function parabolicInterpolation(tauEstimate) {
+function parabolicInterpolation(tauEstimate, yinBuffer) {
 	var s0, s1, s2, newtauEstimate;
 	var ar, par;
 
@@ -185,7 +196,7 @@ For more information see http://sfb649.wiwi.hu-berlin.de/fedc_homepage/xplore/tu
  * @return a better, more precise tau value.
  */
 
-function bestlocal(tauEstimate) {
+function bestlocal(tauEstimate, yinBuffer) {
 	var bestlocalestimate = tauEstimate;
 	var lowlimit = i - tauEstimate / 2;
 	var highlimit = i + tauEstimate / 2;

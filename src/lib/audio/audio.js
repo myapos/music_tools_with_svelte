@@ -276,7 +276,17 @@ const audio = () => {
 		navigator.getMedia(
 			{ audio: true },
 			(stream) => {
-				return gotStream({ stream, audioContext, yinBuffer });
+				return gotStream({
+					stream,
+					audioContext,
+					yinBuffer,
+					threshold,
+					pitchInHertz,
+					myMedianFilter,
+					count,
+					myMedianSortedFilter,
+					goalfrequency
+				});
 			},
 			didntGetStream
 		);
