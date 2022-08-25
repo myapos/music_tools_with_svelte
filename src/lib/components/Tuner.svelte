@@ -1,7 +1,9 @@
 <script>
 	import audio from '$lib/audio/audio';
+	import { stateNoteInfo } from '$lib/stores/stores';
 	import { stateAudioContext } from '$lib/stores/stores';
 	import DisplayNote from './DisplayNote.svelte';
+
 	let note_negative_50 = '-50Hz';
 	let note_negative_25 = '-25Hz';
 	let note_0 = '0Hz';
@@ -21,6 +23,8 @@
 			});
 		}
 	};
+
+	$: console.log('stateNoteInfo', $stateNoteInfo);
 </script>
 
 <div>
