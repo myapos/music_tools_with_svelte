@@ -2,7 +2,11 @@
 module.exports = {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	theme: {
-		extend: {},
+		extend: {
+			colors: {
+				'tuner-color': '#a92525'
+			}
+		},
 		screens: {
 			sm: { max: '640px' },
 			// => @media (min-width: 640px) { ... }

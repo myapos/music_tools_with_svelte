@@ -1,4 +1,4 @@
-import displayNote from '../display/displayNote';
+import matchNote from './matchNote';
 import difference from './difference';
 import cumulativeMeanNormalizedDifference from './cumulativeMeanNormalizedDifference';
 import absoluteThreshold from './absoluteThreshold';
@@ -70,7 +70,7 @@ function myYIN({ pitchBuf, sampleRate, yinBuffer }) {
 
 		console.log('goalfrequency', goalfrequency);
 		console.log('pitchInHertz', pitchInHertz);
-		displayNote(goalfrequency);
+		matchNote(goalfrequency);
 
 		return goalfrequency;
 	}

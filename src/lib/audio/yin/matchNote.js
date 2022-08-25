@@ -1,11 +1,9 @@
+import { stateNoteInfo } from '$lib/stores/stores';
 import { hashFreqNotes } from '../constants';
-import { thresholdcolordeviation } from '../constants';
-import calculateDeviationDegrees from './calculateDeviationDegrees';
 
-let thetadeviation = 135; //! degrees
 let minimumThreshold = 5; //! Hz
 
-const displayNote = (goalfrequency) => {
+const matchNote = (goalfrequency) => {
 	let noteInfo = {
 		note: '',
 		freq: 0
@@ -39,12 +37,13 @@ const displayNote = (goalfrequency) => {
 
 	if (foundNote) {
 		console.log('Nearest note is', noteInfo.note, ' with deviation ', deviation);
+		//! update the noteInfo to svelte store
+		stateNoteInfo.update((prev) => {
+			return noteInfo;
+		});
 	}
-	// thetadeviation = calculateDeviationDegrees(deviation);
-	// myRotate(thetadeviation);
 
-	// 	thetadeviation = calculateDeviationDegrees(deviation);
-	// 	myRotate(thetadeviation);
+	return noteInfo;
 };
 
-export default displayNote;
+export default matchNote;
