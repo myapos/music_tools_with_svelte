@@ -1,5 +1,7 @@
 <script>
 	import audio from '$lib/audio/audio';
+	import { tweened } from 'svelte/motion';
+	import { cubicOut } from 'svelte/easing';
 	import { stateNoteInfo } from '$lib/stores/stores';
 	import { stateAudioContext } from '$lib/stores/stores';
 	import DisplayNote from './DisplayNote.svelte';
@@ -28,19 +30,35 @@
 
 	$: console.log('stateNoteInfo', $stateNoteInfo);
 
+	const tweenConfig = {
+		duration: 400,
+		easing: cubicOut
+	};
+
+	$: degreesOffset = (90 / minimumThreshold) * $stateNoteInfo.deviation;
+
+	$: rotate = tweened(0, tweenConfig);
+
+	$: {
+		$rotate = degreesOffset;
+	}
+
 	/**
 	 * It will translate the deviation from the nearest note to degrees
 	 * offset for display in the arc	 *
 	 **/
-	$: degreesOffset = (90 / minimumThreshold) * $stateNoteInfo.deviation;
+	const transform = () => {
+		$rotate = 45;
+	};
+
 	$: console.log('degreesOffset', degreesOffset);
 	$: isTuned = startedTuning && Math.abs(degreesOffset) < tunedDeviation;
 </script>
 
 <div>
 	<div class="relative flex flex-col">
-		<div class="arc " class:tuned={isTuned} />
-		<div class="indicator absolute bg-tuner-color" style="transform: rotate({degreesOffset}deg);" />
+		<div class="arc" on:click={transform} class:tuned={isTuned} />
+		<div class="indicator absolute bg-tuner-color" style="transform: rotate({$rotate}deg);" />
 		<div class="note note_negative_50 bottom_50 absolute text-2xl">{note_negative_50}</div>
 		<div class="note note_negative_25 bottom_25 absolute text-2xl">{note_negative_25}</div>
 		<div class="note note_0 absolute text-2xl">{note_0}</div>

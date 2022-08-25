@@ -5,7 +5,7 @@ module.exports = {
 		extend: {
 			colors: {
 				'tuner-color': '#a92525',
-				tuned: '#3172eb'
+				tuned: '#ebbf31ab'
 			}
 		},
 		screens: {
