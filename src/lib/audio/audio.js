@@ -1,261 +1,11 @@
 import gotStream from './gotStream';
-function didntGetStream() {
-	alert('Stream generation failed.');
-}
+import didntGetStream from './didntGetStream';
 
 const audio = () => {
-	console.log('audio');
+	//! globals for pitch detection
+	let audioContext = null;
 
-	var goalfrequency; //Hz
-
-	/*initializations*/
-	// var map = [
-	// 	['C0', 16.35],
-	// 	['C#0/Db0', 17.32],
-	// 	['D0', 18.35],
-	// 	['D#0/Eb0', 19.45],
-	// 	['E0', 20.6],
-	// 	['F0', 21.83],
-	// 	['F#0/Gb0', 23.12],
-	// 	['G0', 24.5],
-	// 	['G#0/Ab0', 25.96],
-	// 	['A0', 27.5],
-	// 	['A#0/Bb0', 29.14],
-	// 	['B0', 30.87],
-	// 	['C1', 32.7],
-	// 	['C#1/Db1', 34.65],
-	// 	['D1', 36.71],
-	// 	['D#1/Eb1', 38.89],
-	// 	['E1', 41.2],
-	// 	['F1', 43.65],
-	// 	['F#1/Gb1', 46.25],
-	// 	['G1', 49.0],
-	// 	['G#1/Ab1', 51.91],
-	// 	['A1', 58.27],
-	// 	['A#1/Bb1', 58.27],
-	// 	['B1', 61.74],
-	// 	['C2', 65.41],
-	// 	['C#2/Db2', 69.3],
-	// 	['D2', 73.42],
-	// 	['D#2/Eb2', 77.78],
-	// 	['E2', 82.41],
-	// 	['F2', 87.31],
-	// 	['F#2/Gb2', 46.25],
-	// 	['G2', 98.0],
-	// 	['G#2/Ab2', 103.83],
-	// 	['A2', 110.0],
-	// 	['A#2/Bb2', 116.54],
-	// 	['B2', 123.47],
-	// 	['C3', 130.81],
-	// 	['C#3/Db3', 138.59],
-	// 	['D3', 146.83],
-	// 	['D#3/Eb3', 155.56],
-	// 	['E3', 164.81],
-	// 	['F3', 174.61],
-	// 	['F#3/Gb3', 185.0],
-	// 	['G3', 196.0],
-	// 	['G#3/Ab3', 207.65],
-	// 	['A3', 220.0],
-	// 	['A#3/Bb3', 233.08],
-	// 	['B3', 246.94],
-	// 	['C4', 261.63],
-	// 	['C#4/Db4', 277.18],
-	// 	['D4', 293.66],
-	// 	['D#4/Eb4', 311.13],
-	// 	['E4', 329.63],
-	// 	['F4', 349.23],
-	// 	['F#4/Gb4', 369.99],
-	// 	['G4', 392.0],
-	// 	['G#4/Ab4', 415.3],
-	// 	['A4', 440.0],
-	// 	['A#4/Bb4', 466.16],
-	// 	['B4', 493.88],
-	// 	['C5', 523.25],
-	// 	['C#5/Db5', 554.37],
-	// 	['D5', 587.33],
-	// 	['D#5/Eb5', 622.25],
-	// 	['E5', 659.25],
-	// 	['F5', 698.46],
-	// 	['F#5/Gb5', 739.99],
-	// 	['G5', 783.99],
-	// 	['G#5/Ab5', 830.61],
-	// 	['A5', 880.0],
-	// 	['A#5/Bb5', 932.33],
-	// 	['B5', 987.77],
-	// 	['C6', 1046.5],
-	// 	['C#6/Db6', 1108.73],
-	// 	['D6', 1174.66],
-	// 	['D#6/Eb6', 1244.51],
-	// 	['E6', 1318.51],
-	// 	['F6', 1396.91],
-	// 	['F#6/Gb6', 1479.98],
-	// 	['G6', 1567.98],
-	// 	['G#6/Ab6', 1661.22],
-	// 	['A6', 1760.0],
-	// 	['A#6/Bb6', 1864.66],
-	// 	['B6', 1975.53],
-	// 	['C7', 2093.0],
-	// 	['C#7/Db7', 2217.46],
-	// 	['D7', 2349.32],
-	// 	['D#7/Eb7', 2489.02],
-	// 	['E7', 2637.02],
-	// 	['F7', 2793.83],
-	// 	['F#7/Gb7', 2959.96],
-	// 	['G7', 3135.96],
-	// 	['G#7/Ab7', 3322.44],
-	// 	['A7', 3520.0],
-	// 	['A#7/Bb7', 3729.31],
-	// 	['B7', 3951.07],
-	// 	['C8', 4186.01],
-	// 	['C#8/Db8', 4434.92],
-	// 	['D8', 4698.63],
-	// 	['D#8/Eb8', 4978.03],
-	// 	['E8', 5274.04],
-	// 	['F8', 5587.65],
-	// 	['F#8/Gb8 ', 5919.91],
-	// 	['G8', 6271.93],
-	// 	['G#8/Ab8', 6644.88],
-	// 	['A8', 7040.0],
-	// 	['A#8/Bb8', 7458.62],
-	// 	['B8', 7902.13]
-	// ];
-
-	/*initializations*/
-	var mapDif = [
-		['C0', 16.35],
-		['C#0/Db0', 17.32],
-		['D0', 18.35],
-		['D#0/Eb0', 19.45],
-		['E0', 20.6],
-		['F0', 21.83],
-		['F#0/Gb0', 23.12],
-		['G0', 24.5],
-		['G#0/Ab0', 25.96],
-		['A0', 27.5],
-		['A#0/Bb0', 29.14],
-		['B0', 30.87],
-		['C1', 32.7],
-		['C#1/Db1', 34.65],
-		['D1', 36.71],
-		['D#1/Eb1', 38.89],
-		['E1', 41.2],
-		['F1', 43.65],
-		['F#1/Gb1', 46.25],
-		['G1', 49.0],
-		['G#1/Ab1', 51.91],
-		['A1', 58.27],
-		['A#1/Bb1', 58.27],
-		['B1', 61.74],
-		['C2', 65.41],
-		['C#2/Db2', 69.3],
-		['D2', 73.42],
-		['D#2/Eb2', 77.78],
-		['E2', 82.41],
-		['F2', 87.31],
-		['F#2/Gb2', 46.25],
-		['G2', 98.0],
-		['G#2/Ab2', 103.83],
-		['A2', 110.0],
-		['A#2/Bb2', 116.54],
-		['B2', 123.47],
-		['C3', 130.81],
-		['C#3/Db3', 138.59],
-		['D3', 146.83],
-		['D#3/Eb3', 155.56],
-		['E3', 164.81],
-		['F3', 174.61],
-		['F#3/Gb3', 185.0],
-		['G3', 196.0],
-		['G#3/Ab3', 207.65],
-		['A3', 220.0],
-		['A#3/Bb3', 233.08],
-		['B3', 246.94],
-		['C4', 261.63],
-		['C#4/Db4', 277.18],
-		['D4', 293.66],
-		['D#4/Eb4', 311.13],
-		['E4', 329.63],
-		['F4', 349.23],
-		['F#4/Gb4', 369.99],
-		['G4', 392.0],
-		['G#4/Ab4', 415.3],
-		['A4', 440.0],
-		['A#4/Bb4', 466.16],
-		['B4', 493.88],
-		['C5', 523.25],
-		['C#5/Db5', 554.37],
-		['D5', 587.33],
-		['D#5/Eb5', 622.25],
-		['E5', 659.25],
-		['F5', 698.46],
-		['F#5/Gb5', 739.99],
-		['G5', 783.99],
-		['G#5/Ab5', 830.61],
-		['A5', 880.0],
-		['A#5/Bb5', 932.33],
-		['B5', 987.77],
-		['C6', 1046.5],
-		['C#6/Db6', 1108.73],
-		['D6', 1174.66],
-		['D#6/Eb6', 1244.51],
-		['E6', 1318.51],
-		['F6', 1396.91],
-		['F#6/Gb6', 1479.98],
-		['G6', 1567.98],
-		['G#6/Ab6', 1661.22],
-		['A6', 1760.0],
-		['A#6/Bb6', 1864.66],
-		['B6', 1975.53],
-		['C7', 2093.0],
-		['C#7/Db7', 2217.46],
-		['D7', 2349.32],
-		['D#7/Eb7', 2489.02],
-		['E7', 2637.02],
-		['F7', 2793.83],
-		['F#7/Gb7', 2959.96],
-		['G7', 3135.96],
-		['G#7/Ab7', 3322.44],
-		['A7', 3520.0],
-		['A#7/Bb7', 3729.31],
-		['B7', 3951.07],
-		['C8', 4186.01],
-		['C#8/Db8', 4434.92],
-		['D8', 4698.63],
-		['D#8/Eb8', 4978.03],
-		['E8', 5274.04],
-		['F8', 5587.65],
-		['F#8/Gb8 ', 5919.91],
-		['G8', 6271.93],
-		['G#8/Ab8', 6644.88],
-		['A8', 7040.0],
-		['A#8/Bb8', 7458.62],
-		['B8', 7902.13]
-	];
-
-	var deviation = 0; //Hz
-	var thetadeviation = 135; //degrees
-	var a = 50; //! den xrisimopoieitai //a Hz symbolize maximum and minimum deviation on protractor from goal frequency -->resolution of protractor
-	var thresholdcolordeviation = 0.9; //if absolute deviation is smaller than threshold then color is of notestring is changing
-
-	//globals for pitch detection
-	var audioContext = null;
-
-	//! epanoristike
-	var analyser = null;
-	var yinBuffer = null;
-	var threshold = 0.15;
-	var pitchInHertz = -1;
-
-	//! den xrisimopoieitai
-	var pitchInRange = 100;
-
-	//globals for median filtering
-	var count = 0; //counts how many pitches are calculated. Every length values is reset in zero.
-
-	var myMedianFilter = [0, 0, 0, 0, 0, 0, 0, 0, 0]; //initialization for myMedianFilter. In this array 19 values of pitch is saved and median filtering is applied
-
-	var myMedianSortedFilter = [0, 0, 0, 0, 0, 0, 0, 0, 0]; //initialization for myMedianSortedFilter. This array contains sorted values of myMedianFilter
-
+	//! globals for median filtering
 	window.craicAudioContext = (function () {
 		return window.webkitAudioContext || window.AudioContext;
 	})();
@@ -267,9 +17,9 @@ const audio = () => {
 		navigator.msGetUserMedia;
 
 	try {
-		//            audioContext = new webkitAudioContext();
+		// audioContext = new webkitAudioContext();
 		audioContext = new craicAudioContext();
-		//alert('Web Audio API is  supported in this browser');
+		// alert('Web Audio API is  supported in this browser');
 	} catch (e) {
 		alert('Web Audio API is not supported in this browser');
 	}
@@ -282,20 +32,13 @@ const audio = () => {
 			(stream) => {
 				return gotStream({
 					stream,
-					audioContext,
-					yinBuffer,
-					threshold,
-					pitchInHertz,
-					myMedianFilter,
-					count,
-					myMedianSortedFilter,
-					goalfrequency
+					audioContext
 				});
 			},
 			didntGetStream
 		);
 	} catch (e) {
-		alert('webkitGetUserMedia threw exception :' + e);
+		console.error('webkitGetUserMedia threw exception :' + e);
 	}
 };
 

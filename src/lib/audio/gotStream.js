@@ -1,17 +1,7 @@
 import myYIN from './yin';
 
-function gotStream({
-	stream,
-	audioContext,
-	yinBuffer,
-	threshold,
-	pitchInHertz,
-	myMedianFilter,
-	count,
-	myMedianSortedFilter,
-	goalfrequency
-}) {
-	// Create an AudioNode from the stream.
+function gotStream({ stream, audioContext }) {
+	//! Create an AudioNode from the stream.
 	window.source = audioContext.createMediaStreamSource(stream); //fixes bug of firefox
 	var microphone = audioContext.createMediaStreamSource(stream);
 	const analyser = audioContext.createAnalyser();
@@ -28,28 +18,18 @@ function gotStream({
 			// output[i] = input[i]; //no output to speakers
 		}
 
-		yinBuffer = new Array(input.length / 2);
+		const yinBuffer = new Array(input.length / 2);
 		//calculate pitch with YIN algorithm
 		//console.log("audioContext.sampleRate: "+audioContext.sampleRate);
 		myYIN({
 			pitchBuf: input,
 			sampleRate: audioContext.sampleRate,
-			yinBuffer,
-			threshold,
-			pitchInHertz,
-			myMedianFilter,
-			count,
-			myMedianSortedFilter,
-			goalfrequency
+			yinBuffer
 		});
 	};
 
 	microphone.connect(myPCMProcessingNode);
 	myPCMProcessingNode.connect(audioContext.destination);
-
-	var errorCallback = function (e) {
-		alert('Error in getUserMedia: ' + e);
-	};
 }
 
 export default gotStream;

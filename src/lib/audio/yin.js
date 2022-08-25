@@ -1,16 +1,16 @@
 import displayNote from './displayNote';
 
-function myYIN({
-	pitchBuf,
-	sampleRate,
-	yinBuffer,
-	threshold,
-	pitchInHertz,
-	myMedianFilter,
-	count,
-	myMedianSortedFilter,
-	goalfrequency
-}) {
+//! counts how many pitches are calculated. Every length values is reset in zero.
+let count = 0;
+//! initialization for myMedianFilter. In this array 19 values of pitch is saved and median filtering is applied
+let myMedianFilter = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+//! initialization for myMedianSortedFilter. This array contains sorted values of myMedianFilter
+let myMedianSortedFilter = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+let threshold = 0.15;
+let pitchInHertz = -1;
+
+function myYIN({ pitchBuf, sampleRate, yinBuffer }) {
 	//console.log("Hello from my_YIN");
 	var tauEstimate = -1;
 
@@ -71,10 +71,13 @@ function myYIN({
 		//Math.round(myMedianSortedFilter.);
 
 		//set goal frequency
-		goalfrequency = myMedianSortedFilter[Math.round(myMedianSortedFilter.length / 2)];
-		console.log('raw goalfrequency', goalfrequency);
+		const goalfrequency = myMedianSortedFilter[Math.round(myMedianSortedFilter.length / 2)];
+
+		console.log('goalfrequency', goalfrequency);
+		console.log('pitchInHertz', pitchInHertz);
 		displayNote(goalfrequency);
-		//console.log("pitchInHertz: "+pitchInHertz);
+
+		return goalfrequency;
 	}
 }
 
