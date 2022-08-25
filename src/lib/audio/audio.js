@@ -1,3 +1,4 @@
+import { stateAudioContext } from '$lib/stores/stores';
 import gotStream from './gotStream';
 import didntGetStream from './didntGetStream';
 
@@ -5,38 +6,35 @@ const audio = () => {
 	//! globals for pitch detection
 	let audioContext = null;
 
-	//! globals for median filtering
 	window.craicAudioContext = (function () {
 		return window.webkitAudioContext || window.AudioContext;
 	})();
-
-	navigator.getMedia =
-		navigator.mozGetUserMedia ||
-		navigator.getUserMedia ||
-		navigator.webkitGetUserMedia ||
-		navigator.msGetUserMedia;
-
 	try {
-		// audioContext = new webkitAudioContext();
 		audioContext = new craicAudioContext();
+		stateAudioContext.update(() => {
+			return audioContext;
+		});
+		//! keep in store audioContext
 		// alert('Web Audio API is  supported in this browser');
 	} catch (e) {
-		alert('Web Audio API is not supported in this browser');
+		alert('Web Audio API is not supported in this browser', e);
 	}
 
-	// get the input audio stream and set up the nodes
+	//! get the input audio stream and set up the nodes
 	try {
-		// calls the function gotStream
-		navigator.getMedia(
-			{ audio: true },
-			(stream) => {
+		navigator.mediaDevices
+			.getUserMedia({ audio: true })
+			.then((stream) => {
+				/* use the stream */
 				return gotStream({
 					stream,
 					audioContext
 				});
-			},
-			didntGetStream
-		);
+			})
+			.catch((err) => {
+				/* handle the error */
+				didntGetStream(err);
+			});
 	} catch (e) {
 		console.error('webkitGetUserMedia threw exception :' + e);
 	}

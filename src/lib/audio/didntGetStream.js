@@ -1,4 +1,4 @@
-const didntGetStream = () => {
-	console.error('Stream generation failed.');
+const didntGetStream = (err) => {
+	console.error('Stream generation failed.', err);
 };
 export default didntGetStream;

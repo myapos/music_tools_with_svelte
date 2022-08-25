@@ -1,5 +1,6 @@
 <script>
 	import audio from '$lib/audio/audio';
+	import { stateAudioContext } from '$lib/stores/stores';
 	import DisplayNote from './DisplayNote.svelte';
 	let note_negative_50 = '-50Hz';
 	let note_negative_25 = '-25Hz';
@@ -7,6 +8,19 @@
 	let note_positive_25 = '25Hz';
 	let note_positive_50 = '50Hz';
 	let startedTuning = false;
+
+	let stopTuning = () => {
+		if (startedTuning) {
+			stateAudioContext.update((ctx) => {
+				try {
+					ctx.close();
+					return ctx;
+				} catch (e) {
+					console.error('error', e);
+				}
+			});
+		}
+	};
 </script>
 
 <div>
@@ -22,14 +36,23 @@
 
 	<div
 		on:click={() => {
-			startedTuning = true;
-			audio();
+			if (startedTuning) {
+				//! if it already started and click again stop tuning
+				console.log('stop tuning');
+				stopTuning();
+			} else {
+				//! start tuning
+				console.log('start tuning');
+
+				audio();
+			}
+			startedTuning = !startedTuning;
 		}}
 		class="start text-xl text-center text-tuner-color cursor-pointer
 		 w-2/5 p-2 bg-black hover:bg-red-900 hover:text-black
 		 rounded mx-auto mt-5"
 	>
-		Start Tuning!
+		{startedTuning ? 'Stop' : 'Start'} Tuning!
 	</div>
 
 	{#if startedTuning}
