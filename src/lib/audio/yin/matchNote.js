@@ -1,12 +1,11 @@
 import { stateNoteInfo } from '$lib/stores/stores';
-import { hashFreqNotes } from '../constants';
-
-let minimumThreshold = 5; //! Hz
+import { hashFreqNotes, minimumThreshold } from '../constants';
 
 const matchNote = (goalfrequency) => {
 	let noteInfo = {
 		note: '',
-		freq: 0
+		freq: 0,
+		deviation: 0
 	};
 
 	console.log('calculating...', goalfrequency);
@@ -25,6 +24,7 @@ const matchNote = (goalfrequency) => {
 			if (diff < minimumThreshold) {
 				noteInfo.note = hashFreqNotes[freq];
 				noteInfo.freq = freq;
+				noteInfo.deviation = goalfrequency - freq;
 				return true;
 			}
 		});
@@ -33,10 +33,9 @@ const matchNote = (goalfrequency) => {
 	}
 
 	const foundNote = noteInfo.note.length > 0;
-	const deviation = goalfrequency - noteInfo.freq;
 
 	if (foundNote) {
-		console.log('Nearest note is', noteInfo.note, ' with deviation ', deviation);
+		console.log('Nearest note is', noteInfo.note, ' with deviation ', noteInfo.deviation);
 		//! update the noteInfo to svelte store
 		stateNoteInfo.update((prev) => {
 			return noteInfo;

@@ -108,3 +108,5 @@ export const hashFreqNotes = {
 	7458.62: 'A#8/Bb8',
 	7902.13: 'B8'
 };
+
+export const minimumThreshold = 5; //! Hz

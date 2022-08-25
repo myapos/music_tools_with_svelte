@@ -3,6 +3,7 @@
 	import { stateNoteInfo } from '$lib/stores/stores';
 	import { stateAudioContext } from '$lib/stores/stores';
 	import DisplayNote from './DisplayNote.svelte';
+	import { minimumThreshold } from '$lib/audio/constants';
 
 	let note_negative_50 = '-50Hz';
 	let note_negative_25 = '-25Hz';
@@ -10,6 +11,7 @@
 	let note_positive_25 = '25Hz';
 	let note_positive_50 = '50Hz';
 	let startedTuning = false;
+	let tunedDeviation = 10; //! Hz
 
 	let stopTuning = () => {
 		if (startedTuning) {
@@ -25,12 +27,20 @@
 	};
 
 	$: console.log('stateNoteInfo', $stateNoteInfo);
+
+	/**
+	 * It will translate the deviation from the nearest note to degrees
+	 * offset for display in the arc	 *
+	 **/
+	$: degreesOffset = (90 / minimumThreshold) * $stateNoteInfo.deviation;
+	$: console.log('degreesOffset', degreesOffset);
+	$: isTuned = startedTuning && Math.abs(degreesOffset) < tunedDeviation;
 </script>
 
 <div>
 	<div class="relative flex flex-col">
-		<div class="arc" />
-		<div class="indicator absolute bg-tuner-color" />
+		<div class="arc " class:tuned={isTuned} />
+		<div class="indicator absolute bg-tuner-color" style="transform: rotate({degreesOffset}deg);" />
 		<div class="note note_negative_50 bottom_50 absolute text-2xl">{note_negative_50}</div>
 		<div class="note note_negative_25 bottom_25 absolute text-2xl">{note_negative_25}</div>
 		<div class="note note_0 absolute text-2xl">{note_0}</div>
@@ -60,11 +70,15 @@
 	</div>
 
 	{#if startedTuning}
-		<DisplayNote />
+		<DisplayNote bind:isTuned />
 	{/if}
 </div>
 
 <style>
+	.tuned {
+		border-color: var(--tuned) transparent transparent transparent !important;
+	}
+
 	.bottom_25 {
 		bottom: 10rem;
 	}
@@ -99,11 +113,10 @@
 
 	.indicator {
 		width: 10px;
-		height: 180px;
+		height: 160px;
 		border-radius: 5px;
-		left: 46%;
+		left: 50%;
 		bottom: 1rem;
-		transform: rotate(35deg);
 		transform-origin: bottom;
 	}
 
