@@ -18,13 +18,23 @@
 		<div class="note note_positive_50 bottom_50 absolute text-2xl">{note_positive_50}</div>
 	</div>
 
-	<div on:click={audio} class="start text-2xl text-center">Start Tuning</div>
+	<div
+		on:click={audio}
+		class="start text-xl text-center
+		 w-2/5 p-2 bg-black hover:bg-red-900 hover:text-black
+		 rounded mx-auto mt-5"
+	>
+		Start Tuning!
+	</div>
 </div>
 
 <style>
 	.start {
 		color: var(--tuner-color);
 		cursor: pointer;
+	}
+	.start:hover {
+		color: black;
 	}
 
 	.bottom_25 {
