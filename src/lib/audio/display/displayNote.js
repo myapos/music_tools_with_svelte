@@ -1,76 +1,10 @@
-import { notesFreq } from './constants';
-import { thresholdcolordeviation } from './constants';
+import { notesFreq } from '../constants';
+import { thresholdcolordeviation } from '../constants';
+import calculateDeviationDegrees from './calculateDeviationDegrees';
+import calculateNearestValue from './calculateNearestValue';
 
-var deviation = 0; //Hz
-var thetadeviation = 135; //degrees
-
-function findMinimumIndex(arr) {
-	/*initializations*/
-	var tempminOfArray = 100000;
-	var tempIndex = -1;
-
-	arr.forEach((value1m, index1m) => {
-		arr[index1m].forEach((value2m, index2m) => {
-			if (typeof arr[index1m][index2m] === 'number') {
-				/**/
-
-				if (arr[index1m][index2m] <= tempminOfArray) {
-					tempminOfArray = arr[index1m][index2m];
-					tempIndex = index1m;
-				}
-			}
-		});
-	});
-	// 	$.each(arr, function (index1m, value1m) {
-	// 		$.each(arr[index1m], function (index2m, value2m) {
-	// 			/*Map contains two types of data. Notes as strings and frequencies as numbers. We check for minimum
-	// only in numbers. Then we get string of that number*/
-
-	// 			if ($.type(arr[index1m][index2m]) === 'number') {
-	// 				/**/
-
-	// 				if (arr[index1m][index2m] <= tempminOfArray) {
-	// 					tempminOfArray = arr[index1m][index2m];
-	// 					tempIndex = index1m;
-	// 				}
-	// 			}
-	// 		});
-	// 	});
-	//console.log("tempIndex:"+tempIndex);
-	return tempIndex;
-}
-
-/**
- * Calculate difference from goalfrequency and save them in a new array.
- * Then get the one with minimum difference from goal frequency
- **/
-
-function calculateNearestValue(goalfrequency) {
-	var minimumIndex = -1;
-
-	notesFreq.forEach((value1NV, index1NV) => {
-		notesFreq[index1NV].forEach((value2NV, index2NV) => {
-			/*Map contains two types of data. 
-			Notes as strings and frequencies as numbers. We apply difference only in numbers. 
-			Then we get string of that number */
-
-			if (typeof notesFreq[index1NV][index2NV] === 'number') {
-				notesFreq[index1NV][index2NV] = Math.abs(notesFreq[index1NV][index2NV] - goalfrequency);
-			}
-		});
-	});
-
-	minimumIndex = findMinimumIndex(notesFreq);
-	//console.log("minimum Index at:"+minimumIndex);
-	//console.log("nearest music tone is:"+notesFreq[minimumIndex][0]);
-	return minimumIndex;
-}
-
-function calculateDeviationDegrees(x) {
-	var a = 50; //! a Hz symbolize maximum and minimum deviation on protractor from goal frequency -->resolution of protractor
-	const A = 90 + (90 * x) / a;
-	return A;
-}
+let deviation = 0; //Hz
+let thetadeviation = 135; //degrees
 
 const displayNote = (goalfrequency) => {
 	var indexf1 = -1;
@@ -114,7 +48,7 @@ const displayNote = (goalfrequency) => {
 	if (indexf1 == -1) {
 		console.log('Matching note does not exist in notesFreq. Calculating the nearest value');
 
-		nearestIndex = calculateNearestValue(goalfrequency);
+		nearestIndex = calculateNearestValue(goalfrequency, notesFreq);
 		// $(noteString).text(notesFreq[nearestIndex][0]);
 		deviation = goalfrequency - notesFreq[nearestIndex][1];
 		console.log('Nearest tone is:' + notesFreq[nearestIndex][0] + ' with deviation:' + deviation);

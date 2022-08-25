@@ -1,4 +1,4 @@
-import displayNote from '../displayNote';
+import displayNote from '../display/displayNote';
 import difference from './difference';
 import cumulativeMeanNormalizedDifference from './cumulativeMeanNormalizedDifference';
 import absoluteThreshold from './absoluteThreshold';
@@ -32,22 +32,21 @@ function myYIN({ pitchBuf, sampleRate, yinBuffer }) {
 	//step 5
 
 	if (tauEstimate != -1) {
-		//step 6
+		//! step 6
 		var localTau = bestlocal(tauEstimate, yinBuffer);
 
-		//step 5
-		//var betterTau = parabolicInterpolation(tauEstimate);
+		//! step 5
 		var betterTau = parabolicInterpolation(localTau, yinBuffer);
 
-		//conversion to Hz
+		//! conversion to Hz
 		pitchInHertz = sampleRate / betterTau;
 
-		//do some filtering...median filtering for 1D signal is selected
+		//! do some filtering...median filtering for 1D signal is selected
 
 		/*step 1. Save myMedianFilter.length values for computed pitch in an array*/
 		myMedianFilter[count] = pitchInHertz; //Math.round(pitchInHertz);
 
-		/*handle counter*/
+		/*handle counter -- will reset if exceed filter length*/
 		if (count < myMedianFilter.length - 1) {
 			//increase count
 			count++;
@@ -55,11 +54,6 @@ function myYIN({ pitchBuf, sampleRate, yinBuffer }) {
 			//reset to zero
 			count = 0;
 		}
-		//1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19
-
-		//check myMedianFilter values
-		//console.log("Checking myMedianFilter. Length:"+ myMedianFilter.length);
-		//printArray(myMedianFilter);
 
 		/*step 2. sort myMedianFilter values*/
 
@@ -67,15 +61,11 @@ function myYIN({ pitchBuf, sampleRate, yinBuffer }) {
 			return a - b;
 		});
 
-		//check sorted values
-		//console.log(""+myMedianSortedFilter);
+		//! check sorted values
 
 		/*step3. Select as goalfrequency the median element and display*/
 
-		//console.log("median element index:"+(Math.round(myMedianSortedFilter.length/2)));
-		//Math.round(myMedianSortedFilter.);
-
-		//set goal frequency
+		//! set goal frequency
 		const goalfrequency = myMedianSortedFilter[Math.round(myMedianSortedFilter.length / 2)];
 
 		console.log('goalfrequency', goalfrequency);
