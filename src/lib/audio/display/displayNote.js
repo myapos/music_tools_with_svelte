@@ -1,68 +1,37 @@
-import { notesFreq } from '../constants';
+import { hashFreqNotes } from '../constants';
 import { thresholdcolordeviation } from '../constants';
 import calculateDeviationDegrees from './calculateDeviationDegrees';
-import calculateNearestValue from './calculateNearestValue';
 
 let deviation = 0; //Hz
 let thetadeviation = 135; //degrees
+let minimumThreshold = 5;
 
 const displayNote = (goalfrequency) => {
-	var indexf1 = -1;
-	var indexf2 = -1;
-	var nearestIndex = -1;
+	let note = '';
 
 	console.log('calculating...', goalfrequency);
+	//! search in hash map to find the nearest note
 
-	notesFreq.forEach((value1, index1) => {
-		notesFreq[index1].forEach((value2, index2) => {
-			/**
-			Map contains two types of data. Notes as strings and frequencies as numbers. We check for goalfrequency
-			only in numbers. Then we get the corresponding string of that number
-			*/
+	const noteExistInHash = typeof hashFreqNotes[goalfrequency] !== 'undefined';
+	console.log('noteExistInHash', noteExistInHash);
 
-			if (typeof notesFreq[index1][index2] === 'number') {
-				//if value is found
-				if (notesFreq[index1][index2] == goalfrequency) {
-					console.log('found goal frequency in notesFreq[' + index1 + '][' + index2 + ']');
-					console.log('Matching note is:' + notesFreq[index1][0]);
-					// $(noteString).text(notesFreq[index1][0]);
-
-					deviation = goalfrequency - notesFreq[index1][1];
-					console.log('Tone is:' + notesFreq[index1][0] + ' with deviation:' + deviation);
-					indexf1 = index1;
-					indexf2 = index2;
-					if (Math.abs(deviation) < thresholdcolordeviation) {
-						// $('#noteString').css({ color: 'green' });
-						// $('#my_protractor').css({ border: '5px solid green' });
-					} else {
-						// $('#noteString').css({ color: '#666600' });
-						// $('#my_protractor').css({ border: '5px solid #999967' });
-					}
-				}
-				console.log('indexf1 :' + indexf1);
+	if (!noteExistInHash) {
+		//! find the nearest note to goalFrequency with deviation
+		//! calculate differences from goalFrequency
+		//! if the difference is near to zero (threshold applied) then this is our note
+		Object.keys(hashFreqNotes).forEach((freq) => {
+			const diff = Math.abs(freq - goalfrequency);
+			if (diff < minimumThreshold) {
+				console.log('found it', freq, ' note is', hashFreqNotes[freq]);
+				note = hashFreqNotes[freq];
 			}
+			console.log('diff', diff);
 		});
-	});
-
-	/*if value is not found then indexf1 and idexf2 has the default values -1. So we are searching for nearest values in notesFreq array*/
-	if (indexf1 == -1) {
-		console.log('Matching note does not exist in notesFreq. Calculating the nearest value');
-
-		nearestIndex = calculateNearestValue(goalfrequency, notesFreq);
-		// $(noteString).text(notesFreq[nearestIndex][0]);
-		deviation = goalfrequency - notesFreq[nearestIndex][1];
-		console.log('Nearest tone is:' + notesFreq[nearestIndex][0] + ' with deviation:' + deviation);
-		if (Math.abs(deviation) < thresholdcolordeviation) {
-			// $('#noteString').css({ color: 'green' });
-			// $('#my_protractor').css({ border: '5px solid green' });
-		} else {
-			// $('#noteString').css({ color: '#666600' });
-			// $('#my_protractor').css({ border: '5px solid #999967' });
-		}
-		/**/
+	} else {
+		note = hashFreqNotes[goalfrequency];
 	}
 
-	thetadeviation = calculateDeviationDegrees(deviation);
+	// thetadeviation = calculateDeviationDegrees(deviation);
 	// myRotate(thetadeviation);
 
 	// 	thetadeviation = calculateDeviationDegrees(deviation);
