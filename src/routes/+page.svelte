@@ -102,8 +102,4 @@
 		background-color: var(--background-black-red);
 		min-height: 300px;
 	}
-
-	/* section {
-		overflow-y: scroll;
-	} */
 </style>
