@@ -14,4 +14,9 @@
 	/>
 	2022
 </div>
-<Link url="mailto:myapos@gmail.com" description="Myron Apostolakis" target="_blank" />
+<Link
+	url="mailto:myapos@gmail.com"
+	description="Myron Apostolakis"
+	target="_blank"
+	className="p-5 cursor"
+/>
