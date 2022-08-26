@@ -47,14 +47,14 @@
 	<MobileMenu bind:isOpen {onClick} />
 
 	<main
-		class="flex justify-center items-center flex-col overflow-auto md:h-auto "
+		class="flex justify-center items-center flex-col overflow-auto"
 		on:click={onClickOnTheRestArea}
 	>
 		<slot />
 	</main>
 
 	<footer
-		class="flex justify-center fixed bottom-0 bg-blue-600 text-blue-200 w-full md:mt-30"
+		class="flex justify-center sticky bottom-0 bg-blue-600 text-blue-200 w-full md:mt-30"
 		on:click={onClickOnTheRestArea}
 	>
 		<Footer />
@@ -68,5 +68,10 @@
 		font-family: Roboto;
 		background-color: #2563eb30;
 		min-width: 640px;
+	}
+	:global(body > div) {
+		/* this will apply to <body> */
+		display: flex;
+		flex-direction: column;
 	}
 </style>
