@@ -6,6 +6,7 @@
 	export let url = '';
 	export let description = '';
 	export let target = '';
+	export let className = '';
 
 	$: isActive = false;
 
@@ -16,14 +17,13 @@
 	onMount(() => {
 		isActive = url === $page.url.pathname;
 	});
+
+	const baseClasses = 'hover:text-blue-50';
+
+	let classes = `${baseClasses} ${className}`;
 </script>
 
-<a
-	href={url}
-	class="hover:text-blue-50 p-5"
-	{target}
-	class:text-orange-300={isActive}
-	class:bg-red-800={isActive}
+<a href={url} {target} class={classes} class:text-orange-300={isActive} class:bg-red-800={isActive}
 	>{description}
 </a>
 

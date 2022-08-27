@@ -4,4 +4,20 @@
 
 :root {
 	--menu-text-blue-200: rgb(191 219 254);
+	--background-blue-800: #5300e9;
+	--stone: #57544e;
+	--background-black-red: #2e1818;
+	--tuner-color: #a92525;
+	/* --tuned: #3172eb; */
+	--tuned: #ebbf31ab;
 }
+
+/* 
+ info for background color
+
+ color palette
+ 
+ tuner --> bg-red-900
+ header menu and footer --> bg-blue-600
+
+*/
