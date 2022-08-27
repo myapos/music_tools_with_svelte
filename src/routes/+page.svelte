@@ -19,7 +19,7 @@
 </section>
 
 <section
-	class="text-justify md:tracking-wide py-8 instructions w-1/2 md:w-full md:py-8 md:px-4 md:text-2xl"
+	class="text-justify md:tracking-wide py-8 instructions w-3/4 md:w-full md:py-8 md:px-4 md:text-2xl"
 >
 	<H2 className={h2ExtraClasses}>What is an electronic tuner?</H2>
 	<P>

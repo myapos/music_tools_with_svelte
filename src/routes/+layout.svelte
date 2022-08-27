@@ -10,6 +10,8 @@
 
 	let isLoading = true;
 	let screenWidth: number;
+	let scrollY: number;
+	$: isInBottom = false;
 
 	onMount(() => {
 		isLoading = false;
@@ -37,7 +39,8 @@
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
 </svelte:head>
 
-<svelte:window bind:innerWidth={screenWidth} />
+<svelte:window bind:innerWidth={screenWidth} bind:scrollY />
+
 {#if isLoading}
 	<main class="flex justify-center items-center w-full h-screen flex-col">
 		<Circle size="60" color="#FF3E00" unit="px" duration="1s" />
@@ -53,12 +56,14 @@
 		<slot />
 	</main>
 
+	<!-- <div id="dummyDiv" />
 	<footer
 		class="flex justify-center sticky bottom-0 bg-blue-600 text-blue-200 w-full md:mt-30"
 		on:click={onClickOnTheRestArea}
 	>
 		<Footer />
-	</footer>
+	</footer> -->
+	<Footer {onClickOnTheRestArea} />
 {/if}
 
 <style>
