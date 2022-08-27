@@ -56,13 +56,6 @@
 		<slot />
 	</main>
 
-	<!-- <div id="dummyDiv" />
-	<footer
-		class="flex justify-center sticky bottom-0 bg-blue-600 text-blue-200 w-full md:mt-30"
-		on:click={onClickOnTheRestArea}
-	>
-		<Footer />
-	</footer> -->
 	<Footer {onClickOnTheRestArea} />
 {/if}
 

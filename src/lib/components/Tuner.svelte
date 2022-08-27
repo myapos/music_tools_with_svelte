@@ -51,7 +51,6 @@
 		$rotate = 45;
 	};
 
-	$: console.log('degreesOffset', degreesOffset);
 	$: isTuned = startedTuning && Math.abs(degreesOffset) < tunedDeviation;
 </script>
 

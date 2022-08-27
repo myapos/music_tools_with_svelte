@@ -18,9 +18,7 @@
 	<Tuner />
 </section>
 
-<section
-	class="text-justify md:tracking-wide py-8 instructions w-3/4 md:w-full md:py-8 md:px-4 md:text-2xl"
->
+<section class="text-justify md:tracking-wide py-8 w-3/4 md:w-full md:py-8 md:px-4 md:text-2xl">
 	<H2 className={h2ExtraClasses}>What is an electronic tuner?</H2>
 	<P>
 		In music, an <Link
@@ -98,9 +96,6 @@
 </section>
 
 <style>
-	.instructions {
-		/* width: 50%; */
-	}
 	.tuner {
 		background-color: var(--background-black-red);
 		min-height: 300px;

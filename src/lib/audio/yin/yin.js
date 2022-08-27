@@ -68,8 +68,6 @@ function myYIN({ pitchBuf, sampleRate, yinBuffer }) {
 		//! set goal frequency
 		const goalfrequency = myMedianSortedFilter[Math.round(myMedianSortedFilter.length / 2)];
 
-		console.log('goalfrequency', goalfrequency);
-		console.log('pitchInHertz', pitchInHertz);
 		matchNote(goalfrequency);
 
 		return goalfrequency;

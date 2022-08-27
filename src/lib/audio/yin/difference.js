@@ -18,8 +18,6 @@ const difference = (difBuf, yinBuffer) => {
 			yinBuffer[tau] += delta * delta;
 		}
 	}
-	//printArray(yinBuffer);
-	//console.log("Hello from difference");
 };
 
 export default difference;
