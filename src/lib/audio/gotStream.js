@@ -12,11 +12,6 @@ function gotStream({ stream, audioContext }) {
 	var myPCMProcessingNode = audioContext.createScriptProcessor(bufferSize, 1, 1);
 	myPCMProcessingNode.onaudioprocess = function (e) {
 		const input = e.inputBuffer.getChannelData(0);
-		// const output = e.outputBuffer.getChannelData(0);
-		// for (var i = 0; i < bufferSize; i++) {
-		// 	// Modify the input and send it to the output.
-		// 	// output[i] = input[i]; //no output to speakers
-		// }
 
 		const yinBuffer = new Array(input.length / 2);
 		//! calculate pitch with YIN algorithm
