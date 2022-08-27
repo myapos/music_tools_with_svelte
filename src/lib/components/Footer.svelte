@@ -24,7 +24,8 @@
 	};
 
 	onMount(() => {
-		const THRESHOLD_FOR_SHORT_SCREENS = 400;
+		const THRESHOLD_FOR_SHORT_SCREENS = 800;
+
 		let clientHeight = Math.max(
 			document.body.offsetHeight,
 			document.documentElement.offsetHeight,
@@ -34,12 +35,16 @@
 
 		const isInShortScreen = clientHeight < THRESHOLD_FOR_SHORT_SCREENS;
 
-		if (isInShortScreen) {
+		const interSectionObserverIsSupported =
+			typeof window.IntersectionObserver !== 'undefined' &&
+			typeof window.IntersectionObserverEntry.prototype !== 'undefined';
+
+		console.log('interSectionObserverIsSupported', interSectionObserverIsSupported);
+
+		if (isInShortScreen && interSectionObserverIsSupported) {
 			const footerWrapper: any = window.document.querySelector('#footerWrapper');
-			console.log('window', window, ' footerWrapper', footerWrapper);
 
 			const observer = new IntersectionObserver((entries: any) => {
-				console.log('entries', entries);
 				const footerWrapperEntry = entries[0];
 
 				if (footerWrapperEntry.isIntersecting) {
