@@ -2,13 +2,12 @@
 	import Tuner from '$lib/components/Tuner.svelte';
 	import H1 from '$lib/components/H1.svelte';
 	import H2 from '$lib/components/H2.svelte';
+	import H3 from '$lib/components/H3.svelte';
 	import P from '$lib/components/P.svelte';
 	import Link from '$lib/components/Link.svelte';
 
 	const h1ExtraClasses = 'p-8';
 	const h2ExtraClasses = 'py-2';
-	const orderedListExtraClasses = 'marker:text-red-900  list-decimal list-inside my-2"';
-	const listItemExtraClasses = 'my-2"';
 </script>
 
 <H1 className={h1ExtraClasses}>Instrument tuner</H1>
@@ -50,47 +49,51 @@
 	<H2 className={h2ExtraClasses}>How to use an electronic tuner?</H2>
 
 	<P>
-		Playing with a tuner will help develop your intonation and an understanding of the tendencies of
-		your instrument. To use this instrument tuner, make sure the built-in microphone has web access.
-		<ol class={orderedListExtraClasses}>
-			<li class={listItemExtraClasses}>
-				Play any note. You will see the needle move and the strobe rotates until it finds the pitch
-				you are playing. This tuner is tuned to A440. Remember, these notes are shown in concert
-				pitch. If you play guitar, piano, or another instrument pitched in C, then you will see the
-				note name of the pitch you play. If you play an instrument that needs to transpose, like a
-				trumpet or French horn, then you will need to understand how to transpose.
-			</li>
-			<li class={listItemExtraClasses}>
-				Once the tuner recognizes what note you are playing, try to adjust it so that it stays
-				perfectly steady and centered on the dial. If you had to bring the pitch up, you were flat.
-				If you had to bring the pitch down, then you were sharp.
-			</li>
-			<li class={listItemExtraClasses}>
-				Make an adjustment to your instrument, either by adjusting a slide, a peg, or whatever your
-				instrument's equivalent is. Play the note again. If the needle and strobe are centered and
-				steady, then your instrument is tuned.
-			</li>
-		</ol>
+		Using a tuner while playing will help you improve your intonation and have a better grasp of the
+		characteristics of your instrument. Make sure the integrated microphone has web connectivity
+		before using this instrument tuner. Below are some simple steps you can follow in order to use
+		this tuner.
+
+		<H3>STEP 1</H3>
+		<P>
+			Try to play a note with your musical instrument. The tuner will detect the pitch and display
+			it. In the same time it will detect the deviation from the pitch that is detected and will
+			rotate the needle accordingly. For example playing the A pitch will be matched with 440Hz and
+			will place the needle in a vertical position right in the middle of the arc. Additionally,
+			when a note is detected with zero deviation the color of the arc and the detected pitch will
+			change meaning that the pitch is considered to be detected succesfully.
+		</P>
+		<H3>STEP 2</H3>
+		<P>
+			When the tuner detects the note that you are playing, try to adjust your note bringing the
+			pitch up or down in order to tune your instrument. When the needle is positioned in the middle
+			of the arc then the deviation of the detected pitch is almost zero. That means that the pitch
+			is detected with great accuracy and the note is tuned.
+		</P>
+		<H3>STEP 3</H3>
+		<P>
+			Repeat the process for every chord of your instrument. For example for a mandolin to be tuned
+			your goal is to tune the instrument to E-A-D-G notes. When every chord is tuned then your
+			instrument is tuned.
+		</P>
 	</P>
 
 	<H2 className={h2ExtraClasses}>Granting Microphone Access</H2>
 
 	<P>
-		Granting Microphone Access This tuner will require mic access through your web browser. If you
-		have disabled it in the past, then the tuner will not work. - Chrome: Go to Settings -> Site
-		Settings -> Microphone and allow this site to access the microphone. - Firefox: Go to
-		Preferences -> click Privacy & Security -> Scroll down to permissions and select Settings.
-		Search this site and select Allow. - Safari: Safari > Preferences, then click Websites. Change
-		the microphone setting to allow this site.
-	</P>
+		This tuner will require mic access through your web browser. If you have disabled it in the
+		past, then the tuner will not work. It is recommended to be used with Chrome 0or Firefox
+		browsers
 
-	<P>
-		Granting Microphone Access This tuner will require mic access through your web browser. If you
-		have disabled it in the past, then the tuner will not work. - Chrome: Go to Settings -> Site
-		Settings -> Microphone and allow this site to access the microphone. - Firefox: Go to
-		Preferences -> click Privacy & Security -> Scroll down to permissions and select Settings.
-		Search this site and select Allow. - Safari: Safari > Preferences, then click Websites. Change
-		the microphone setting to allow this site.
+		<H3>Chrome</H3>
+		<P>
+			Go to Settings -> Site Settings -> Microphone and allow this site to access the microphone.
+		</P>
+		<H3>Firefox</H3>
+		<P>
+			Go to Preferences -> click Privacy & Security -> Scroll down to permissions and select
+			Settings. Search this site and select Allow.
+		</P>
 	</P>
 </section>
 
