@@ -21,6 +21,7 @@
 
 	let gain: any;
 	let audioContext: any;
+	let timeoutId: any;
 
 	const stop = ({ g, context }: any) => {
 		isPlaying = false;
@@ -30,9 +31,12 @@
 		if (audioContext.state === 'running') {
 			audioContext.close();
 		}
+		clearTimeout(timeoutId);
 	};
 
 	const handleGenerator = (frequency = 300, duration = 5000) => {
+		console.log('logs:', '1');
+
 		if (isPlaying) {
 			//! stop
 			stop({ g: gain, context: audioContext });
@@ -49,16 +53,21 @@
 			oscillator.frequency.value = frequency;
 
 			oscillator.start(0);
+
+			timeoutId = setTimeout(() => {
+				console.log('logs:', '4');
+				//! stop
+				if (isPlaying) {
+					stop({ g: gain, context: audioContext });
+				}
+			}, duration);
+
+			isPlaying = true;
 		}
 
-		setTimeout(() => {
-			//! stop
-			if (isPlaying) {
-				stop({ g: gain, context: audioContext });
-			}
-		}, duration);
+		console.log('logs:', '2');
 
-		isPlaying = !isPlaying;
+		console.log('logs:', '3');
 	};
 
 	let values = [STARTING_FREQUENCY];
@@ -109,6 +118,7 @@
 		>
 	</div>
 </section>
+{isPlaying}
 <section class="text-justify md:tracking-wide py-8 w-3/4 md:w-full md:py-8 md:px-4 md:text-2xl">
 	<H2 className={h2ExtraClasses}>What is an electronic tuner?</H2>
 	<P>
