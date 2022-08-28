@@ -49,7 +49,7 @@
 	<MobileMenu bind:isOpen {onClick} />
 
 	<main
-		class="flex justify-center items-center flex-col overflow-auto h-screen"
+		class="flex justify-center items-center flex-col overflow-auto"
 		on:click={onClickOnTheRestArea}
 	>
 		<slot />
