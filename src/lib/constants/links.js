@@ -1,7 +1,7 @@
 const links = [
 	{ url: '/', description: 'E-tuner' },
-	{ url: '/metronome', description: 'Metronome' },
 	{ url: '/tone_generator', description: 'Tone Generator' },
+	{ url: '/metronome', description: 'Metronome' },
 	{ url: '/manual', description: 'Manual' },
 	{ url: '/links', description: 'Links' },
 	{ url: '/terms', description: 'Terms Of Use' },

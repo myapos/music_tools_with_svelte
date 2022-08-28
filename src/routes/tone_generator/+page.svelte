@@ -1,1 +1,1 @@
-<p>Tone Giver</p>
+<p>Tone Generator</p>

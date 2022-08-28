@@ -24,7 +24,7 @@
 	};
 
 	onMount(() => {
-		const THRESHOLD_FOR_SHORT_SCREENS = 800;
+		const THRESHOLD_FOR_SHORT_SCREENS = 600;
 
 		let clientHeight = Math.max(
 			document.body.offsetHeight,
@@ -38,8 +38,6 @@
 		const interSectionObserverIsSupported =
 			typeof window.IntersectionObserver !== 'undefined' &&
 			typeof window.IntersectionObserverEntry.prototype !== 'undefined';
-
-		console.log('interSectionObserverIsSupported', interSectionObserverIsSupported);
 
 		if (isInShortScreen && interSectionObserverIsSupported) {
 			const footerWrapper: any = window.document.querySelector('#footerWrapper');
@@ -60,6 +58,15 @@
 			//! it will be visible for screens with big height
 			isVisible = true;
 		}
+
+		console.log(
+			'interSectionObserverIsSupported',
+			interSectionObserverIsSupported,
+			' isInShortScreen',
+			isInShortScreen,
+			' isVisible',
+			isVisible
+		);
 	});
 </script>
 
