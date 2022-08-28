@@ -40,3 +40,7 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > ### To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+
+### Links
+
+- https://marcgg.com/blog/2016/11/01/javascript-audio/

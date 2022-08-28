@@ -15,6 +15,8 @@
 	"devDependencies": {
 		"@playwright/test": "^1.25.0",
 		"@sveltejs/adapter-auto": "next",
+		"@sveltejs/adapter-node": "^1.0.0-next.87",
+		"@sveltejs/adapter-static": "^1.0.0-next.39",
 		"@sveltejs/kit": "next",
 		"@typescript-eslint/eslint-plugin": "^5.27.0",
 		"@typescript-eslint/parser": "^5.27.0",
@@ -22,6 +24,8 @@
 		"eslint": "^8.16.0",
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-svelte3": "^4.0.0",
+		"i": "^0.3.7",
+		"npm": "^8.18.0",
 		"postcss": "^8.4.16",
 		"prettier": "^2.6.2",
 		"prettier-plugin-svelte": "^2.7.0",
@@ -36,6 +40,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"svelte-icons-pack": "^2.0.0"
+		"svelte-icons-pack": "^2.0.0",
+		"svelte-range-slider-pips": "^2.0.3"
 	}
 }

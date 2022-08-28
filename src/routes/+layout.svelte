@@ -11,7 +11,6 @@
 	let isLoading = true;
 	let screenWidth: number;
 	let scrollY: number;
-	$: isInBottom = false;
 
 	onMount(() => {
 		isLoading = false;
@@ -50,7 +49,7 @@
 	<MobileMenu bind:isOpen {onClick} />
 
 	<main
-		class="flex justify-center items-center flex-col overflow-auto"
+		class="flex justify-center items-center flex-col overflow-auto h-screen"
 		on:click={onClickOnTheRestArea}
 	>
 		<slot />
