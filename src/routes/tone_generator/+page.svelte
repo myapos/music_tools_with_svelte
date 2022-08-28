@@ -12,33 +12,46 @@
 
 	const types = [{ text: 'sine' }, { text: 'square' }, { text: 'sawtooth' }, { text: 'triangle' }];
 	const STARTING_FREQUENCY = 440;
-	let TYPE = 'sine';
+	$: isPlaying = false;
 	$: frequency = STARTING_FREQUENCY;
 
 	let selectedType: any;
 
-	const playTone = (frequency = 300, duration = 1e3) => {
-		const context = new AudioContext();
-		const oscillator = context.createOscillator();
+	const context = new AudioContext();
+	const oscillator = context.createOscillator();
+	const g = context.createGain();
+	oscillator.connect(g);
+
+	const stop = () => {
+		g.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 0.04);
+		isPlaying = false;
+	};
+
+	const handleGenerator = (frequency = 300, duration = 1e3) => {
+		g.connect(context.destination);
+
 		oscillator.type = selectedType.text;
 		oscillator.frequency.value = frequency;
 
-		const g = context.createGain();
-		oscillator.connect(g);
-		g.connect(context.destination);
-		oscillator.start(0);
+		if (isPlaying) {
+			//! stop
+			stop();
+			// oscillator.stop();
+		} else {
+			oscillator.start(0);
+		}
 
 		setTimeout(() => {
-			g.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 0.04);
-			// oscillator.stop()
+			stop();
 		}, duration);
+
+		isPlaying = !isPlaying;
 	};
 
 	let values = [STARTING_FREQUENCY];
 
 	const onChangeFreq = (e) => {
 		frequency = e.detail.value;
-		console.log('changed', e.detail, ' frequency', frequency);
 	};
 </script>
 
@@ -59,8 +72,11 @@
 	/>
 
 	<div class="w-1/2 flex flex-col items-center justify-centers mx-auto">
-		<div>{frequency} Hz</div>
+		<div class="text-tuner-color text-xl text-center w-2/5 p-2 rounded mx-auto mt-5">
+			{frequency} Hz
+		</div>
 		<select
+			class="w-full p-5 rounded"
 			bind:value={selectedType}
 			on:change={(e) => {
 				console.log('e', e);
@@ -73,14 +89,15 @@
 			{/each}
 		</select>
 		<Button
-			onClick={() => playTone(frequency)}
+			onClick={() => handleGenerator(frequency)}
 			className="start text-xl text-center text-tuner-color cursor-pointer
 	w-2/5 p-2 bg-black hover:bg-red-900 hover:text-black
-	rounded mx-auto mt-5">Play!</Button
+	rounded mx-auto mt-5">{isPlaying ? 'Stop' : 'Play'}!</Button
 		>
 	</div>
 </section>
-
+isPlaying:
+{isPlaying}
 <section class="text-justify md:tracking-wide py-8 w-3/4 md:w-full md:py-8 md:px-4 md:text-2xl">
 	<H2 className={h2ExtraClasses}>What is an electronic tuner?</H2>
 	<P>
