@@ -17,32 +17,45 @@
 
 	let selectedType: any;
 
-	const context = new AudioContext();
-	const oscillator = context.createOscillator();
-	const g = context.createGain();
-	oscillator.connect(g);
+	//! globals for contenxt
 
-	const stop = () => {
-		g.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 0.04);
+	let gain: any;
+	let audioContext: any;
+
+	const stop = ({ g, context }: any) => {
 		isPlaying = false;
+		g.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 0.04);
+		console.log('.state', audioContext.state);
+
+		if (audioContext.state === 'running') {
+			audioContext.close();
+		}
 	};
 
-	const handleGenerator = (frequency = 300, duration = 1e3) => {
-		g.connect(context.destination);
-
-		oscillator.type = selectedType.text;
-		oscillator.frequency.value = frequency;
-
+	const handleGenerator = (frequency = 300, duration = 5000) => {
 		if (isPlaying) {
 			//! stop
-			stop();
-			// oscillator.stop();
+			stop({ g: gain, context: audioContext });
 		} else {
+			const context = new AudioContext();
+			audioContext = context;
+			const oscillator = context.createOscillator();
+			const g = context.createGain();
+			gain = g;
+			oscillator.connect(g);
+			g.connect(context.destination);
+
+			oscillator.type = selectedType.text;
+			oscillator.frequency.value = frequency;
+
 			oscillator.start(0);
 		}
 
 		setTimeout(() => {
-			stop();
+			//! stop
+			if (isPlaying) {
+				stop({ g: gain, context: audioContext });
+			}
 		}, duration);
 
 		isPlaying = !isPlaying;
@@ -96,8 +109,6 @@
 		>
 	</div>
 </section>
-isPlaying:
-{isPlaying}
 <section class="text-justify md:tracking-wide py-8 w-3/4 md:w-full md:py-8 md:px-4 md:text-2xl">
 	<H2 className={h2ExtraClasses}>What is an electronic tuner?</H2>
 	<P>
