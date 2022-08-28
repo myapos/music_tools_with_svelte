@@ -83,11 +83,25 @@
 		past, then the tuner will not work. It is recommended to be used with Chrome 0or Firefox
 		browsers
 
-		<H3>Chrome</H3>
+		<H3
+			><Link
+				url="https://support.google.com/chrome/answer/2693767?hl=en-GB&co=GENIE.Platform%3DDesktop"
+				description="Chrome"
+				target="_blank"
+				className="p-0 text-red-900 hover:text-red-400"
+			/>
+		</H3>
 		<P>
 			Go to Settings -> Site Settings -> Microphone and allow this site to access the microphone.
 		</P>
-		<H3>Firefox</H3>
+		<H3>
+			<Link
+				url="https://support.mozilla.org/en-US/kb/how-manage-your-camera-and-microphone-permissions#w_use-prompts-to-allow-or-block-camera-and-microphone-permissions-for-a-site"
+				description="Firefox"
+				target="_blank"
+				className="p-0 text-red-900 hover:text-red-400"
+			/>
+		</H3>
 		<P>
 			Go to Preferences -> click Privacy & Security -> Scroll down to permissions and select
 			Settings. Search this site and select Allow.

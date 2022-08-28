@@ -18,9 +18,7 @@
 		isActive = url === $page.url.pathname;
 	});
 
-	const baseClasses = 'hover:text-blue-50';
-
-	let classes = `${baseClasses} ${className}`;
+	let classes = `${className}`;
 </script>
 
 <a href={url} {target} class={classes} class:text-orange-300={isActive} class:bg-red-800={isActive}
