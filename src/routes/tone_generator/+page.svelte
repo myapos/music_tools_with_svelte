@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Select from 'svelte-select';
 	import RangeSlider from 'svelte-range-slider-pips';
 	import H1 from '$lib/components/H1.svelte';
 	import Button from '$lib/components/Button.svelte';
@@ -18,7 +19,6 @@
 	let selectedType: any;
 
 	//! globals for contenxt
-
 	let gain: any;
 	let audioContext: any;
 	let timeoutId: any;
@@ -35,8 +35,6 @@
 	};
 
 	const handleGenerator = (frequency = 300, duration = 5000) => {
-		console.log('logs:', '1');
-
 		if (isPlaying) {
 			//! stop
 			stop({ g: gain, context: audioContext });
@@ -49,13 +47,12 @@
 			oscillator.connect(g);
 			g.connect(context.destination);
 
-			oscillator.type = selectedType.text;
+			oscillator.type = selectedType.value;
 			oscillator.frequency.value = frequency;
 
 			oscillator.start(0);
 
 			timeoutId = setTimeout(() => {
-				console.log('logs:', '4');
 				//! stop
 				if (isPlaying) {
 					stop({ g: gain, context: audioContext });
@@ -64,10 +61,6 @@
 
 			isPlaying = true;
 		}
-
-		console.log('logs:', '2');
-
-		console.log('logs:', '3');
 	};
 
 	let values = [STARTING_FREQUENCY];
@@ -75,6 +68,20 @@
 	const onChangeFreq = (e) => {
 		frequency = e.detail.value;
 	};
+
+	let items = [
+		{ value: 'sine', label: 'Sine' },
+		{ value: 'square', label: 'Square' },
+		{ value: 'sawtooth', label: 'Sawtooth' },
+		{ value: 'triangle', label: 'Triangle' }
+	];
+
+	let value = { value: 'sine', label: 'Sine' };
+
+	function handleSelect(event) {
+		console.log('selected item', event.detail);
+		selectedType = event.detail;
+	}
 </script>
 
 <H1 className={h1ExtraClasses}>Tone Generator</H1>
@@ -97,28 +104,16 @@
 		<div class="text-tuner-color text-xl text-center w-2/5 p-2 rounded mx-auto mt-5">
 			{frequency} Hz
 		</div>
-		<select
-			class="w-full p-5 rounded"
-			bind:value={selectedType}
-			on:change={(e) => {
-				console.log('e', e);
-			}}
-		>
-			{#each types as type}
-				<option value={type} selected={type.text === 'sine'}>
-					{type.text}
-				</option>
-			{/each}
-		</select>
+
+		<Select containerClasses="w-1/5  p-5 rounded" {items} {value} on:select={handleSelect} />
 		<Button
 			onClick={() => handleGenerator(frequency)}
 			className="start text-xl text-center text-tuner-color cursor-pointer
-	w-2/5 p-2 bg-black hover:bg-red-900 hover:text-black
+	w-1/5 p-2 bg-black hover:bg-red-900 hover:text-black
 	rounded mx-auto mt-5">{isPlaying ? 'Stop' : 'Play'}!</Button
 		>
 	</div>
 </section>
-{isPlaying}
 <section class="text-justify md:tracking-wide py-8 w-3/4 md:w-full md:py-8 md:px-4 md:text-2xl">
 	<H2 className={h2ExtraClasses}>What is an electronic tuner?</H2>
 	<P>
