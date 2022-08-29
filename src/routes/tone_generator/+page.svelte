@@ -22,7 +22,7 @@
 	let gain: { [key: string]: any };
 	let audioContext: { [key: string]: any };
 	let timeoutId: number;
-	let volume: number = 0;
+	let volumePosition: number = 0.25;
 
 	//! initial value of select
 	let selectedType: any = { value: 'sine', label: 'Sine' };
@@ -46,19 +46,10 @@
 			audioContext = context;
 			const oscillator = context.createOscillator();
 			const g = context.createGain();
-			//! from previous plays
-			const hasAlreadyValue = typeof gain?.gain.value !== 'undefined';
-			let previousValue = 0;
-
-			if (hasAlreadyValue) {
-				previousValue = gain?.gain.value;
-			}
 
 			gain = g;
 
-			if (hasAlreadyValue) {
-				gain.gain.value = previousValue;
-			}
+			gain.gain.value = volumePosition;
 
 			oscillator.connect(g);
 			g.connect(context.destination);
@@ -87,11 +78,22 @@
 </script>
 
 <H1 className={h1ExtraClasses}>Tone Generator</H1>
-
 <section
 	class="tools md:text-xl md:text-justify md:tracking-wide
      bg-red-900 w-full flex flex-col justify-center relative p-8 "
 >
+	<div
+		class="text-tuner-color 
+    w-2/5 
+    text-xl 
+    text-center 
+    p-2 
+    rounded 
+    mx-auto
+    "
+	>
+		Frequency selector
+	</div>
 	<RangeSlider
 		bind:values={rangeValues}
 		all="label"
@@ -110,6 +112,7 @@
 			max={MAX_RANGE_FREQ}
 			bind:selectedType
 			bind:gain
+			bind:volumePosition
 		/>
 		<Button
 			onClick={() => handleGenerator(frequency)}

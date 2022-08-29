@@ -9,6 +9,7 @@
 	export let frequency: number;
 	export let min: number;
 	export let max: number;
+	export let volumePosition: number;
 	export let selectedType: Object;
 	export let gain: { [key: string]: any };
 
@@ -90,10 +91,6 @@
 	};
 </script>
 
-<div class="w-full">
-	<Volume bind:gain />
-</div>
-
 <div class="flex flex-row justify-center items-center w-2/5">
 	<Select
 		containerClasses="w-3/5 p-5 rounded"
@@ -149,6 +146,9 @@
 		on:select={handleSelectType}
 		placeholder="Select type"
 	/>
+</div>
+<div class="w-full">
+	<Volume bind:gain bind:volumePosition />
 </div>
 
 <style>
