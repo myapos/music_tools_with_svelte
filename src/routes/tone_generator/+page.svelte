@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Select from 'svelte-select';
 	import RangeSlider from 'svelte-range-slider-pips';
 	import H1 from '$lib/components/H1.svelte';
 	import Button from '$lib/components/Button.svelte';
@@ -30,7 +29,6 @@
 	const stop = ({ g, context }: any) => {
 		isPlaying = false;
 		g.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 0.04);
-		console.log('.state', audioContext.state);
 
 		if (audioContext.state === 'running') {
 			audioContext.close();
@@ -72,13 +70,6 @@
 	const onChangeFreq = (e) => {
 		frequency = e.detail.value;
 	};
-
-	let items = [
-		{ value: 'sine', label: 'Sine' },
-		{ value: 'square', label: 'Square' },
-		{ value: 'sawtooth', label: 'Sawtooth' },
-		{ value: 'triangle', label: 'Triangle' }
-	];
 </script>
 
 <H1 className={h1ExtraClasses}>Tone Generator</H1>
@@ -99,7 +90,7 @@
 	/>
 
 	<div class="w-1/2 flex flex-col items-center justify-centers mx-auto">
-		<Controls bind:frequency min={MIN_RANGE_FREQ} max={MAX_RANGE_FREQ} bind:selectedType />
+		<Controls bind:frequency min={MIN_RANGE_FREQ} max={MAX_RANGE_FREQ} bind:selectedType {gain} />
 		<Button
 			onClick={() => handleGenerator(frequency)}
 			className="start text-xl text-center text-tuner-color cursor-pointer

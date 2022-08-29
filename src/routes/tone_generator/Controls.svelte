@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Volume from './Volume.svelte';
 	import Select from 'svelte-select';
 	import Icon from 'svelte-icons-pack/Icon.svelte';
 	import IoArrowBackOutline from 'svelte-icons-pack/io/IoArrowBackOutline';
@@ -9,6 +10,7 @@
 	export let min: number;
 	export let max: number;
 	export let selectedType: Object;
+	export let gain: { [key: string]: any };
 
 	let intervalRightId: any;
 	let intervalLeftId: any;
@@ -75,8 +77,6 @@
 		};
 	});
 
-	console.log('itemsHashNotes', itemsHashNotes);
-
 	let selectedFreq: any = { value: '440', label: 'A4' };
 
 	const handleSelectFreq = (event: any) => {
@@ -89,6 +89,10 @@
 		}
 	};
 </script>
+
+<div class="w-full">
+	<Volume bind:gain />
+</div>
 
 <div class="flex flex-row justify-center items-center w-2/5">
 	<Select
