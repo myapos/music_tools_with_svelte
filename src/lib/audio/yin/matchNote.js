@@ -1,5 +1,5 @@
 import { stateNoteInfo } from '$lib/stores/stores';
-import { hashFreqNotes, minimumThreshold } from '../constants';
+import { hashFreqNotes, minimumThreshold } from '$lib/audio/constants';
 
 const matchNote = (goalfrequency) => {
 	let noteInfo = {

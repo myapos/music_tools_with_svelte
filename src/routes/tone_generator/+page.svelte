@@ -27,10 +27,6 @@
 	//! initial value of select
 	let selectedType: any = { value: 'sine', label: 'Sine' };
 
-	const handleSelect = (event: any) => {
-		selectedType = event.detail;
-	};
-
 	const stop = ({ g, context }: any) => {
 		isPlaying = false;
 		g.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 0.04);
@@ -103,13 +99,7 @@
 	/>
 
 	<div class="w-1/2 flex flex-col items-center justify-centers mx-auto">
-		<Controls bind:frequency min={MIN_RANGE_FREQ} max={MAX_RANGE_FREQ} />
-		<Select
-			containerClasses="w-1/5  p-5 rounded"
-			{items}
-			bind:value={selectedType}
-			on:select={handleSelect}
-		/>
+		<Controls bind:frequency min={MIN_RANGE_FREQ} max={MAX_RANGE_FREQ} bind:selectedType />
 		<Button
 			onClick={() => handleGenerator(frequency)}
 			className="start text-xl text-center text-tuner-color cursor-pointer
