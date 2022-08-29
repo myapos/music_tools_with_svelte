@@ -3,25 +3,25 @@
 	import IoArrowBackOutline from 'svelte-icons-pack/io/IoArrowBackOutline';
 	import IoArrowForward from 'svelte-icons-pack/io/IoArrowForward';
 	export let frequency: number;
+	export let min: number;
+	export let max: number;
 
 	let intervalRightId: any;
 	let intervalLeftId: any;
 	const MINIMUM_THRESHOLD_FOR_HOLDING = 150;
+	let displayInput = false;
 
 	const handleLeftClick = () => {
-		console.log('handle left');
 		frequency--;
 	};
 
 	const handleLeftMouseDown = () => {
 		intervalLeftId = setInterval(() => {
-			console.log('decreasing');
 			frequency--;
 		}, MINIMUM_THRESHOLD_FOR_HOLDING);
 	};
 
 	const handleLeftMouseUp = () => {
-		console.log('handle handleLeftMouseUp');
 		clearInterval(intervalLeftId);
 	};
 
@@ -31,14 +31,26 @@
 
 	const handleRightMouseDown = () => {
 		intervalRightId = setInterval(() => {
-			console.log('increasing');
 			frequency++;
 		}, MINIMUM_THRESHOLD_FOR_HOLDING);
 	};
 
 	const handleRightMouseUp = () => {
-		console.log('handle handleRightMouseUp');
 		clearInterval(intervalRightId);
+	};
+
+	const enableDisplayInput = () => {
+		displayInput = true;
+	};
+
+	const disableDisplayInput = () => {
+		displayInput = false;
+	};
+
+	const disableDisplayInputOnEnter = (e: any) => {
+		if (e.key.match(/enter/gi)) {
+			disableDisplayInput();
+		}
 	};
 </script>
 
@@ -53,8 +65,20 @@
 		/>
 	</div>
 
-	<div class="text-tuner-color text-xl text-center p-2 rounded mx-auto">
-		{frequency} Hz
+	<div
+		class="text-tuner-color text-xl text-center p-2 rounded mx-auto cursor-pointer"
+		on:dblclick={enableDisplayInput}
+	>
+		{#if displayInput}<input
+				type="number"
+				{min}
+				{max}
+				bind:value={frequency}
+				on:keypress={disableDisplayInputOnEnter}
+				on:blur={disableDisplayInput}
+			/>{:else}
+			{frequency} Hz
+		{/if}
 	</div>
 
 	<div
@@ -71,3 +95,17 @@
 		/>
 	</div>
 </div>
+
+<style>
+	/* Chrome, Safari, Edge, Opera */
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+
+	/* Firefox */
+	input[type='number'] {
+		-moz-appearance: textfield;
+	}
+</style>

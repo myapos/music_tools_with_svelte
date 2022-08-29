@@ -13,6 +13,9 @@
 	const h2ExtraClasses = 'py-2';
 
 	const STARTING_FREQUENCY = 440;
+	const MIN_RANGE_FREQ = 0;
+	const MAX_RANGE_FREQ = 20154;
+
 	$: isPlaying = false;
 	$: frequency = STARTING_FREQUENCY;
 
@@ -93,14 +96,14 @@
 		all="label"
 		float={false}
 		range={true}
-		min={0}
-		max={20154}
+		min={MIN_RANGE_FREQ}
+		max={MAX_RANGE_FREQ}
 		hoverable
 		on:change={onChangeFreq}
 	/>
 
 	<div class="w-1/2 flex flex-col items-center justify-centers mx-auto">
-		<Controls bind:frequency />
+		<Controls bind:frequency min={MIN_RANGE_FREQ} max={MAX_RANGE_FREQ} />
 		<Select
 			containerClasses="w-1/5  p-5 rounded"
 			{items}
