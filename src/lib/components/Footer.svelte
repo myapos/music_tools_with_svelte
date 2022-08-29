@@ -58,15 +58,6 @@
 			//! it will be visible for screens with big height
 			isVisible = true;
 		}
-
-		console.log(
-			'interSectionObserverIsSupported',
-			interSectionObserverIsSupported,
-			' isInShortScreen',
-			isInShortScreen,
-			' isVisible',
-			isVisible
-		);
 	});
 </script>
 
@@ -82,7 +73,7 @@
 				src={FaCopyright}
 				size="1rem"
 				color="var(--menu-text-blue-200)"
-				title="copright"
+				title="copyright"
 				className="mr-2"
 			/>
 			2022

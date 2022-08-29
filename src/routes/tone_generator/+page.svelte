@@ -7,21 +7,26 @@
 	import H3 from '$lib/components/H3.svelte';
 	import P from '$lib/components/P.svelte';
 	import Link from '$lib/components/Link.svelte';
+	import Controls from './Controls.svelte';
 
 	const h1ExtraClasses = 'p-8';
 	const h2ExtraClasses = 'py-2';
 
-	const types = [{ text: 'sine' }, { text: 'square' }, { text: 'sawtooth' }, { text: 'triangle' }];
 	const STARTING_FREQUENCY = 440;
 	$: isPlaying = false;
 	$: frequency = STARTING_FREQUENCY;
-
-	let selectedType: any;
 
 	//! globals for contenxt
 	let gain: any;
 	let audioContext: any;
 	let timeoutId: any;
+
+	//! initial value of select
+	let selectedType: any = { value: 'sine', label: 'Sine' };
+
+	const handleSelect = (event: any) => {
+		selectedType = event.detail;
+	};
 
 	const stop = ({ g, context }: any) => {
 		isPlaying = false;
@@ -63,7 +68,7 @@
 		}
 	};
 
-	let values = [STARTING_FREQUENCY];
+	$: rangeValues = [frequency];
 
 	const onChangeFreq = (e) => {
 		frequency = e.detail.value;
@@ -75,13 +80,6 @@
 		{ value: 'sawtooth', label: 'Sawtooth' },
 		{ value: 'triangle', label: 'Triangle' }
 	];
-
-	let value = { value: 'sine', label: 'Sine' };
-
-	function handleSelect(event) {
-		console.log('selected item', event.detail);
-		selectedType = event.detail;
-	}
 </script>
 
 <H1 className={h1ExtraClasses}>Tone Generator</H1>
@@ -91,9 +89,10 @@
      bg-red-900 w-full flex flex-col justify-center relative p-8 "
 >
 	<RangeSlider
-		bind:values
+		bind:values={rangeValues}
 		all="label"
 		float={false}
+		range={true}
 		min={0}
 		max={20154}
 		hoverable
@@ -101,17 +100,20 @@
 	/>
 
 	<div class="w-1/2 flex flex-col items-center justify-centers mx-auto">
-		<div class="text-tuner-color text-xl text-center w-2/5 p-2 rounded mx-auto mt-5">
-			{frequency} Hz
-		</div>
-
-		<Select containerClasses="w-1/5  p-5 rounded" {items} {value} on:select={handleSelect} />
+		<Controls bind:frequency />
+		<Select
+			containerClasses="w-1/5  p-5 rounded"
+			{items}
+			bind:value={selectedType}
+			on:select={handleSelect}
+		/>
 		<Button
 			onClick={() => handleGenerator(frequency)}
 			className="start text-xl text-center text-tuner-color cursor-pointer
 	w-1/5 p-2 bg-black hover:bg-red-900 hover:text-black
-	rounded mx-auto mt-5">{isPlaying ? 'Stop' : 'Play'}!</Button
-		>
+	rounded mx-auto mt-5"
+			>{isPlaying ? 'Stop' : 'Play'}!
+		</Button>
 	</div>
 </section>
 <section class="text-justify md:tracking-wide py-8 w-3/4 md:w-full md:py-8 md:px-4 md:text-2xl">
