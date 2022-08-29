@@ -19,9 +19,10 @@
 	$: frequency = STARTING_FREQUENCY;
 
 	//! globals for contenxt
-	let gain: any;
-	let audioContext: any;
-	let timeoutId: any;
+	let gain: { [key: string]: any };
+	let audioContext: { [key: string]: any };
+	let timeoutId: number;
+	let volume: number = 0;
 
 	//! initial value of select
 	let selectedType: any = { value: 'sine', label: 'Sine' };
@@ -45,7 +46,20 @@
 			audioContext = context;
 			const oscillator = context.createOscillator();
 			const g = context.createGain();
+			//! from previous plays
+			const hasAlreadyValue = typeof gain?.gain.value !== 'undefined';
+			let previousValue = 0;
+
+			if (hasAlreadyValue) {
+				previousValue = gain?.gain.value;
+			}
+
 			gain = g;
+
+			if (hasAlreadyValue) {
+				gain.gain.value = previousValue;
+			}
+
 			oscillator.connect(g);
 			g.connect(context.destination);
 
@@ -90,7 +104,13 @@
 	/>
 
 	<div class="w-1/2 flex flex-col items-center justify-centers mx-auto">
-		<Controls bind:frequency min={MIN_RANGE_FREQ} max={MAX_RANGE_FREQ} bind:selectedType {gain} />
+		<Controls
+			bind:frequency
+			min={MIN_RANGE_FREQ}
+			max={MAX_RANGE_FREQ}
+			bind:selectedType
+			bind:gain
+		/>
 		<Button
 			onClick={() => handleGenerator(frequency)}
 			className="start text-xl text-center text-tuner-color cursor-pointer
