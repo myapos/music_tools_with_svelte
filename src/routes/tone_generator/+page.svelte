@@ -188,6 +188,9 @@
 	</P>
 	<H2 className={h2ExtraClasses}>How to use this tone generator?</H2>
 
+	<P className="p-5 border-2 border-red-900 rounded text-lg text-red-900"
+		>Be aware that the generation of high frequencies/volume may damage your hearing.</P
+	>
 	<P>
 		<H3>General Use</H3>
 		You can use this tone generator by selecting a frequency and clicking Play. The tone will be played
@@ -205,8 +208,7 @@
 
 		<P>
 			You can use this tone generator by using the frequency selector and clicking Play. The range
-			of the freqeuncy selector is between 0-20154 Hz. Be aware though that the generation of high
-			frequencies may damage your hearing.
+			of the freqeuncy selector is between 0-20154 Hz.
 		</P>
 
 		<H3>Volume Selector</H3>
