@@ -1,29 +1,16 @@
 <script lang="ts">
-	import Volume from './Volume.svelte';
-	import Select from 'svelte-select';
 	import Icon from 'svelte-icons-pack/Icon.svelte';
 	import IoArrowBackOutline from 'svelte-icons-pack/io/IoArrowBackOutline';
 	import IoArrowForward from 'svelte-icons-pack/io/IoArrowForward';
-	import { hashNotesFreq } from '$lib/audio/constants';
 
 	export let frequency: number;
 	export let min: number;
 	export let max: number;
-	export let volumePosition: number;
-	export let selectedType: Object;
-	export let gain: { [key: string]: any };
 
 	let intervalRightId: any;
 	let intervalLeftId: any;
 	const MINIMUM_THRESHOLD_FOR_HOLDING = 150;
 	let displayInput = false;
-
-	let items = [
-		{ value: 'sine', label: 'Sine' },
-		{ value: 'square', label: 'Square' },
-		{ value: 'sawtooth', label: 'Sawtooth' },
-		{ value: 'triangle', label: 'Triangle' }
-	];
 
 	const handleLeftClick = () => {
 		frequency--;
@@ -66,39 +53,9 @@
 			disableDisplayInput();
 		}
 	};
-
-	const handleSelectType = (event: any) => {
-		selectedType = event.detail;
-	};
-
-	const itemsHashNotes = Object.keys(hashNotesFreq).map((note) => {
-		return {
-			value: hashNotesFreq[note],
-			label: note
-		};
-	});
-
-	let selectedFreq: any = { value: '440', label: 'A4' };
-
-	const handleSelectFreq = (event: any) => {
-		const hasValue = typeof event.detail.value !== 'undefined';
-		const { value } = event.detail;
-
-		if (hasValue) {
-			selectedFreq = event.detail;
-			frequency = parseInt(value);
-		}
-	};
 </script>
 
 <div class="flex flex-row justify-center items-center w-2/5">
-	<Select
-		containerClasses="w-3/5 p-5 rounded"
-		items={itemsHashNotes}
-		bind:value={selectedFreq}
-		on:select={handleSelectFreq}
-		placeholder="Search notes"
-	/>
 	<div on:click={handleLeftClick} on:mousedown={handleLeftMouseDown} on:mouseup={handleLeftMouseUp}>
 		<Icon
 			src={IoArrowBackOutline}
@@ -138,17 +95,6 @@
 			className="cursor-pointer hover:brightness-150"
 		/>
 	</div>
-
-	<Select
-		containerClasses="w-3/5 p-5 rounded"
-		{items}
-		bind:value={selectedType}
-		on:select={handleSelectType}
-		placeholder="Select type"
-	/>
-</div>
-<div class="w-full">
-	<Volume bind:gain bind:volumePosition />
 </div>
 
 <style>

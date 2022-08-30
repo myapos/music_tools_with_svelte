@@ -1,5 +1,8 @@
 <script lang="ts">
 	import RangeSlider from 'svelte-range-slider-pips';
+	import SearchNotes from './SearchNotes.svelte';
+	import WaveType from './WaveType.svelte';
+	import Volume from './Volume.svelte';
 	import H1 from '$lib/components/H1.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import H2 from '$lib/components/H2.svelte';
@@ -25,7 +28,9 @@
 	let volumePosition: number = 0.25;
 
 	//! initial value of select
-	let selectedType: any = { value: 'sine', label: 'Sine' };
+	// let selectedType: any = { value: 'sine', label: 'Sine' };
+	let selectedType = { value: 'sine', label: 'Sine' };
+	let selectedTypeDebug = { value: 'sine', label: 'Sine' };
 
 	const stop = ({ g, context }: any) => {
 		isPlaying = false;
@@ -105,15 +110,29 @@
 		on:change={onChangeFreq}
 	/>
 
+	<div class="text-tuner-color grid grid-rows-2 grid-cols-4 ">
+		<div class="text-center">Volume {100 * volumePosition} %</div>
+		<div class="text-center">Search Notes</div>
+		<div class="text-center">Step Controls</div>
+		<div class="text-center">Wave Type</div>
+		<!--end of first row-->
+		<div>
+			<Volume bind:gain bind:volumePosition />
+		</div>
+		<div class="flex justify-center"><SearchNotes bind:frequency /></div>
+		<div class="flex justify-center">
+			<Controls
+				bind:frequency
+				min={MIN_RANGE_FREQ}
+				max={MAX_RANGE_FREQ}
+				bind:gain
+				bind:volumePosition
+			/>
+		</div>
+		<div class="flex justify-center"><WaveType bind:selectedType /></div>
+	</div>
+
 	<div class="w-1/2 flex flex-col items-center justify-centers mx-auto">
-		<Controls
-			bind:frequency
-			min={MIN_RANGE_FREQ}
-			max={MAX_RANGE_FREQ}
-			bind:selectedType
-			bind:gain
-			bind:volumePosition
-		/>
 		<Button
 			onClick={() => handleGenerator(frequency)}
 			className="start text-xl text-center text-tuner-color cursor-pointer

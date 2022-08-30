@@ -17,18 +17,6 @@
 	};
 </script>
 
-<div
-	class="text-tuner-color 
-    w-2/5 
-    text-xl 
-    text-center 
-    p-2 
-    rounded 
-    mx-auto
-    "
->
-	Volume {100 * volumePosition} %
-</div>
 <RangeSlider
 	bind:values={rangeVolume}
 	all="label"
