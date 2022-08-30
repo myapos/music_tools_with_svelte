@@ -25,7 +25,8 @@
 	let gain: { [key: string]: any };
 	let audioContext: { [key: string]: any };
 	let timeoutId: number;
-	let volumePosition: number = 0.25;
+	//! initial volume setting
+	let volumePosition: number = 0.1;
 
 	//! initial value of select
 	// let selectedType: any = { value: 'sine', label: 'Sine' };
