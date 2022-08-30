@@ -123,7 +123,7 @@
 		<div class="text-center">Volume {parseInt((100 * volumePosition).toFixed())} %</div>
 		<div class="text-center">Search Notes</div>
 		<div class="text-center">Step Controls</div>
-		<div class="text-center">Wave Type</div>
+		<div class="text-center">Wave Shape</div>
 		<!--end of first row-->
 		<div class="flex flex-col content-end mb-o">
 			<Volume bind:gain bind:volumePosition />
@@ -162,60 +162,86 @@
 	</div>
 </section>
 <section class="text-justify md:tracking-wide py-8 w-3/4 md:w-full md:py-8 md:px-4 md:text-2xl">
-	<H2 className={h2ExtraClasses}>What is an electronic tuner?</H2>
+	<H2 className={h2ExtraClasses}>What is an tone generator?</H2>
 	<P>
-		In music, an <Link
-			url="https://en.wikipedia.org/wiki/Electronic_tuner"
-			description="electronic tuner"
+		A <Link
+			url="https://en.wikipedia.org/wiki/Signal_generator"
+			description="signal"
 			target="_blank"
 			className="p-0 text-red-900 hover:text-red-400"
-		/>
-		is a device that detects and displays the pitch of musical notes played on a musical instrument.
-		<span class="font-semibold">"Pitch"</span> is the perceived fundamental frequency of a musical note,
-		which is typically measured in Hertz. Simple tuners indicate—typically with an analog needle or dial,
-		LEDs, or an LCD screen—whether a pitch is lower, higher, or equal to the desired pitch. Since the
-		early 2010s, software applications can turn a smartphone, tablet, or personal computer into a tuner.More
-		complex and expensive tuners indicate pitch more precisely. Tuners vary in size from units that fit
-		in a pocket to 19" rack-mount units. Instrument technicians and piano tuners typically use more expensive,
-		accurate tuners.
+		/> or tone generator is one of a class of electronic devices that generates electrical signals with
+		set properties of amplitude, frequency, and wave shape. These generated signals are used as a stimulus
+		for electronic measurements, typically used in designing, testing, troubleshooting, and repairing
+		electronic or electroacoustic devices, though it often has artistic uses as well.
+
+		<P>
+			There are many different types of signal generators with different purposes and applications
+			and at varying levels of expense. These types include function generators, RF and microwave
+			signal generators, pitch generators, arbitrary waveform generators, digital pattern
+			generators, and frequency generators. In general, no device is suitable for all possible
+			applications. A signal generator may be as simple as an oscillator with calibrated frequency
+			and amplitude. More general-purpose signal generators allow control of all the characteristics
+			of a signal. Modern general-purpose signal generators will have a microprocessor control and
+			may also permit control from a personal computer. Signal generators may be free-standing
+			self-contained instruments, or may be incorporated into more complex automatic test systems.
+		</P>
 	</P>
-	<P>
-		The simplest tuners detect and display tuning only for a single pitch—often "A" or "E"—or for a
-		small number of pitches, such as the six used in the standard tuning of a guitar (E,A,D,G,B,E).
-		More complex tuners offer chromatic tuning for all 12 pitches of the equally tempered octave.
-		Some electronic tuners offer additional features, such as pitch calibration, temperament
-		options, the sounding of a desired pitch through an amplifier plus speaker, and adjustable
-		"read-time" settings that affect how long the tuner takes to measure the pitch of the note.
-	</P>
-	<H2 className={h2ExtraClasses}>How to use an electronic tuner?</H2>
+	<H2 className={h2ExtraClasses}>How to use this tone generator?</H2>
 
 	<P>
-		Using a tuner while playing will help you improve your intonation and have a better grasp of the
-		characteristics of your instrument. Make sure the integrated microphone has web connectivity
-		before using this instrument tuner. Below are some simple steps you can follow in order to use
-		this tuner.
+		<H3>General Use</H3>
+		You can use this tone generator by selecting a frequency and clicking Play. The tone will be played
+		for a few seconds and stop by default. The frequency selection can be achieved using the following
+		controls
+		<ol class="list-disc list-inside marker:text-red-900">
+			<li>Frequency selector</li>
+			<li>Step Controls</li>
+			<li>Notes Controls</li>
+		</ol>
 
-		<H3>STEP 1</H3>
+		<P>Below is a more detailed explanation of each option.</P>
+
+		<H3>Frequency Selector</H3>
+
 		<P>
-			Try to play a note with your musical instrument. The tuner will detect the pitch and display
-			it. In the same time it will detect the deviation from the pitch that is detected and will
-			rotate the needle accordingly. For example playing the A pitch will be matched with 440Hz and
-			will place the needle in a vertical position right in the middle of the arc. Additionally,
-			when a note is detected with zero deviation the color of the arc and the detected pitch will
-			change meaning that the pitch is considered to be detected succesfully.
+			You can use this tone generator by using the frequency selector and clicking Play. The range
+			of the freqeuncy selector is between 0-20154 Hz. Be aware though that the generation of high
+			frequencies may damage your hearing.
 		</P>
-		<H3>STEP 2</H3>
+
+		<H3>Volume Selector</H3>
+
 		<P>
-			When the tuner detects the note that you are playing, try to adjust your note bringing the
-			pitch up or down in order to tune your instrument. When the needle is positioned in the middle
-			of the arc then the deviation of the detected pitch is almost zero. That means that the pitch
-			is detected with great accuracy and the note is tuned.
+			You can change the volume of the playing tone between 0 -100%. Be aware though that the
+			generation in high volumes may damage your hearing.
 		</P>
-		<H3>STEP 3</H3>
+
+		<H3>Notes Selector</H3>
 		<P>
-			Repeat the process for every chord of your instrument. For example for a mandolin to be tuned
-			your goal is to tune the instrument to E-A-D-G notes. When every chord is tuned then your
-			instrument is tuned.
+			You can search for the frequency of a specific tone in a octave by using the notes selector
+			dropdown.
+		</P>
+
+		<H3>Step Controls</H3>
+		<P>
+			You can fine tune the desired frequency by using the arrows left/right for step by step
+			increasements/decreasements of a specific tone. Each step has a value of 1Hz.
+		</P>
+		<H3>Wave Shape</H3>
+		<P>
+			In electronics, acoustics, and related fields, the <Link
+				url="https://en.wikipedia.org/wiki/Waveform"
+				description="waveform"
+				target="_blank"
+				className="p-0 text-red-900 hover:text-red-400"
+			/>
+			of a signal is the shape of its graph as a function of time, independent of its time and magnitude
+			scales and of any displacement in time.
+		</P>
+		<P>
+			In this tone generator the wave shapes that are supported are <span
+				class="font-semibold  text-red-900">Sine, Square, Sawtooth and Triangle</span
+			>. You can select and use them before playing from the wave shape selector.
 		</P>
 	</P>
 
@@ -223,8 +249,7 @@
 
 	<P>
 		This tuner will require mic access through your web browser. If you have disabled it in the
-		past, then the tuner will not work. It is recommended to be used with Chrome 0or Firefox
-		browsers
+		past, then the tuner will not work. It is recommended to be used with Chrome or Firefox browsers
 
 		<H3
 			><Link

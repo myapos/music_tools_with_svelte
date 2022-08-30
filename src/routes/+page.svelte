@@ -28,13 +28,13 @@
 			className="p-0 text-red-900 hover:text-red-400"
 		/>
 		is a device that detects and displays the pitch of musical notes played on a musical instrument.
-		<span class="font-semibold">"Pitch"</span> is the perceived fundamental frequency of a musical note,
-		which is typically measured in Hertz. Simple tuners indicate—typically with an analog needle or dial,
-		LEDs, or an LCD screen—whether a pitch is lower, higher, or equal to the desired pitch. Since the
-		early 2010s, software applications can turn a smartphone, tablet, or personal computer into a tuner.More
-		complex and expensive tuners indicate pitch more precisely. Tuners vary in size from units that fit
-		in a pocket to 19" rack-mount units. Instrument technicians and piano tuners typically use more expensive,
-		accurate tuners.
+		<span class="font-semibold  text-red-900">"Pitch"</span> is the perceived fundamental frequency of
+		a musical note, which is typically measured in Hertz. Simple tuners indicate—typically with an analog
+		needle or dial, LEDs, or an LCD screen—whether a pitch is lower, higher, or equal to the desired
+		pitch. Since the early 2010s, software applications can turn a smartphone, tablet, or personal computer
+		into a tuner.More complex and expensive tuners indicate pitch more precisely. Tuners vary in size
+		from units that fit in a pocket to 19" rack-mount units. Instrument technicians and piano tuners
+		typically use more expensive, accurate tuners.
 	</P>
 	<P>
 		The simplest tuners detect and display tuning only for a single pitch—often "A" or "E"—or for a
@@ -80,8 +80,7 @@
 
 	<P>
 		This tuner will require mic access through your web browser. If you have disabled it in the
-		past, then the tuner will not work. It is recommended to be used with Chrome 0or Firefox
-		browsers
+		past, then the tuner will not work. It is recommended to be used with Chrome or Firefox browsers
 
 		<H3
 			><Link
