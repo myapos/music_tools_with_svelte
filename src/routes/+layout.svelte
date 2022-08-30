@@ -11,7 +11,6 @@
 	let isLoading = true;
 	let screenWidth: number;
 	let scrollY: number;
-	$: isInBottom = false;
 
 	onMount(() => {
 		isLoading = false;

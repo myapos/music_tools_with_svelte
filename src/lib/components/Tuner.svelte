@@ -4,6 +4,7 @@
 	import { cubicOut } from 'svelte/easing';
 	import { stateNoteInfo } from '$lib/stores/stores';
 	import { stateAudioContext } from '$lib/stores/stores';
+	import Button from '$lib/components/Button.svelte';
 	import DisplayNote from './DisplayNote.svelte';
 	import { minimumThreshold } from '$lib/audio/constants';
 
@@ -65,8 +66,8 @@
 		<div class="note note_positive_50 bottom_50 absolute text-2xl">{note_positive_50}</div>
 	</div>
 
-	<div
-		on:click={() => {
+	<Button
+		onClick={() => {
 			if (startedTuning) {
 				//! if it already started and click again stop tuning
 				console.log('stop tuning');
@@ -79,12 +80,10 @@
 			}
 			startedTuning = !startedTuning;
 		}}
-		class="start text-xl text-center text-tuner-color cursor-pointer
-		 w-2/5 p-2 bg-black hover:bg-red-900 hover:text-black
-		 rounded mx-auto mt-5"
+		className="start text-xl text-center text-tuner-color cursor-pointer
+	w-2/5 p-2 bg-black hover:bg-red-900 hover:text-black
+	rounded mx-auto mt-5">{startedTuning ? 'Stop' : 'Start'} Tuning!</Button
 	>
-		{startedTuning ? 'Stop' : 'Start'} Tuning!
-	</div>
 
 	{#if startedTuning}
 		<DisplayNote bind:isTuned />
