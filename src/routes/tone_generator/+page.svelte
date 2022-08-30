@@ -84,8 +84,18 @@
 
 <H1 className={h1ExtraClasses}>Tone Generator</H1>
 <section
-	class="tools md:text-xl md:text-justify md:tracking-wide
-     bg-red-900 w-full flex flex-col justify-center relative p-8 "
+	class="
+	tools 
+	md:text-xl 
+	md:text-justify 
+	md:tracking-wide
+    bg-red-900 
+	w-full 
+	flex 
+	flex-col 
+	justify-center 
+	relative 
+	p-8"
 >
 	<div
 		class="text-tuner-color 
@@ -101,7 +111,6 @@
 	</div>
 	<RangeSlider
 		bind:values={rangeValues}
-		all="label"
 		float={false}
 		range={true}
 		min={MIN_RANGE_FREQ}
@@ -110,13 +119,13 @@
 		on:change={onChangeFreq}
 	/>
 
-	<div class="text-tuner-color grid grid-rows-2 grid-cols-4 ">
-		<div class="text-center">Volume {100 * volumePosition} %</div>
+	<div class="text-tuner-color grid grid-rows-2 grid-cols-4 gap-y-0 justify-center items-end">
+		<div class="text-center">Volume {parseInt((100 * volumePosition).toFixed())} %</div>
 		<div class="text-center">Search Notes</div>
 		<div class="text-center">Step Controls</div>
 		<div class="text-center">Wave Type</div>
 		<!--end of first row-->
-		<div>
+		<div class="flex flex-col content-end mb-o">
 			<Volume bind:gain bind:volumePosition />
 		</div>
 		<div class="flex justify-center"><SearchNotes bind:frequency /></div>
@@ -135,9 +144,19 @@
 	<div class="w-1/2 flex flex-col items-center justify-centers mx-auto">
 		<Button
 			onClick={() => handleGenerator(frequency)}
-			className="start text-xl text-center text-tuner-color cursor-pointer
-	w-1/5 p-2 bg-black hover:bg-red-900 hover:text-black
-	rounded mx-auto mt-5"
+			className="start 
+			text-xl 
+			text-center
+			text-tuner-color 
+			cursor-pointer
+			w-2/5 
+			p-2
+			bg-black
+			hover:bg-red-900
+			hover:text-black
+			rounded
+			mx-auto
+			mt-5"
 			>{isPlaying ? 'Stop' : 'Play'}!
 		</Button>
 	</div>

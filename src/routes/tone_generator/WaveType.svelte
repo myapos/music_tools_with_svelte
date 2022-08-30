@@ -11,12 +11,10 @@
 	const handleSelectType = (event: any) => {
 		selectedType = event.detail;
 	};
-
-	console.log('selectedType edw', selectedType);
 </script>
 
 <Select
-	containerClasses="w-3/5 p-5 rounded"
+	containerClasses="w-3/5 md:w-4/5 p-5 rounded"
 	{items}
 	bind:value={selectedType}
 	on:select={handleSelectType}

@@ -19,7 +19,6 @@
 
 <RangeSlider
 	bind:values={rangeVolume}
-	all="label"
 	float={false}
 	range={true}
 	hoverable

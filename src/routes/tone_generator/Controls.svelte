@@ -67,7 +67,7 @@
 	</div>
 
 	<div
-		class="text-tuner-color w-2/5 text-xl text-center p-2 rounded mx-auto cursor-pointer"
+		class="text-tuner-color w-2/5 md:w-4/5 text-xl text-center  rounded mx-auto cursor-pointer"
 		on:dblclick={enableDisplayInput}
 	>
 		{#if displayInput}<input
