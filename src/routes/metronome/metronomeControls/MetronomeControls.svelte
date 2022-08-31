@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { Howl } from 'howler';
 	import Timer from '$lib/utils/Timer';
-	import { tempo, metronomeIsPlaying } from '$lib/stores/stores';
+	import { tempo, metronomeIsPlaying, bpm } from '$lib/stores/stores';
+	import H2 from '$lib/components/H2.svelte';
 	import strongMp3 from '$lib/assets/strong.mp3';
 	import weakMp3 from '$lib/assets/weak.mp3';
 
@@ -14,18 +15,44 @@
 	const MIN_RANGE_TEMPO = 20;
 	const MAX_RANGE_TEMPO = 240;
 
+	const MIN_BPM = 1;
+	const MAX_BPM = 9;
+
 	const isValidTempo = (tempo: number) => {
 		return tempo >= MIN_RANGE_TEMPO && tempo <= MAX_RANGE_TEMPO;
 	};
 
+	const isValidBpm = (bpm: number) => {
+		return bpm >= MIN_BPM && bpm <= MAX_BPM;
+	};
+
 	$: rangeValues = [$tempo];
+
+	const strong = new Howl({
+		src: [strongMp3]
+	});
+
+	const weak = new Howl({
+		src: [weakMp3]
+	});
+
+	let count = 0;
 
 	$: timer = new Timer({
 		// tempo: $tempo,
 		tempo: speed,
 		callback: () => {
+			if (count === $bpm) {
+				count = 0;
+			}
+
+			if (count === 0) {
+				weak.play();
+			} else {
+				strong.play();
+			}
 			console.log('will be called every ', speed / 1000, 'secs');
-			strong.play();
+			count++;
 		}
 	});
 
@@ -36,14 +63,6 @@
 			return false;
 		});
 	};
-
-	const strong = new Howl({
-		src: [strongMp3]
-	});
-
-	const weak = new Howl({
-		src: [weakMp3]
-	});
 
 	$: speed = 60000 / $tempo;
 
@@ -111,6 +130,38 @@
 			{:else}
 				<Icon src={FaSolidStop} size="1.3rem" color="var(--tuned)" title="stop" />
 			{/if}</ControlBtn
+		>
+	</div>
+</div>
+<H2 className="text-center mt-5">Beat emphasis</H2>
+<div class="beat_management flex flex-row justify-center">
+	<div class="text-center flex flex-row justify-center p-5">
+		<ControlBtn
+			onClick={() => {
+				bpm.update((prev) => {
+					const newBpm = prev - 1;
+					if (isValidBpm(newBpm)) {
+						return newBpm;
+					}
+					return prev;
+				});
+			}}
+			className="text-yellow-600 text-2xl hover:text-white w-8 h-8">-</ControlBtn
+		>
+	</div>
+	<div class="text-xl text-red-900">{$bpm}</div>
+	<div class="text-center flex flex-row justify-center p-5">
+		<ControlBtn
+			onClick={() => {
+				bpm.update((prev) => {
+					const newBpm = prev + 1;
+					if (isValidBpm(newBpm)) {
+						return newBpm;
+					}
+					return prev;
+				});
+			}}
+			className="text-yellow-600 text-2xl hover:text-white w-8 h-8">+</ControlBtn
 		>
 	</div>
 </div>

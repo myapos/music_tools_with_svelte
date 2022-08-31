@@ -29,21 +29,6 @@
 >
 	<Bpm />
 </section>
-<!-- <button
-	on:click={() => {
-		console.log('Play strong');
-		strong.play();
-	}}>Play strong</button
->
-
-<button
-	on:click={() => {
-		console.log('Play weak');
-		weak.play();
-	}}>Play weak</button
-> -->
-<!-- <audio src={strongMp3} controls type="audio/mp3" />
-<audio src={weakMp3} controls type="audio/mp3" /> -->
 
 <section class="text-justify md:tracking-wide py-8 w-3/4 md:w-full md:py-8 md:px-4 md:text-2xl">
 	<MetronomeControls />
