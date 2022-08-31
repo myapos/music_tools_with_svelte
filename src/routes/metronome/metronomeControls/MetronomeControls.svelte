@@ -26,6 +26,8 @@
 		return bpm >= MIN_BPM && bpm <= MAX_BPM;
 	};
 
+	const calculateSpeed = (tempo: number): number => 60000 / tempo;
+
 	$: rangeValues = [$tempo];
 
 	const strong = new Howl({
@@ -38,9 +40,10 @@
 
 	let count = 0;
 
-	$: timer = new Timer({
-		// tempo: $tempo,
-		tempo: speed,
+	let speed = 60000 / $tempo;
+
+	let timer = new Timer({
+		tempo: calculateSpeed($tempo),
 		callback: () => {
 			if (count === $bpm) {
 				count = 0;
@@ -53,18 +56,26 @@
 			}
 			console.log('will be called every ', speed / 1000, 'secs');
 			count++;
+		},
+		errorCallback: (self: any) => {
+			console.error('error occured');
+			self.stop();
 		}
 	});
 
-	$: onChangeTempo = (e) => {
-		tempo.update(() => e.detail.value);
-		timer.stop();
-		metronomeIsPlaying.update((prev) => {
-			return false;
-		});
-	};
+	const onChangeTempo = (e) => {
+		const newTempo = e.detail.value;
+		tempo.update(() => newTempo);
+		console.log('$metronomeIsPlaying', $metronomeIsPlaying);
+		if ($metronomeIsPlaying) {
+			console.log('log:mpainw');
+			const newSpeed = calculateSpeed(newTempo);
+			timer.resetTempo(newSpeed);
 
-	$: speed = 60000 / $tempo;
+			timer.stop();
+			timer.start();
+		}
+	};
 
 	$: console.log('speed', speed);
 </script>

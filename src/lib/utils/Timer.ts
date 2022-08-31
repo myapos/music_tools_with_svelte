@@ -1,6 +1,6 @@
 interface constructorT {
 	tempo: number;
-	errorCallback?: () => void;
+	errorCallback?: (ref: any) => void;
 	callback: () => void;
 	intervalId?: number;
 }
@@ -23,6 +23,13 @@ class Timer {
 		}
 	}
 
+	resetTempo(tempo: number) {
+		console.log('reset logs:', tempo);
+		this.tempo = tempo;
+		this.startedAt = Date.now();
+		this.expectedTime = 0;
+	}
+
 	start(): void {
 		console.log('start');
 		this.round(this.tempo);
@@ -42,10 +49,14 @@ class Timer {
 			const elapsedBySetTimeout = newTime - this.startedAt;
 
 			this.drift = elapsedBySetTimeout - this.expectedTime;
-
-			console.log('drift', this.drift);
-			this.callback();
-			this.round(tempo - this.drift);
+			if (this.drift < 0 && typeof this.errorCallback !== 'undefined') {
+				console.error('calling errorcallbacl');
+				// this.errorCallback(this);
+			} else {
+				console.log('drift', this.drift);
+				this.callback();
+				this.round(tempo - this.drift);
+			}
 		}, tempo - this.drift);
 	}
 }
