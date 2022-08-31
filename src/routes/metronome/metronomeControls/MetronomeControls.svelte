@@ -1,5 +1,10 @@
-<script>
+<script lang="ts">
+	import { Howl } from 'howler';
+	import Timer from '$lib/utils/Timer';
 	import { tempo, metronomeIsPlaying } from '$lib/stores/stores';
+	import strongMp3 from '$lib/assets/strong.mp3';
+	import weakMp3 from '$lib/assets/weak.mp3';
+
 	import RangeSlider from 'svelte-range-slider-pips';
 	import Icon from 'svelte-icons-pack/Icon.svelte';
 	import FaSolidPlay from 'svelte-icons-pack/fa/FaSolidPlay';
@@ -9,11 +14,40 @@
 	const MIN_RANGE_TEMPO = 20;
 	const MAX_RANGE_TEMPO = 240;
 
+	const isValidTempo = (tempo: number) => {
+		return tempo >= MIN_RANGE_TEMPO && tempo <= MAX_RANGE_TEMPO;
+	};
+
 	$: rangeValues = [$tempo];
 
-	const onChangeTempo = (e) => {
+	$: timer = new Timer({
+		// tempo: $tempo,
+		tempo: speed,
+		callback: () => {
+			console.log('will be called every ', speed / 1000, 'secs');
+			strong.play();
+		}
+	});
+
+	$: onChangeTempo = (e) => {
 		tempo.update(() => e.detail.value);
+		timer.stop();
+		metronomeIsPlaying.update((prev) => {
+			return false;
+		});
 	};
+
+	const strong = new Howl({
+		src: [strongMp3]
+	});
+
+	const weak = new Howl({
+		src: [weakMp3]
+	});
+
+	$: speed = 60000 / $tempo;
+
+	$: console.log('speed', speed);
 </script>
 
 <div class="grid grid-rows-2 grid-cols-3 gap-y-0">
@@ -21,7 +55,12 @@
 		<ControlBtn
 			onClick={() => {
 				tempo.update((prev) => {
-					return prev - 1;
+					const newTempo = prev - 1;
+					if (isValidTempo(newTempo)) {
+						return newTempo;
+					}
+
+					return prev;
 				});
 			}}
 			className="text-yellow-600 text-5xl hover:text-white">-</ControlBtn
@@ -43,7 +82,12 @@
 		<ControlBtn
 			onClick={() => {
 				tempo.update((prev) => {
-					return prev + 1;
+					const newTempo = prev + 1;
+					if (isValidTempo(newTempo)) {
+						return newTempo;
+					}
+
+					return prev;
 				});
 			}}
 			className="text-yellow-600 text-5xl hover:text-white">+</ControlBtn
@@ -53,6 +97,11 @@
 		<ControlBtn
 			onClick={() => {
 				console.log('stop/playing');
+				if ($metronomeIsPlaying) {
+					timer.stop();
+				} else {
+					timer.start();
+				}
 				metronomeIsPlaying.update((prev) => {
 					return !prev;
 				});

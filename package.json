@@ -40,5 +40,9 @@
 		"typescript": "^4.7.4",
 		"vite": "^3.0.4"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"@types/howler": "^2.2.7",
+		"howler": "^2.2.3"
+	}
 }
