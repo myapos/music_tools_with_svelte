@@ -1,6 +1,6 @@
-const findTempoMarking = (tempo) => {
-	debugger;
+const findTempoMarking = (tempo: number): string => {
 	let marking = '';
+
 	if (tempo >= 20 && tempo <= 39) {
 		marking = 'Grave';
 	}

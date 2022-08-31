@@ -1,12 +1,11 @@
 <script>
-	import { tempo } from '$lib/stores/stores';
+	import { tempo, metronomeIsPlaying } from '$lib/stores/stores';
 	import RangeSlider from 'svelte-range-slider-pips';
 	import Icon from 'svelte-icons-pack/Icon.svelte';
 	import FaSolidPlay from 'svelte-icons-pack/fa/FaSolidPlay';
 	import FaSolidStop from 'svelte-icons-pack/fa/FaSolidStop';
 	import ControlBtn from './ControlBtn.svelte';
 
-	let isPlaying = true;
 	const MIN_RANGE_TEMPO = 20;
 	const MAX_RANGE_TEMPO = 240;
 
@@ -21,7 +20,9 @@
 	<div class="text-center flex flex-row justify-center">
 		<ControlBtn
 			onClick={() => {
-				console.log('decreasing');
+				tempo.update((prev) => {
+					return prev - 1;
+				});
 			}}
 			className="text-yellow-600 text-5xl hover:text-white">-</ControlBtn
 		>
@@ -41,7 +42,9 @@
 	<div class="text-center flex flex-row justify-center">
 		<ControlBtn
 			onClick={() => {
-				console.log('increasing');
+				tempo.update((prev) => {
+					return prev + 1;
+				});
 			}}
 			className="text-yellow-600 text-5xl hover:text-white">+</ControlBtn
 		>
@@ -50,8 +53,11 @@
 		<ControlBtn
 			onClick={() => {
 				console.log('stop/playing');
+				metronomeIsPlaying.update((prev) => {
+					return !prev;
+				});
 			}}
-			>{#if !isPlaying}
+			>{#if !$metronomeIsPlaying}
 				<Icon src={FaSolidPlay} size="1.3rem" color="var(--tuned)" title="play" />
 			{:else}
 				<Icon src={FaSolidStop} size="1.3rem" color="var(--tuned)" title="stop" />
