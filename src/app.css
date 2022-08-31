@@ -9,7 +9,8 @@
 	--background-black-red: #2e1818;
 	--tuner-color: #a92525;
 	/* --tuned: #3172eb; */
-	--tuned: #ebbf31ab;
+	--tuned: #ebbf31ab; /*text-yellow-600*/
+	--deep-red: #890019;
 }
 
 /* 
@@ -21,3 +22,11 @@
  header menu and footer --> bg-blue-600
 
 */
+/* Global css */
+#tempo_slider {
+	background-color: var(--deep-red);
+}
+
+#tempo_slider .rangeHandle.active .rangeNub {
+	background-color: var(--deep-red);
+}

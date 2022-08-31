@@ -1,5 +1,4 @@
 <script lang="ts">
-	import RangeSlider from 'svelte-range-slider-pips';
 	import H1 from '$lib/components/H1.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import H2 from '$lib/components/H2.svelte';
@@ -11,8 +10,6 @@
 
 	const h1ExtraClasses = 'p-8';
 	const h2ExtraClasses = 'py-2';
-
-	let isPlaying = false;
 </script>
 
 <H1 className={h1ExtraClasses}>Metronome</H1>

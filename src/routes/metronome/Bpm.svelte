@@ -1,5 +1,10 @@
 <script>
-	let bpm = 100;
+	import { tempo } from '$lib/stores/stores';
+	import findTempoMarking from '$lib/utils/findTempoMarking';
+
+	$: marking = findTempoMarking($tempo);
+
+	$: console.log('marking', marking);
 </script>
 
 <div
@@ -19,9 +24,9 @@
 	<div class="flex flex-col">
 		<div class="text-2xl">BPM</div>
 		<div class="text-6xl">
-			{bpm}
+			{$tempo}
 		</div>
-		<div class="text-2xl">Allegrissimo</div>
+		<div class="text-2xl">{marking}</div>
 	</div>
 </div>
 

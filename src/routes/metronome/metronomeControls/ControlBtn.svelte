@@ -3,8 +3,12 @@
 	import { roundedButtonClasses } from '$lib/constants/classStrings';
 
 	export let onClick: svelteHTML.MouseEventHandler<HTMLDivElement>;
+
+	export let className = '';
+
+	const classes = `${roundedButtonClasses} ${className}`;
 </script>
 
-<div on:click={onClick} class={roundedButtonClasses}>
+<div on:click={onClick} class={classes}>
 	<slot />
 </div>
