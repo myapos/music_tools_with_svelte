@@ -3,8 +3,6 @@
 	import findTempoMarking from '$lib/utils/findTempoMarking';
 
 	$: marking = findTempoMarking($tempo);
-
-	$: console.log('marking', marking);
 </script>
 
 <div

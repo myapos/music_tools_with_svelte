@@ -1,13 +1,13 @@
 export interface timerT {
 	speed: number;
-	errorCallback?: (ref: any) => void;
+	errorCallback?: (ref: { [key: string]: unknown }) => void;
 	callback: () => void;
 	intervalId?: number;
 }
 
 class Timer {
 	speed: number;
-	errorCallback?: () => void;
+	errorCallback?: (ref: { [key: string]: unknown }) => void;
 	callback: () => void;
 	intervalId = 0;
 	drift = 0;
@@ -27,7 +27,6 @@ class Timer {
 
 	updateSpeed(speed: number) {
 		this.speed = speed;
-		console.log('reset logs:', speed, ' timer', this);
 	}
 
 	start(): void {
@@ -35,7 +34,6 @@ class Timer {
 		this.isPlaying = true;
 
 		this.round();
-		console.log('start', this);
 	}
 
 	stop(): void {
@@ -46,13 +44,10 @@ class Timer {
 		this.startedAt = 0;
 		this.expectedTime = 0;
 		this.isPlaying = false;
-
-		console.log('stop', this);
 	}
 
 	round(): void {
 		const speed = this.speed;
-		console.log('using new speed', speed);
 		this.intervalId = window.setTimeout(() => {
 			this.expectedTime = this.expectedTime + speed;
 
@@ -62,17 +57,11 @@ class Timer {
 			this.drift = elapsedBySetTimeout - this.expectedTime;
 			if (this.drift < 0 && typeof this.errorCallback !== 'undefined') {
 				console.error('calling errorcallback');
-				console.log('logs:expectedTime', this.expectedTime);
-				console.log('logs:newTime', newTime);
-				console.log('logs:startedAt', this.startedAt);
-				console.log('logs:elapsedBySetTimeout', elapsedBySetTimeout);
-				console.log('logs:drift', this.drift);
 
-				// this.errorCallback(this);
+				this.errorCallback(this);
 			} else {
-				console.log('drift', this.drift);
 				this.callback();
-				this.round(speed - this.drift);
+				this.round();
 			}
 		}, speed - this.drift);
 	}

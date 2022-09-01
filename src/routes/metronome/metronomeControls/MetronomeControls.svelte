@@ -15,13 +15,17 @@
 
 	const MIN_RANGE_TEMPO = 20;
 	const MAX_RANGE_TEMPO = 240;
+	const INITIALIZE_BEATS = 1;
+	const RESET_BEATS = 0;
 
 	const MIN_BPM = 1;
 	const MAX_BPM = 9;
+	let countBeats = INITIALIZE_BEATS;
 
-	const resetToInitialState = (timer: Timer) => {
+	const resetTimerToInitialState = (timer: Timer) => {
 		if (timer && $metronomeIsPlaying) {
 			timer.stop();
+			countBeats = INITIALIZE_BEATS;
 		}
 	};
 
@@ -43,25 +47,20 @@
 		src: [weakMp3]
 	});
 
-	let count = 0;
-
 	let initialSpeed = calculateSpeed($tempo);
-	$: updatedSpeed = calculateSpeed($tempo);
 
 	let timer: Timer = new Timer({
 		speed: initialSpeed,
 		callback: () => {
-			if (count === $bpm) {
-				count = 0;
-			}
-
-			if (count === 0) {
+			if (countBeats === $bpm) {
+				//! reset counter of beats
+				countBeats = RESET_BEATS;
 				weak.play();
 			} else {
 				strong.play();
 			}
-			console.log('will be called every ', updatedSpeed, 'secs');
-			count++;
+
+			countBeats++;
 		},
 		errorCallback: (self: any) => {
 			console.error('error occured');
@@ -77,13 +76,14 @@
 	const onChangeTempo = (e) => {
 		const newTempo = e.detail.value;
 
-		tempo.update(() => newTempo);
-		timer.updateSpeed(calculateSpeed(newTempo));
+		if (isValidTempo(newTempo)) {
+			tempo.update(() => newTempo);
+			timer.updateSpeed(calculateSpeed(newTempo));
+		}
 	};
 
 	onDestroy(() => {
-		console.log('destroy');
-		resetToInitialState(timer);
+		resetTimerToInitialState(timer);
 	});
 </script>
 
@@ -94,6 +94,7 @@
 				tempo.update((prev) => {
 					const newTempo = prev - 1;
 					if (isValidTempo(newTempo)) {
+						timer.updateSpeed(calculateSpeed(newTempo));
 						return newTempo;
 					}
 
@@ -121,6 +122,7 @@
 				tempo.update((prev) => {
 					const newTempo = prev + 1;
 					if (isValidTempo(newTempo)) {
+						timer.updateSpeed(calculateSpeed(newTempo));
 						return newTempo;
 					}
 
@@ -133,9 +135,8 @@
 	<div class="col-span-full mx-auto">
 		<ControlBtn
 			onClick={() => {
-				console.log('start/stop');
 				if ($metronomeIsPlaying) {
-					timer.stop();
+					resetTimerToInitialState(timer);
 				} else {
 					timer.start();
 				}
@@ -160,6 +161,8 @@
 				bpm.update((prev) => {
 					const newBpm = prev - 1;
 					if (isValidBpm(newBpm)) {
+						//! reset beats
+						countBeats = INITIALIZE_BEATS;
 						return newBpm;
 					}
 					return prev;
@@ -175,6 +178,8 @@
 				bpm.update((prev) => {
 					const newBpm = prev + 1;
 					if (isValidBpm(newBpm)) {
+						//! reset beats
+						countBeats = INITIALIZE_BEATS;
 						return newBpm;
 					}
 					return prev;
