@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
 	import { Howl } from 'howler';
 	import Timer from '$lib/utils/Timer';
 	import { tempo, metronomeIsPlaying, bpm } from '$lib/stores/stores';
@@ -18,6 +19,12 @@
 	const MIN_BPM = 1;
 	const MAX_BPM = 9;
 
+	const resetToInitialState = (timer: Timer) => {
+		if (timer && $metronomeIsPlaying) {
+			timer.stop();
+		}
+	};
+
 	const isValidTempo = (tempo: number) => {
 		return tempo >= MIN_RANGE_TEMPO && tempo <= MAX_RANGE_TEMPO;
 	};
@@ -26,9 +33,7 @@
 		return bpm >= MIN_BPM && bpm <= MAX_BPM;
 	};
 
-	const calculateSpeed = (tempo: number): number => 60000 / tempo;
-
-	$: rangeValues = [$tempo];
+	const calculateSpeed = (tempo: number): number => parseInt(`${60000 / tempo}`);
 
 	const strong = new Howl({
 		src: [strongMp3]
@@ -40,10 +45,11 @@
 
 	let count = 0;
 
-	let speed = 60000 / $tempo;
+	let initialSpeed = calculateSpeed($tempo);
+	$: updatedSpeed = calculateSpeed($tempo);
 
-	let timer = new Timer({
-		tempo: calculateSpeed($tempo),
+	let timer: Timer = new Timer({
+		speed: initialSpeed,
 		callback: () => {
 			if (count === $bpm) {
 				count = 0;
@@ -54,7 +60,7 @@
 			} else {
 				strong.play();
 			}
-			console.log('will be called every ', speed / 1000, 'secs');
+			console.log('will be called every ', updatedSpeed, 'secs');
 			count++;
 		},
 		errorCallback: (self: any) => {
@@ -63,21 +69,22 @@
 		}
 	});
 
+	/* reactivity section */
+
+	$: rangeValues = [$tempo];
+	//! on reseting tempo
+
 	const onChangeTempo = (e) => {
 		const newTempo = e.detail.value;
-		tempo.update(() => newTempo);
-		console.log('$metronomeIsPlaying', $metronomeIsPlaying);
-		if ($metronomeIsPlaying) {
-			console.log('log:mpainw');
-			const newSpeed = calculateSpeed(newTempo);
-			timer.resetTempo(newSpeed);
 
-			timer.stop();
-			timer.start();
-		}
+		tempo.update(() => newTempo);
+		timer.updateSpeed(calculateSpeed(newTempo));
 	};
 
-	$: console.log('speed', speed);
+	onDestroy(() => {
+		console.log('destroy');
+		resetToInitialState(timer);
+	});
 </script>
 
 <div class="grid grid-rows-2 grid-cols-3 gap-y-0">
@@ -126,13 +133,14 @@
 	<div class="col-span-full mx-auto">
 		<ControlBtn
 			onClick={() => {
-				console.log('stop/playing');
+				console.log('start/stop');
 				if ($metronomeIsPlaying) {
 					timer.stop();
 				} else {
 					timer.start();
 				}
 				metronomeIsPlaying.update((prev) => {
+					timer.isPlaying = !timer.isPlaying;
 					return !prev;
 				});
 			}}
