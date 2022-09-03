@@ -76,7 +76,7 @@
 	</P>
 
 	<H3>About me</H3>
-	<P className="mb-48">
+	<P className="mb-[300px]">
 		You can find some information about me in my personal site <Link
 			url="https://myapos.oncrete.gr/"
 			description="here"

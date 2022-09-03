@@ -22,7 +22,7 @@
 </script>
 
 <a href={url} {target} class={classes} class:text-orange-300={isActive} class:bg-red-800={isActive}
-	>{description}
+	>{description ? description : ''} <slot />
 </a>
 
 <style>
