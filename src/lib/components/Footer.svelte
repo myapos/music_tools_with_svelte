@@ -4,20 +4,10 @@
 	import Icon from 'svelte-icons-pack/Icon.svelte';
 	import { fade } from 'svelte/transition';
 	import FaCopyright from 'svelte-icons-pack/fa/FaCopyright';
+	import SiSvelte from 'svelte-icons-pack/si/SiSvelte';
 
 	let isVisible = false;
 	export let onClickOnTheRestArea: any;
-
-	const handleIntersection = (entries: any) => {
-		console.log('entries', entries);
-		const footerWrapperEntry = entries[0];
-
-		if (footerWrapperEntry.isIntersecting) {
-			isVisible = true;
-		} else {
-			isVisible = false;
-		}
-	};
 
 	const intersectionOptions = {
 		threshold: 0.5
@@ -77,12 +67,20 @@
 				className="mr-2"
 			/>
 			2022
+
+			<Link
+				url="mailto:myapos@gmail.com"
+				description="Myron Apostolakis"
+				target="_blank"
+				className="p-5 cursor"
+			/>
+
+			Created with
+			<div class="flex items-center">
+				<Link url="https://svelte.dev/" description="" target="_blank" className="p-5 cursor">
+					<Icon src={SiSvelte} size="1.3rem" title="svelte" className="ml-2" />
+				</Link>
+			</div>
 		</div>
-		<Link
-			url="mailto:myapos@gmail.com"
-			description="Myron Apostolakis"
-			target="_blank"
-			className="p-5 cursor"
-		/>
 	</footer>
 {/if}
