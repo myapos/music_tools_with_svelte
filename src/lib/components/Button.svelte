@@ -1,8 +1,7 @@
 <script lang="ts">
-	/** @type {import('@sveltejs/kit')} */
-	export let onClick: any;
+	/** @type {import('svelte-check/dist/svelte-jsx').svelteHTML} */
+	export let onClick: svelteHTML.MouseEventHandler<HTMLDivElement>;
 	export let className: string;
-	//MouseEventHandler<HTMLDivElement>
 </script>
 
 <div on:click={onClick} class={className}>
