@@ -33,88 +33,54 @@
 <section class="text-justify md:tracking-wide py-8 w-3/4 md:w-full md:py-8 md:px-4 md:text-2xl">
 	<MetronomeControls />
 
-	<H2 className={h2ExtraClasses}>What is an tone generator?</H2>
+	<H2 className={h2ExtraClasses}>What is a metronome?</H2>
 	<P>
 		A <Link
-			url="https://en.wikipedia.org/wiki/Signal_generator"
-			description="signal"
+			url="https://en.wikipedia.org/wiki/Metronome"
+			description="metronome"
 			target="_blank"
 			className="p-0 text-red-900 hover:text-red-400"
-		/> or tone generator is one of a class of electronic devices that generates electrical signals with
-		set properties of amplitude, frequency, and wave shape. These generated signals are used as a stimulus
-		for electronic measurements, typically used in designing, testing, troubleshooting, and repairing
-		electronic or electroacoustic devices, though it often has artistic uses as well.
+		/> from ancient Greek μέτρον (métron, "measure") and νομός (nomós, "custom", "melody") is a device
+		that produces an audible click or other sound at a regular interval that can be set by the user,
+		typically in beats per minute (BPM). Metronomes may include synchronized visual motion. Musicians
+		use the device to practise playing to a regular pulse.
 
 		<P>
-			There are many different types of signal generators with different purposes and applications
-			and at varying levels of expense. These types include function generators, RF and microwave
-			signal generators, pitch generators, arbitrary waveform generators, digital pattern
-			generators, and frequency generators. In general, no device is suitable for all possible
-			applications. A signal generator may be as simple as an oscillator with calibrated frequency
-			and amplitude. More general-purpose signal generators allow control of all the characteristics
-			of a signal. Modern general-purpose signal generators will have a microprocessor control and
-			may also permit control from a personal computer. Signal generators may be free-standing
-			self-contained instruments, or may be incorporated into more complex automatic test systems.
+			A kind of metronome was among the inventions of Andalusian polymath Abbas ibn Firnas
+			(810–887). In 1815, German inventor Johann Maelzel patented his mechanical, wind-up metronome
+			as a tool for musicians, under the title "Instrument/Machine for the Improvement of all
+			Musical Performance, called Metronome". In the 20th century, electronic metronomes and
+			software metronomes were invented
 		</P>
 	</P>
-	<H2 className={h2ExtraClasses}>How to use this tone generator?</H2>
+	<H2 className={h2ExtraClasses}>How to use this metronome?</H2>
 
-	<P className="p-5 border-2 border-red-900 rounded text-lg text-red-900"
-		>Be aware that the generation of high frequencies/volume may damage your hearing.</P
-	>
 	<P>
 		<H3>General Use</H3>
-		You can use this tone generator by selecting a frequency and clicking Play. The tone will be played
-		for a few seconds and stop by default. The frequency selection can be achieved using the following
-		controls
-		<ol class="list-disc list-inside marker:text-red-900">
-			<li>Frequency selector</li>
-			<li>Step Controls</li>
-			<li>Notes Controls</li>
-		</ol>
+		You can control this metronome by using the plus/minus signs or the slider to adjust the tempo and
+		clicking Play. Clicking on the plus/minus sign or moving the slider to the right/left with increase/decrease
+		the tempo.The metronome will use the tempo to generate two kind of sounds onew weak and one strong
+		every BPM cycles. The number of BPM is controlled by the Beat emphasis and is explained below.
 
-		<P>Below is a more detailed explanation of each option.</P>
-
-		<H3>Frequency Selector</H3>
+		<H3>Beat emphasis</H3>
 
 		<P>
-			You can use this tone generator by using the frequency selector and clicking Play. The range
-			of the freqeuncy selector is between 0-20154 Hz.
+			You can use the plus/minus signs in order to increase/decrease the beat emphasis of the
+			metronome. The beat emphasis is used to play different sounds according to the length of the
+			metronome. You can use this option to control when a strong and a weak sound will be played.
+			For example for a beat emphasis equal to 4 every 4 time cycles one weak sound will be played.
+			So the scheme will be 3 strong sounds + 1 weak sound = 4 sounds in total. For beat emphasis
+			value of two 1 strong sound + 1 weak sound = 2 sounds in total sound and so on.
 		</P>
 
-		<H3>Volume Selector</H3>
-
-		<P>
-			You can change the volume of the playing tone between 0 -100%. Be aware though that the
-			generation in high volumes may damage your hearing.
-		</P>
-
-		<H3>Notes Selector</H3>
-		<P>
-			You can search for the frequency of a specific tone in a octave by using the notes selector
-			dropdown.
-		</P>
-
-		<H3>Step Controls</H3>
-		<P>
-			You can fine tune the desired frequency by using the arrows left/right for step by step
-			increasements/decreasements of a specific tone. Each step has a value of 1Hz.
-		</P>
-		<H3>Wave Shape</H3>
-		<P>
-			In electronics, acoustics, and related fields, the <Link
-				url="https://en.wikipedia.org/wiki/Waveform"
-				description="waveform"
+		<H3>Tips on using a metronome</H3>
+		<P
+			>You can can find some useful tips on using a metronome <Link
+				url="https://prodigies.com/blogs/music-teachers/tips-on-how-to-practice-with-a-metronome"
+				description="here"
 				target="_blank"
 				className="p-0 text-red-900 hover:text-red-400"
 			/>
-			of a signal is the shape of its graph as a function of time, independent of its time and magnitude
-			scales and of any displacement in time.
-		</P>
-		<P>
-			In this tone generator the wave shapes that are supported are <span
-				class="font-semibold  text-red-900">Sine, Square, Sawtooth and Triangle</span
-			>. You can select and use them before playing from the wave shape selector.
 		</P>
 	</P>
 
