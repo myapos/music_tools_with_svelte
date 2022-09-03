@@ -7,6 +7,7 @@
 	import MobileMenu from '$lib/components/MobileMenu.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import breakpoints from '$lib/constants/breakpoints';
+	import Modal from 'svelte-simple-modal';
 
 	let isLoading = true;
 	let screenWidth: number;
@@ -40,23 +41,25 @@
 
 <svelte:window bind:innerWidth={screenWidth} bind:scrollY />
 
-{#if isLoading}
-	<main class="flex justify-center items-center w-full h-screen flex-col">
-		<Circle size="60" color="#FF3E00" unit="px" duration="1s" />
-	</main>
-{:else}
-	<Menu />
-	<MobileMenu bind:isOpen {onClick} />
+<Modal>
+	{#if isLoading}
+		<main class="flex justify-center items-center w-full h-screen flex-col">
+			<Circle size="60" color="#FF3E00" unit="px" duration="1s" />
+		</main>
+	{:else}
+		<Menu />
+		<MobileMenu bind:isOpen {onClick} />
 
-	<main
-		class="flex justify-center items-center flex-col overflow-auto"
-		on:click={onClickOnTheRestArea}
-	>
-		<slot />
-	</main>
+		<main
+			class="flex justify-center items-center flex-col overflow-auto"
+			on:click={onClickOnTheRestArea}
+		>
+			<slot />
+		</main>
 
-	<Footer {onClickOnTheRestArea} />
-{/if}
+		<Footer {onClickOnTheRestArea} />
+	{/if}
+</Modal>
 
 <style>
 	:global(body) {
