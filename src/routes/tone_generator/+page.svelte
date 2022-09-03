@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
 	import RangeSlider from 'svelte-range-slider-pips';
 	import SearchNotes from './SearchNotes.svelte';
 	import WaveType from './WaveType.svelte';
@@ -9,17 +10,20 @@
 	import H3 from '$lib/components/H3.svelte';
 	import P from '$lib/components/P.svelte';
 	import Link from '$lib/components/Link.svelte';
+	import { MIN_RANGE_FREQ, MAX_RANGE_FREQ, frequency } from '$lib/stores/stores';
 	import Controls from './Controls.svelte';
 
 	const h1ExtraClasses = 'p-8';
 	const h2ExtraClasses = 'py-2';
 
-	const STARTING_FREQUENCY = 440;
-	const MIN_RANGE_FREQ = 0;
-	const MAX_RANGE_FREQ = 20154;
-
 	$: isPlaying = false;
-	$: frequency = STARTING_FREQUENCY;
+
+	let frequencyValue: number;
+	const unsubscribe = frequency.subscribe((value) => {
+		frequencyValue = value;
+	});
+
+	onDestroy(unsubscribe);
 
 	//! globals for contenxt
 	let gain: { [key: string]: any };
@@ -29,9 +33,7 @@
 	let volumePosition: number = 0.1;
 
 	//! initial value of select
-	// let selectedType: any = { value: 'sine', label: 'Sine' };
 	let selectedType = { value: 'sine', label: 'Sine' };
-	let selectedTypeDebug = { value: 'sine', label: 'Sine' };
 
 	const stop = ({ g, context }: any) => {
 		isPlaying = false;
@@ -61,7 +63,7 @@
 			g.connect(context.destination);
 
 			oscillator.type = selectedType.value;
-			oscillator.frequency.value = frequency;
+			oscillator.frequency.value = frequencyValue;
 
 			oscillator.start(0);
 
@@ -76,10 +78,13 @@
 		}
 	};
 
-	$: rangeValues = [frequency];
+	$: rangeValues = [$frequency];
 
 	const onChangeFreq = (e) => {
-		frequency = e.detail.value;
+		// frequency = e.detail.value;
+		frequency.update((prev) => {
+			return e.detail.value;
+		});
 	};
 </script>
 
@@ -129,22 +134,16 @@
 		<div class="flex flex-col content-end mb-o">
 			<Volume bind:gain bind:volumePosition />
 		</div>
-		<div class="flex justify-center"><SearchNotes bind:frequency /></div>
+		<div class="flex justify-center"><SearchNotes /></div>
 		<div class="flex justify-center">
-			<Controls
-				bind:frequency
-				min={MIN_RANGE_FREQ}
-				max={MAX_RANGE_FREQ}
-				bind:gain
-				bind:volumePosition
-			/>
+			<Controls min={MIN_RANGE_FREQ} max={MAX_RANGE_FREQ} />
 		</div>
 		<div class="flex justify-center"><WaveType bind:selectedType /></div>
 	</div>
 
 	<div class="w-1/2 flex flex-col items-center justify-centers mx-auto">
 		<Button
-			onClick={() => handleGenerator(frequency)}
+			onClick={() => handleGenerator($frequency)}
 			className="start 
 			text-xl 
 			text-center

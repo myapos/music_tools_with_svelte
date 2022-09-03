@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Select from 'svelte-select';
 	import { hashNotesFreq } from '$lib/audio/constants';
-	export let frequency: number;
+	import { frequency } from '$lib/stores/stores';
 
 	const itemsHashNotes = Object.keys(hashNotesFreq).map((note) => {
 		return {
@@ -18,7 +18,10 @@
 
 		if (hasValue) {
 			selectedFreq = event.detail;
-			frequency = parseInt(value);
+
+			frequency.update((prev) => {
+				return parseInt(value);
+			});
 		}
 	};
 </script>
