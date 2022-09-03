@@ -1,13 +1,7 @@
 <script lang="ts">
-	import H1 from '$lib/components/H1.svelte';
-
-	import H2 from '$lib/components/H2.svelte';
 	import H3 from '$lib/components/H3.svelte';
 	import P from '$lib/components/P.svelte';
 	import Link from '$lib/components/Link.svelte';
-
-	const h1ExtraClasses = 'p-8';
-	const h2ExtraClasses = 'py-2';
 </script>
 
 <section class="text-justify md:tracking-wide py-8 w-3/4 md:w-full md:py-8 md:px-4 md:text-2xl">
