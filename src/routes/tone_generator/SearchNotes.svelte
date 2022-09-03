@@ -3,6 +3,8 @@
 	import { hashNotesFreq } from '$lib/audio/constants';
 	import { frequency } from '$lib/stores/stores';
 
+	export let oscillatorRef: { [key: string]: any } = {};
+
 	const itemsHashNotes = Object.keys(hashNotesFreq).map((note) => {
 		return {
 			value: hashNotesFreq[note],
@@ -19,8 +21,15 @@
 		if (hasValue) {
 			selectedFreq = event.detail;
 
+			const oscillatorIsIntialized = oscillatorRef?.frequency?.value;
+			if (oscillatorIsIntialized) {
+				oscillatorRef.frequency.value = value;
+			}
+
 			frequency.update((prev) => {
-				return parseInt(value);
+				const newFreq = parseInt(value);
+
+				return newFreq;
 			});
 		}
 	};
