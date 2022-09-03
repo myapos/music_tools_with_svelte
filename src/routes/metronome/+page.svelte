@@ -73,6 +73,51 @@
 			value of two 1 strong sound + 1 weak sound = 2 sounds in total sound and so on.
 		</P>
 
+		<H3>Tempo Markings</H3>
+
+		<P>
+			A <Link
+				url="https://courses.lumenlearning.com/suny-musicappreciationtheory/chapter/tempo-markings-and-changes/"
+				description="tempo"
+				target="_blank"
+				className="p-0 text-red-900 hover:text-red-400"
+			/> marking is a word or phrase that gives you the composer’s idea of how fast the music should
+			feel. How fast a piece of music feels depends on several different things, including the texture
+			and complexity of the music, how often the beat gets divided into faster notes, and how fast the
+			beats themselves are (the metronome marking).
+		</P>
+		<P>
+			Also, the same tempo marking can mean quite different things to different composers; if a
+			metronome marking is not available, the performer should use a knowledge of the music’s style
+			and genre, and musical common sense, to decide on the proper tempo. When possible, listening
+			to a professional play the piece can help with tempo decisions, but it is also reasonable for
+			different performers to prefer slightly different tempos for the same piece.
+		</P>
+
+		<H3>Common bpm range of tempo markings</H3>
+		<P>
+			<ul class="list-disc list-inside marker:text-red-900">
+				<li>Grave - between 20 and 39 beats per minute</li>
+				<li>Lento - between 40 and 45 beats per minute</li>
+				<li>Largo - between 46 and 55 beats per minute</li>
+				<li>Adagio - between 56 and 65 beats per minute</li>
+				<li>Adagietto - between 66 and 70 beats per minute</li>
+				<li>Andante Moderato - between 71 and 73 beats per minute</li>
+				<li>Andante - between 74 and 78 beats per minute</li>
+				<li>Andantino - between 79 and 83 beats per minute</li>
+				<li>Marcia Moderato - between 84 and 85 beats per minute</li>
+				<li>Moderato - between 86 and 95 beats per minute</li>
+				<li>Allegretto - between 96 and 110 beats per minute</li>
+				<li>Allegro Moderato - between 111 and 120 beats per minute</li>
+				<li>Allegro - between 121 and 132 beats per minute</li>
+				<li>Vivace - between 133 and 141 beats per minute</li>
+				<li>Vivacissimmo - between 142 and 151 beats per minute</li>
+				<li>Alegrissimmo - between 152 and 168 beats per minute</li>
+				<li>Presto - between 169 and 200 beats per minute</li>
+				<li>Prestissimo - between 201 and 240 beats per minute</li>
+			</ul>
+		</P>
+
 		<H3>Tips on using a metronome</H3>
 		<P
 			>You can can find some useful tips on using a metronome <Link

@@ -13,7 +13,11 @@ const findTempoMarking = (tempo: number): string => {
 		marking = 'Largo';
 	}
 
-	if (tempo >= 56 && tempo <= 70) {
+	if (tempo >= 56 && tempo <= 65) {
+		marking = 'Adagio';
+	}
+
+	if (tempo >= 66 && tempo <= 70) {
 		marking = 'Adagietto';
 	}
 

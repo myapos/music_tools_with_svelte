@@ -197,11 +197,11 @@
 		You can use this tone generator by selecting a frequency and clicking Play. The tone will be played
 		for a few seconds and stop by default. The frequency selection can be achieved using the following
 		controls
-		<ol class="list-disc list-inside marker:text-red-900">
+		<ul class="list-disc list-inside marker:text-red-900">
 			<li>Frequency selector</li>
 			<li>Step Controls</li>
 			<li>Notes Controls</li>
-		</ol>
+		</ul>
 
 		<P>Below is a more detailed explanation of each option.</P>
 
