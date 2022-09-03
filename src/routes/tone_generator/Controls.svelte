@@ -2,10 +2,7 @@
 	import Icon from 'svelte-icons-pack/Icon.svelte';
 	import IoArrowBackOutline from 'svelte-icons-pack/io/IoArrowBackOutline';
 	import IoArrowForward from 'svelte-icons-pack/io/IoArrowForward';
-	import { frequency } from '$lib/stores/stores';
-
-	export let min: number;
-	export let max: number;
+	import { frequency, MIN_RANGE_FREQ, MAX_RANGE_FREQ } from '$lib/stores/stores';
 
 	let intervalRightId: any;
 	let intervalLeftId: any;
@@ -80,8 +77,8 @@
 	>
 		{#if displayInput}<input
 				type="number"
-				{min}
-				{max}
+				min={MIN_RANGE_FREQ}
+				max={MAX_RANGE_FREQ}
 				bind:value={$frequency}
 				on:keypress={disableDisplayInputOnEnter}
 				on:blur={disableDisplayInput}

@@ -136,7 +136,7 @@
 		</div>
 		<div class="flex justify-center"><SearchNotes /></div>
 		<div class="flex justify-center">
-			<Controls min={MIN_RANGE_FREQ} max={MAX_RANGE_FREQ} />
+			<Controls />
 		</div>
 		<div class="flex justify-center"><WaveType bind:selectedType /></div>
 	</div>
