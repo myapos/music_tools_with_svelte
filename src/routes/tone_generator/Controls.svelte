@@ -2,10 +2,7 @@
 	import Icon from 'svelte-icons-pack/Icon.svelte';
 	import IoArrowBackOutline from 'svelte-icons-pack/io/IoArrowBackOutline';
 	import IoArrowForward from 'svelte-icons-pack/io/IoArrowForward';
-
-	export let frequency: number;
-	export let min: number;
-	export let max: number;
+	import { frequency, MIN_RANGE_FREQ, MAX_RANGE_FREQ } from '$lib/stores/stores';
 
 	let intervalRightId: any;
 	let intervalLeftId: any;
@@ -13,12 +10,16 @@
 	let displayInput = false;
 
 	const handleLeftClick = () => {
-		frequency--;
+		frequency.update((prev) => {
+			return prev - 1;
+		});
 	};
 
 	const handleLeftMouseDown = () => {
 		intervalLeftId = setInterval(() => {
-			frequency--;
+			frequency.update((prev) => {
+				return prev - 1;
+			});
 		}, MINIMUM_THRESHOLD_FOR_HOLDING);
 	};
 
@@ -27,12 +28,16 @@
 	};
 
 	const handleRightMouseClick = () => {
-		frequency++;
+		frequency.update((prev) => {
+			return prev + 1;
+		});
 	};
 
 	const handleRightMouseDown = () => {
 		intervalRightId = setInterval(() => {
-			frequency++;
+			frequency.update((prev) => {
+				return prev + 1;
+			});
 		}, MINIMUM_THRESHOLD_FOR_HOLDING);
 	};
 
@@ -67,18 +72,18 @@
 	</div>
 
 	<div
-		class="text-tuner-color w-2/5 md:w-4/5 text-xl text-center  rounded mx-auto cursor-pointer"
+		class="text-tuner-color w-3/5 md:w-4/5 text-xl text-center  rounded mx-auto cursor-pointer"
 		on:dblclick={enableDisplayInput}
 	>
 		{#if displayInput}<input
 				type="number"
-				{min}
-				{max}
-				bind:value={frequency}
+				min={MIN_RANGE_FREQ}
+				max={MAX_RANGE_FREQ}
+				bind:value={$frequency}
 				on:keypress={disableDisplayInputOnEnter}
 				on:blur={disableDisplayInput}
 			/>{:else}
-			{frequency} Hz
+			{$frequency} Hz
 		{/if}
 	</div>
 
