@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
+	import { onDestroy, getContext } from 'svelte';
 	import RangeSlider from 'svelte-range-slider-pips';
 	import SearchNotes from './SearchNotes.svelte';
 	import WaveType from './WaveType.svelte';
@@ -12,9 +12,14 @@
 	import Link from '$lib/components/Link.svelte';
 	import { MIN_RANGE_FREQ, MAX_RANGE_FREQ, frequency } from '$lib/stores/stores';
 	import Controls from './Controls.svelte';
+	import Popup from './Popup.svelte';
+
+	const { open }: any = getContext('simple-modal');
+	const showSurprise = ({ message }: { message: string }) => open(Popup, { message });
 
 	const h1ExtraClasses = 'p-8';
 	const h2ExtraClasses = 'py-2';
+	const DEFAULT_TIMEOUT_DURATION = 10000;
 
 	$: isPlaying = false;
 
@@ -46,7 +51,7 @@
 		clearTimeout(timeoutId);
 	};
 
-	const handleGenerator = (frequency = 300, duration = 5000) => {
+	const handleGenerator = (frequency = 300, duration = DEFAULT_TIMEOUT_DURATION) => {
 		if (isPlaying) {
 			//! stop
 			stop({ g: gain, context: audioContext });
@@ -70,10 +75,11 @@
 			oscillator.start(0);
 
 			timeoutId = setTimeout(() => {
-				//! stop
 				if (isPlaying) {
+					//! stop
 					stop({ g: gain, context: audioContext });
-					alert('Timeout exceeded');
+					// alert(`Period of ${DEFAULT_TIMEOUT_DURATION / 1000} secs exceeded`);
+					showSurprise({ message: `Period of ${DEFAULT_TIMEOUT_DURATION / 1000} secs exceeded` });
 				}
 			}, duration);
 
@@ -85,7 +91,10 @@
 
 	const onChangeFreq = (e) => {
 		frequency.update((prev) => {
-			oscillatorRef.frequency.value = e.detail.value;
+			const oscillatorIsIntialized = oscillatorRef?.frequency?.value;
+			if (oscillatorIsIntialized) {
+				oscillatorRef.frequency.value = e.detail.value;
+			}
 			return e.detail.value;
 		});
 	};
@@ -137,7 +146,7 @@
 		<div class="flex flex-col content-end mb-o">
 			<Volume bind:gain bind:volumePosition />
 		</div>
-		<div class="flex justify-center"><SearchNotes /></div>
+		<div class="flex justify-center"><SearchNotes {oscillatorRef} /></div>
 		<div class="flex justify-center">
 			<Controls />
 		</div>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import RangeSlider from 'svelte-range-slider-pips';
-	export let gain: { [key: string]: any };
+	export let gain: { [key: string]: any } = {};
 	export let volumePosition: number;
 
 	const MIN_VOLUME = 0;

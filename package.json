@@ -43,6 +43,7 @@
 	"type": "module",
 	"dependencies": {
 		"@types/howler": "^2.2.7",
-		"howler": "^2.2.3"
+		"howler": "^2.2.3",
+		"svelte-simple-modal": "^1.4.1"
 	}
 }
