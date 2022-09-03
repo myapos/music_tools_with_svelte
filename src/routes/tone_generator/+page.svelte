@@ -19,6 +19,7 @@
 	$: isPlaying = false;
 
 	let frequencyValue: number;
+	let oscillatorRef: any;
 	const unsubscribe = frequency.subscribe((value) => {
 		frequencyValue = value;
 	});
@@ -65,12 +66,14 @@
 			oscillator.type = selectedType.value;
 			oscillator.frequency.value = frequencyValue;
 
+			oscillatorRef = oscillator;
 			oscillator.start(0);
 
 			timeoutId = setTimeout(() => {
 				//! stop
 				if (isPlaying) {
 					stop({ g: gain, context: audioContext });
+					alert('Timeout exceeded');
 				}
 			}, duration);
 
@@ -81,8 +84,8 @@
 	$: rangeValues = [$frequency];
 
 	const onChangeFreq = (e) => {
-		// frequency = e.detail.value;
 		frequency.update((prev) => {
+			oscillatorRef.frequency.value = e.detail.value;
 			return e.detail.value;
 		});
 	};
