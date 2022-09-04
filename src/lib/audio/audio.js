@@ -23,6 +23,7 @@ const audio = () => {
 
 	//! get the input audio stream and set up the nodes
 	try {
+		debugger;
 		navigator.mediaDevices
 			.getUserMedia({ audio: true })
 			.then((stream) => {
