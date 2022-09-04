@@ -1,5 +1,5 @@
 <script lang="ts">
-	import browserDetect from 'browser-detect';
+	import UAParser from 'ua-parser-js';
 	import { onMount } from 'svelte';
 	import Link from './Link.svelte';
 	import Icon from 'svelte-icons-pack/Icon.svelte';
@@ -13,9 +13,6 @@
 	const intersectionOptions = {
 		threshold: 0.5
 	};
-
-	console.log('browserDetect', browserDetect);
-	let browsers = browserDetect();
 
 	onMount(() => {
 		const THRESHOLD_FOR_SHORT_SCREENS = 600;
@@ -55,14 +52,21 @@
 		}
 	});
 
-	$: console.log('browsers', browsers);
+	let parser = new UAParser();
+
+	console.log(parser.getResult());
+
+	// $: console.log('browsers', browsers);
 
 	let shouldApplySticky = false;
 
-	const { name, mobile } = browsers;
-	const isInMobileChrome = name === 'chrome' && mobile === true;
+	const { browser, device } = parser.getResult();
+	const blackListBrowsers = ['Samsung Browser', 'Mobile Safari'];
+	const isInMobileChrome = blackListBrowsers.includes(browser.name) && device.type === 'mobile';
 
 	shouldApplySticky = isInMobileChrome;
+
+	console.log('shouldApplySticky', shouldApplySticky);
 </script>
 
 <!-- class="flex justify-center sticky bottom-0 bg-blue-600 text-blue-200 w-full md:mt-30" -->

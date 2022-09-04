@@ -43,8 +43,8 @@
 	"type": "module",
 	"dependencies": {
 		"@types/howler": "^2.2.7",
-		"browser-detect": "^0.2.28",
 		"howler": "^2.2.3",
-		"svelte-simple-modal": "^1.4.1"
+		"svelte-simple-modal": "^1.4.1",
+		"ua-parser-js": "^1.0.2"
 	}
 }
