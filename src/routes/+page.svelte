@@ -1,4 +1,5 @@
 <script>
+	import UAParser from 'ua-parser-js';
 	import Tuner from '$lib/components/Tuner.svelte';
 	import H1 from '$lib/components/H1.svelte';
 	import H2 from '$lib/components/H2.svelte';
@@ -8,12 +9,38 @@
 
 	const h1ExtraClasses = 'p-8';
 	const h2ExtraClasses = 'py-2';
+
+	let parser = new UAParser();
+	const parsed = parser.getResult();
+
+	let shouldApplyExtraHeight = false;
+
+	const { browser, device, os } = parsed;
+	const blackListBrowsers = ['Samsung Browser', 'Mobile Safari', 'Firefox'];
+	const blackListOs = ['Android'];
+
+	shouldApplyExtraHeight =
+		blackListBrowsers.includes(browser.name) &&
+		device.type === 'mobile' &&
+		blackListOs.includes(os.name);
 </script>
 
 <H1 className={h1ExtraClasses}>Instrument tuner</H1>
 
 <section
-	class="tools md:text-xl md:text-justify md:tracking-wide bg-red-900 w-full flex justify-center items-center relative p-8"
+	class={`
+	setBackground
+	${shouldApplyExtraHeight ? 'extraHeight' : 'tools'} 
+	md:text-xl 
+	md:text-justify 
+	md:tracking-wide 
+	bg-red-900 
+	w-full 
+	flex 
+	justify-center 
+	items-center 
+	relative 
+	p-8`}
 >
 	<Tuner />
 </section>
@@ -109,8 +136,13 @@
 </section>
 
 <style>
-	.tools {
+	.setBackground {
 		background-color: var(--background-black-red);
+	}
+	.tools {
+		min-height: 300px;
+	}
+	.extraHeight {
 		min-height: 550px;
 	}
 </style>

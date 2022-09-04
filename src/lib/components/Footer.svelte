@@ -60,12 +60,11 @@
 	const { browser, device, os } = parsed;
 	const blackListBrowsers = ['Samsung Browser', 'Mobile Safari', 'Firefox'];
 	const blackListOs = ['Android'];
-	const isInMobileChrome =
+
+	shouldApplySticky =
 		blackListBrowsers.includes(browser.name) &&
 		device.type === 'mobile' &&
 		blackListOs.includes(os.name);
-
-	shouldApplySticky = isInMobileChrome;
 </script>
 
 <!-- It will help to detect if the footer is visible. It has dimension 1x1 px -->
