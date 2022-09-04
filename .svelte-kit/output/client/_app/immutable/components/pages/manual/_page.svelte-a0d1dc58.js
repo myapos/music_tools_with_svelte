@@ -1,1 +1,0 @@
-import{S as o,i,s as c,k as p,q as m,l as d,m as u,r as _,h as l,b as f,D as h,A as n}from"../../../chunks/index-80463ac2.js";function x(r){let a,s;return{c(){a=p("p"),s=m("Manual")},l(e){a=d(e,"P",{});var t=u(a);s=_(t,"Manual"),t.forEach(l)},m(e,t){f(e,a,t),h(a,s)},p:n,i:n,o:n,d(e){e&&l(a)}}}class q extends o{constructor(a){super(),i(this,a,null,x,c,{})}}export{q as default};
