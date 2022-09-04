@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import audio from '$lib/audio/audio';
 	import { tweened } from 'svelte/motion';
 	import { cubicOut } from 'svelte/easing';
@@ -7,6 +7,12 @@
 	import Button from '$lib/components/Button.svelte';
 	import DisplayNote from './DisplayNote.svelte';
 	import { minimumThreshold } from '$lib/audio/constants';
+	import { getContext } from 'svelte';
+	import Popup from '$lib/components/Popup.svelte';
+
+	const { open }: { open: Function } = getContext('simple-modal');
+
+	const showPopup = ({ message }: { message: string }) => open(Popup, { message });
 
 	let note_negative_50 = '-50Hz';
 	let note_negative_25 = '-25Hz';
@@ -18,7 +24,7 @@
 
 	let stopTuning = () => {
 		if (startedTuning) {
-			stateAudioContext.update((ctx) => {
+			stateAudioContext.update((ctx: any) => {
 				try {
 					ctx.close();
 					return ctx;
@@ -28,8 +34,6 @@
 			});
 		}
 	};
-
-	$: console.log('stateNoteInfo', $stateNoteInfo);
 
 	const tweenConfig = {
 		duration: 400,
@@ -76,7 +80,7 @@
 				//! start tuning
 				console.log('start tuning');
 
-				audio();
+				audio(showPopup);
 			}
 			startedTuning = !startedTuning;
 		}}

@@ -1,7 +1,7 @@
-const didntGetStream = (err) => {
+const didntGetStream = (err, showPopup) => {
 	const msg = 'Stream generation failed.' + err + '.Please try again with Chrome or Firefox';
 
-	alert(msg);
+	showPopup({ message: msg });
 	console.error(msg);
 };
 export default didntGetStream;

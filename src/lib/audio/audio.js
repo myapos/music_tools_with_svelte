@@ -2,7 +2,7 @@ import { stateAudioContext } from '$lib/stores/stores';
 import gotStream from './gotStream';
 import didntGetStream from './didntGetStream';
 
-const audio = () => {
+const audio = (showPopup) => {
 	//! globals for pitch detection
 	let audioContext = null;
 
@@ -16,9 +16,8 @@ const audio = () => {
 		});
 
 		//! keep in store audioContext
-		// alert('Web Audio API is  supported in this browser');
 	} catch (e) {
-		alert('Web Audio API is not supported in this browser', e);
+		showPopup({ message: 'Web Audio API is not supported in this browser' + e });
 	}
 
 	//! get the input audio stream and set up the nodes
@@ -34,7 +33,7 @@ const audio = () => {
 			})
 			.catch((err) => {
 				/* handle the error */
-				didntGetStream(err);
+				didntGetStream(err, showPopup);
 			});
 	} catch (e) {
 		console.error('webkitGetUserMedia threw exception :' + e);

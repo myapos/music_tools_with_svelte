@@ -12,10 +12,12 @@
 	import Link from '$lib/components/Link.svelte';
 	import { MIN_RANGE_FREQ, MAX_RANGE_FREQ, frequency } from '$lib/stores/stores';
 	import Controls from './Controls.svelte';
-	import Popup from './Popup.svelte';
+	import Popup from '$lib/components/Popup.svelte';
 
 	const { open }: any = getContext('simple-modal');
-	const showSurprise = ({ message }: { message: string }) => open(Popup, { message });
+	const showPopup = ({ message }: { message: string }) => {
+		return open(Popup, { message });
+	};
 
 	const h1ExtraClasses = 'p-8';
 	const h2ExtraClasses = 'py-2';
@@ -78,8 +80,7 @@
 				if (isPlaying) {
 					//! stop
 					stop({ g: gain, context: audioContext });
-					// alert(`Period of ${DEFAULT_TIMEOUT_DURATION / 1000} secs exceeded`);
-					showSurprise({ message: `Period of ${DEFAULT_TIMEOUT_DURATION / 1000} secs exceeded` });
+					showPopup({ message: `Period of ${DEFAULT_TIMEOUT_DURATION / 1000} secs exceeded` });
 				}
 			}, duration);
 
