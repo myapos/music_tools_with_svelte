@@ -46,3 +46,4 @@ You can preview the production build with `npm run preview`.
 - deploy the app
 - test in different platforms
 - write tests with playwright
+- pwa
