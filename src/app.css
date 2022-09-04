@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	min-width: 640px;
+	height: 100vh;
+}
 :root {
 	--menu-text-blue-200: rgb(191 219 254);
 	--background-blue-800: #5300e9;

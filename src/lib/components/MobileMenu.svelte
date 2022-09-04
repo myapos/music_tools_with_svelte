@@ -10,7 +10,7 @@
 <div
 	class="p-5 bg-blue-600 text-blue-200 hover:text-blue-50 w-full hidden md:flex md:justify-between relative md:z-10"
 >
-	<div class="text-center w-full md:text-xl">Mobile Menu</div>
+	<div class="text-center w-full md:text-xl">Music tools</div>
 	<div on:click={onClick}>
 		<Icon
 			src={FaSolidBars}

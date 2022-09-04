@@ -1,4 +1,5 @@
 <script lang="ts">
+	import browserDetect from 'browser-detect';
 	import { onMount } from 'svelte';
 	import Link from './Link.svelte';
 	import Icon from 'svelte-icons-pack/Icon.svelte';
@@ -12,6 +13,9 @@
 	const intersectionOptions = {
 		threshold: 0.5
 	};
+
+	console.log('browserDetect', browserDetect);
+	let browsers = browserDetect();
 
 	onMount(() => {
 		const THRESHOLD_FOR_SHORT_SCREENS = 600;
@@ -34,6 +38,7 @@
 
 			const observer = new IntersectionObserver((entries: any) => {
 				const footerWrapperEntry = entries[0];
+				console.log('footerWrapperEntry', footerWrapperEntry);
 
 				if (footerWrapperEntry.isIntersecting) {
 					isVisible = true;
@@ -49,13 +54,28 @@
 			isVisible = true;
 		}
 	});
+
+	$: console.log('browsers', browsers);
+
+	let shouldApplySticky = false;
+
+	const { name, mobile } = browsers;
+	const isInMobileChrome = name === 'chrome' && mobile === true;
+
+	shouldApplySticky = isInMobileChrome;
 </script>
 
-<div id="footerWrapper" />
+<!-- class="flex justify-center sticky bottom-0 bg-blue-600 text-blue-200 w-full md:mt-30" -->
+
+<!-- It will help to detect if the footer is visible. It has dimension 1x1 px -->
+<div id="footerWrapper" class="w-px h-px" />
 {#if isVisible}
 	<footer
+		id="footer"
 		on:click={onClickOnTheRestArea}
-		class="flex justify-center sticky bottom-0 bg-blue-600 text-blue-200 w-full md:mt-30"
+		class={`flex justify-center  ${
+			shouldApplySticky ? '' : 'sticky bottom-0'
+		} bg-blue-600 text-blue-200 w-full md:mt-30`}
 		transition:fade
 	>
 		<div class="flex items-center">
@@ -78,7 +98,7 @@
 			Created with
 			<div class="flex items-center">
 				<Link url="https://svelte.dev/" description="" target="_blank" className="p-5 cursor">
-					<Icon src={SiSvelte} size="1.3rem" title="svelte" className="ml-2" />
+					<Icon src={SiSvelte} size="1.3rem" color="white" title="svelte" className="ml-2" />
 				</Link>
 			</div>
 		</div>

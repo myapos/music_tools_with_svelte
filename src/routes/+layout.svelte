@@ -69,9 +69,4 @@
 		background-color: #2563eb30;
 		min-width: 640px;
 	}
-	:global(body > div) {
-		/* this will apply to <body> */
-		display: flex;
-		flex-direction: column;
-	}
 </style>

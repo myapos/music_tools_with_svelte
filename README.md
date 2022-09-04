@@ -43,7 +43,7 @@ You can preview the production build with `npm run preview`.
 
 ### TODOS
 
-- deploy the app
-- test in different platforms
+- deploy the app --> OK
+- test in different platforms --> mobile firefox issues on tuner and css display
 - write tests with playwright
 - pwa
