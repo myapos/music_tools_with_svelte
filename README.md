@@ -41,8 +41,8 @@ You can preview the production build with `npm run preview`.
 
 > ### To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
 
-### Links
+### TODOS
 
-- https://marcgg.com/blog/2016/11/01/javascript-audio/
-- https://medium.com/@jackhuang.wz/building-a-metronome-in-python-c8e16826fe4f
-- https://www.youtube.com/watch?v=D08gOHOjeEk&list=PLXAhCH9FJ8zU2lR4ZvJGianiyVJlqm0z0
+- deploy the app
+- test in different platforms
+- write tests with playwright
