@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '../app.css';
+	import UAParser from 'ua-parser-js';
 	import { Circle } from 'svelte-loading-spinners';
 	import { onMount } from 'svelte';
 
@@ -33,6 +34,20 @@
 			toggle();
 		}
 	};
+
+	let parser = new UAParser();
+	const parsed = parser.getResult();
+
+	let shouldApplyFullModal = false;
+
+	const { browser, device, os } = parsed;
+	const blackListBrowsers = ['Samsung Browser', 'Mobile Safari', 'Firefox'];
+	const blackListOs = ['Android'];
+
+	shouldApplyFullModal =
+		blackListBrowsers.includes(browser.name) &&
+		device.type === 'mobile' &&
+		blackListOs.includes(os.name);
 </script>
 
 <svelte:head>
@@ -41,7 +56,7 @@
 
 <svelte:window bind:innerWidth={screenWidth} bind:scrollY />
 
-<Modal>
+<Modal styleBg={{ width: '100%', height: '100%' }}>
 	{#if isLoading}
 		<main class="flex justify-center items-center w-full h-screen flex-col">
 			<Circle size="60" color="#FF3E00" unit="px" duration="1s" />
