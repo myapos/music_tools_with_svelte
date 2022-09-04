@@ -13,7 +13,7 @@
 <H1 className={h1ExtraClasses}>Instrument tuner</H1>
 
 <section
-	class="tools md:text-xl md:text-justify md:tracking-wide bg-red-900 w-full flex justify-center relative p-8"
+	class="tools md:text-xl md:text-justify md:tracking-wide bg-red-900 w-full flex justify-center items-center relative p-8"
 >
 	<Tuner />
 </section>
@@ -111,6 +111,6 @@
 <style>
 	.tools {
 		background-color: var(--background-black-red);
-		min-height: 300px;
+		min-height: 450px;
 	}
 </style>
