@@ -316,7 +316,7 @@ const Tuner = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 });
 const _page_svelte_svelte_type_style_lang = "";
 const css = {
-  code: ".tools.svelte-wc1eop{background-color:var(--background-black-red);min-height:450px}",
+  code: ".tools.svelte-v6ih00{background-color:var(--background-black-red);min-height:550px}",
   map: null
 };
 const h1ExtraClasses = "p-8";
@@ -329,7 +329,7 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     }
   })}
 
-<section class="${"tools md:text-xl md:text-justify md:tracking-wide bg-red-900 w-full flex justify-center items-center relative p-8 svelte-wc1eop"}">${validate_component(Tuner, "Tuner").$$render($$result, {}, {}, {})}</section>
+<section class="${"tools md:text-xl md:text-justify md:tracking-wide bg-red-900 w-full flex justify-center items-center relative p-8 svelte-v6ih00"}">${validate_component(Tuner, "Tuner").$$render($$result, {}, {}, {})}</section>
 
 <section class="${"text-justify md:tracking-wide py-8 w-3/4 md:w-full md:py-8 md:px-4 md:text-2xl"}">${validate_component(H2, "H2").$$render($$result, { className: h2ExtraClasses }, {}, {
     default: () => {

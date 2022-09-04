@@ -111,6 +111,6 @@
 <style>
 	.tools {
 		background-color: var(--background-black-red);
-		min-height: 450px;
+		min-height: 550px;
 	}
 </style>
