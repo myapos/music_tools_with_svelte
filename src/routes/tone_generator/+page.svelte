@@ -19,7 +19,7 @@
 
 	const h1ExtraClasses = 'p-8';
 	const h2ExtraClasses = 'py-2';
-	const DEFAULT_TIMEOUT_DURATION = 500;
+	const DEFAULT_TIMEOUT_DURATION = 10000;
 
 	$: isPlaying = false;
 
