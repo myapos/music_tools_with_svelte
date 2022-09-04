@@ -53,23 +53,20 @@
 	});
 
 	let parser = new UAParser();
-
-	console.log(parser.getResult());
-
-	// $: console.log('browsers', browsers);
+	const parsed = parser.getResult();
 
 	let shouldApplySticky = false;
 
-	const { browser, device } = parser.getResult();
-	const blackListBrowsers = ['Samsung Browser', 'Mobile Safari'];
-	const isInMobileChrome = blackListBrowsers.includes(browser.name) && device.type === 'mobile';
+	const { browser, device, os } = parsed;
+	const blackListBrowsers = ['Samsung Browser', 'Mobile Safari', 'Firefox'];
+	const blackListOs = ['Android'];
+	const isInMobileChrome =
+		blackListBrowsers.includes(browser.name) &&
+		device.type === 'mobile' &&
+		blackListOs.includes(os.name);
 
 	shouldApplySticky = isInMobileChrome;
-
-	console.log('shouldApplySticky', shouldApplySticky);
 </script>
-
-<!-- class="flex justify-center sticky bottom-0 bg-blue-600 text-blue-200 w-full md:mt-30" -->
 
 <!-- It will help to detect if the footer is visible. It has dimension 1x1 px -->
 <div id="footerWrapper" class="w-px h-px" />
