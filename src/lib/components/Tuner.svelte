@@ -1,10 +1,9 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import audio from '$lib/audio/audio';
 	import { tweened } from 'svelte/motion';
 	import { cubicOut } from 'svelte/easing';
-	import { stateNoteInfo } from '$lib/stores/stores';
-	import { stateAudioContext } from '$lib/stores/stores';
-	import { startedTuning } from '$lib/stores/stores';
+	import { stateNoteInfo, stateAudioContext, startedTuning } from '$lib/stores/stores';
 	import Button from '$lib/components/Button.svelte';
 	import DisplayNote from './DisplayNote.svelte';
 	import { minimumThreshold } from '$lib/audio/constants';
@@ -45,6 +44,13 @@
 	};
 
 	$: isTuned = $startedTuning && Math.abs(degreesOffset) < tunedDeviation;
+
+	onMount(() => {
+		//! reset to initial state on mount
+		stateNoteInfo.update((prev) => {
+			return { note: '', deviation: 0 };
+		});
+	});
 </script>
 
 <div>
@@ -64,7 +70,7 @@
 				//! if it already started and click again stop tuning
 				stopTuning({
 					startedTuningCtx: startedTuning,
-					context: stateAudioContext,
+					audioContenxt: stateAudioContext,
 					isTuning: $startedTuning
 				});
 			} else {

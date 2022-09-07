@@ -31,7 +31,7 @@
 	onDestroy(() => {
 		stopTuning({
 			startedTuningCtx: startedTuning,
-			context: stateAudioContext,
+			audioContenxt: stateAudioContext,
 			isTuning: $startedTuning
 		});
 	});

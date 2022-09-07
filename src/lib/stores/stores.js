@@ -1,6 +1,8 @@
 import { writable } from 'svelte/store';
 
-export const stateNoteInfo = writable({});
+//! tuner
+
+export const stateNoteInfo = writable({ note: '', deviation: 0 });
 export const stateAudioContext = writable({});
 export const startedTuning = writable(false);
 

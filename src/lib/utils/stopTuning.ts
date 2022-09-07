@@ -1,12 +1,12 @@
 interface stopTuningT {
 	startedTuningCtx: { [key: string]: any };
-	context: { [key: string]: any };
+	audioContenxt: { [key: string]: any };
 	isTuning: boolean;
 }
 
-const stopTuning = ({ startedTuningCtx, context, isTuning }: stopTuningT) => {
+const stopTuning = ({ startedTuningCtx, audioContenxt, isTuning }: stopTuningT) => {
 	if (isTuning) {
-		context.update((ctx: any) => {
+		audioContenxt.update((ctx: any) => {
 			try {
 				ctx.close();
 				return ctx;
