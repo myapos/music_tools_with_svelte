@@ -1,4 +1,5 @@
-<script>
+<script lang="ts">
+	import { onDestroy } from 'svelte';
 	import UAParser from 'ua-parser-js';
 	import Tuner from '$lib/components/Tuner.svelte';
 	import H1 from '$lib/components/H1.svelte';
@@ -6,6 +7,9 @@
 	import H3 from '$lib/components/H3.svelte';
 	import P from '$lib/components/P.svelte';
 	import Link from '$lib/components/Link.svelte';
+	import { stateAudioContext } from '$lib/stores/stores';
+	import { startedTuning } from '$lib/stores/stores';
+	import stopTuning from '$lib/utils/stopTuning';
 
 	const h1ExtraClasses = 'p-8';
 	const h2ExtraClasses = 'py-2';
@@ -23,6 +27,14 @@
 		blackListBrowsers.includes(browser.name) &&
 		device.type === 'mobile' &&
 		blackListOs.includes(os.name);
+
+	onDestroy(() => {
+		stopTuning({
+			startedTuningCtx: startedTuning,
+			context: stateAudioContext,
+			isTuning: $startedTuning
+		});
+	});
 </script>
 
 <H1 className={h1ExtraClasses}>Instrument tuner</H1>

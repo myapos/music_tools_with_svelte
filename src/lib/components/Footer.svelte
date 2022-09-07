@@ -35,7 +35,6 @@
 
 			const observer = new IntersectionObserver((entries: any) => {
 				const footerWrapperEntry = entries[0];
-				console.log('footerWrapperEntry', footerWrapperEntry);
 
 				if (footerWrapperEntry.isIntersecting) {
 					isVisible = true;

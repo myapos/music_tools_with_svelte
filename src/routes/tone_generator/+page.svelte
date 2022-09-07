@@ -31,8 +31,6 @@
 		frequencyValue = value;
 	});
 
-	onDestroy(unsubscribe);
-
 	//! globals for contenxt
 	let gain: { [key: string]: any };
 	let audioContext: { [key: string]: any };
@@ -99,6 +97,13 @@
 			return e.detail.value;
 		});
 	};
+
+	onDestroy(() => {
+		if (isPlaying) {
+			stop({ g: gain, context: audioContext });
+		}
+		unsubscribe();
+	});
 </script>
 
 <H1 className={h1ExtraClasses}>Tone Generator</H1>

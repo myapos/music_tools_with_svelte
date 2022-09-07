@@ -4,11 +4,13 @@
 	import { cubicOut } from 'svelte/easing';
 	import { stateNoteInfo } from '$lib/stores/stores';
 	import { stateAudioContext } from '$lib/stores/stores';
+	import { startedTuning } from '$lib/stores/stores';
 	import Button from '$lib/components/Button.svelte';
 	import DisplayNote from './DisplayNote.svelte';
 	import { minimumThreshold } from '$lib/audio/constants';
 	import { getContext } from 'svelte';
 	import Popup from '$lib/components/Popup.svelte';
+	import stopTuning from '$lib/utils/stopTuning';
 
 	const { open }: { open: Function } = getContext('simple-modal');
 
@@ -19,21 +21,7 @@
 	let note_0 = '0Hz';
 	let note_positive_25 = '25Hz';
 	let note_positive_50 = '50Hz';
-	let startedTuning = false;
 	let tunedDeviation = 10; //! Hz
-
-	let stopTuning = () => {
-		if (startedTuning) {
-			stateAudioContext.update((ctx: any) => {
-				try {
-					ctx.close();
-					return ctx;
-				} catch (e) {
-					console.error('error', e);
-				}
-			});
-		}
-	};
 
 	const tweenConfig = {
 		duration: 400,
@@ -56,7 +44,7 @@
 		$rotate = 45;
 	};
 
-	$: isTuned = startedTuning && Math.abs(degreesOffset) < tunedDeviation;
+	$: isTuned = $startedTuning && Math.abs(degreesOffset) < tunedDeviation;
 </script>
 
 <div>
@@ -72,24 +60,29 @@
 
 	<Button
 		onClick={() => {
-			if (startedTuning) {
+			if ($startedTuning) {
 				//! if it already started and click again stop tuning
-				console.log('stop tuning');
-				stopTuning();
+				stopTuning({
+					startedTuningCtx: startedTuning,
+					context: stateAudioContext,
+					isTuning: $startedTuning
+				});
 			} else {
 				//! start tuning
 				console.log('start tuning');
 
 				audio(showPopup);
+				startedTuning.update((prev) => {
+					return true;
+				});
 			}
-			startedTuning = !startedTuning;
 		}}
 		className="start text-xl text-center text-tuner-color cursor-pointer
 	w-2/5 p-2 bg-black hover:bg-red-900 hover:text-black
-	rounded mx-auto mt-5">{startedTuning ? 'Stop' : 'Start'} Tuning!</Button
+	rounded mx-auto mt-5">{$startedTuning ? 'Stop' : 'Start'} Tuning!</Button
 	>
 
-	{#if startedTuning}
+	{#if $startedTuning}
 		<DisplayNote bind:isTuned />
 	{/if}
 </div>
