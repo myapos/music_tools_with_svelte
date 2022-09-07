@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Select from 'svelte-select';
-	export let selectedType: Object;
+	export let selectedType: { [key: string]: any };
+	export let oscillatorRef: { [key: string]: any };
 
 	let items = [
 		{ value: 'sine', label: 'Sine' },
@@ -9,6 +10,12 @@
 		{ value: 'triangle', label: 'Triangle' }
 	];
 	const handleSelectType = (event: any) => {
+		const oscillatorIsIntialized = oscillatorRef?.type.length > 0;
+
+		if (oscillatorIsIntialized) {
+			oscillatorRef.type = event.detail.value;
+		}
+
 		selectedType = event.detail;
 	};
 </script>

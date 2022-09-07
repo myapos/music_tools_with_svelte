@@ -11,7 +11,7 @@
 	import P from '$lib/components/P.svelte';
 	import Link from '$lib/components/Link.svelte';
 	import { MIN_RANGE_FREQ, MAX_RANGE_FREQ, frequency } from '$lib/stores/stores';
-	import Controls from './Controls.svelte';
+	import StepControls from './StepControls.svelte';
 	import Popup from '$lib/components/Popup.svelte';
 
 	const { open }: any = getContext('simple-modal');
@@ -149,9 +149,11 @@
 		</div>
 		<div class="flex justify-center"><SearchNotes {oscillatorRef} /></div>
 		<div class="flex justify-center">
-			<Controls />
+			<StepControls />
 		</div>
-		<div class="flex justify-center"><WaveType bind:selectedType /></div>
+		<div class="flex justify-center">
+			<WaveType bind:selectedType bind:oscillatorRef />
+		</div>
 	</div>
 
 	<div class="w-1/2 flex flex-col items-center justify-centers mx-auto">
