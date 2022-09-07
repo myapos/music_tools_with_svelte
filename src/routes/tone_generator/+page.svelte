@@ -27,6 +27,7 @@
 
 	let frequencyValue: number;
 	let oscillatorRef: any;
+	let stepValue: number = 1;
 	const unsubscribe = frequency.subscribe((value) => {
 		frequencyValue = value;
 	});
@@ -95,13 +96,17 @@
 
 	$: rangeValues = [$frequency];
 
+	const onStepChange = () => {};
+
 	const onChangeFreq = (e) => {
+		const freq = e.detail.value;
+
 		frequency.update((prev) => {
 			const oscillatorIsIntialized = oscillatorRef?.frequency?.value;
 			if (oscillatorIsIntialized) {
-				oscillatorRef.frequency.value = e.detail.value;
+				oscillatorRef.frequency.value = freq;
 			}
-			return e.detail.value;
+			return freq;
 		});
 
 		//! update time out on frequency changes
@@ -114,6 +119,15 @@
 			clearTimeout(timeoutId);
 		}
 		timeoutId = setTimeout(handleTimeout, DEFAULT_TIMEOUT_DURATION);
+
+		console.log('frequency', freq);
+
+		if (freq > 1000) {
+			stepValue = 100;
+		} else {
+			stepValue = 1;
+		}
+		onStepChange();
 	};
 
 	onDestroy(() => {
@@ -159,6 +173,7 @@
 		max={MAX_RANGE_FREQ}
 		hoverable
 		on:change={onChangeFreq}
+		step={stepValue}
 	/>
 
 	<div class="text-tuner-color grid grid-rows-2 grid-cols-4 gap-y-0 justify-center items-end">

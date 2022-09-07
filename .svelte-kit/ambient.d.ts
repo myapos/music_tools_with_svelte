@@ -20,14 +20,12 @@ declare module '$env/static/private' {
 	export const HOME: string;
 	export const CHROME_DESKTOP: string;
 	export const CONDA_SHLVL: string;
-	export const OLDPWD: string;
 	export const TERM_PROGRAM_VERSION: string;
 	export const DESKTOP_SESSION: string;
 	export const NVM_BIN: string;
 	export const npm_package_json: string;
 	export const NVM_INC: string;
 	export const GIO_LAUNCHED_DESKTOP_FILE: string;
-	export const APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL: string;
 	export const GNOME_SHELL_SESSION_MODE: string;
 	export const GTK_MODULES: string;
 	export const VSCODE_GIT_ASKPASS_MAIN: string;
@@ -40,7 +38,6 @@ declare module '$env/static/private' {
 	export const npm_config_engine_strict: string;
 	export const COLORTERM: string;
 	export const _CE_M: string;
-	export const TERMINATOR_DBUS_NAME: string;
 	export const GIO_LAUNCHED_DESKTOP_FILE_PID: string;
 	export const COLOR: string;
 	export const NVM_DIR: string;
@@ -70,7 +67,6 @@ declare module '$env/static/private' {
 	export const XDG_RUNTIME_DIR: string;
 	export const GDK_BACKEND: string;
 	export const DISPLAY: string;
-	export const TERMINATOR_DBUS_PATH: string;
 	export const LANG: string;
 	export const XDG_CURRENT_DESKTOP: string;
 	export const LC_TELEPHONE: string;
@@ -86,11 +82,9 @@ declare module '$env/static/private' {
 	export const ORIGINAL_XDG_CURRENT_DESKTOP: string;
 	export const SHELL: string;
 	export const LC_NAME: string;
-	export const TERMINATOR_UUID: string;
 	export const npm_package_version: string;
 	export const npm_lifecycle_event: string;
 	export const QT_ACCESSIBILITY: string;
-	export const NO_AT_BRIDGE: string;
 	export const GDMSESSION: string;
 	export const LESSCLOSE: string;
 	export const LC_MEASUREMENT: string;
@@ -111,7 +105,6 @@ declare module '$env/static/private' {
 	export const LC_NUMERIC: string;
 	export const npm_command: string;
 	export const LC_PAPER: string;
-	export const VTE_VERSION: string;
 	export const INIT_CWD: string;
 	export const EDITOR: string;
 }
