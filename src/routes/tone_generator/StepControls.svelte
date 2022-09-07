@@ -3,16 +3,29 @@
 	import IoArrowBackOutline from 'svelte-icons-pack/io/IoArrowBackOutline';
 	import IoArrowForward from 'svelte-icons-pack/io/IoArrowForward';
 	import { frequency, MIN_RANGE_FREQ, MAX_RANGE_FREQ } from '$lib/stores/stores';
+	import { DEFAULT_TIMEOUT_DURATION } from '$lib/constants/values';
+
+	export let timeoutId: number;
+	export let handleTimeout: Function;
 
 	let intervalRightId: any;
 	let intervalLeftId: any;
 	const MINIMUM_THRESHOLD_FOR_HOLDING = 150;
 	let displayInput = false;
 
+	const handleTimeoutWrapper = () => {
+		if (timeoutId) {
+			clearTimeout(timeoutId);
+		}
+		timeoutId = setTimeout(handleTimeout, DEFAULT_TIMEOUT_DURATION);
+	};
+
 	const handleLeftClick = () => {
 		frequency.update((prev) => {
 			return prev - 1;
 		});
+
+		handleTimeoutWrapper();
 	};
 
 	const handleLeftMouseDown = () => {
@@ -20,6 +33,7 @@
 			frequency.update((prev) => {
 				return prev - 1;
 			});
+			handleTimeoutWrapper();
 		}, MINIMUM_THRESHOLD_FOR_HOLDING);
 	};
 
@@ -31,6 +45,7 @@
 		frequency.update((prev) => {
 			return prev + 1;
 		});
+		handleTimeoutWrapper();
 	};
 
 	const handleRightMouseDown = () => {
@@ -38,6 +53,7 @@
 			frequency.update((prev) => {
 				return prev + 1;
 			});
+			handleTimeoutWrapper();
 		}, MINIMUM_THRESHOLD_FOR_HOLDING);
 	};
 

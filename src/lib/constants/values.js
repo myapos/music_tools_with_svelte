@@ -1,0 +1,1 @@
+export const DEFAULT_TIMEOUT_DURATION = 10000;

@@ -10,6 +10,7 @@
 	import H3 from '$lib/components/H3.svelte';
 	import P from '$lib/components/P.svelte';
 	import Link from '$lib/components/Link.svelte';
+	import { DEFAULT_TIMEOUT_DURATION } from '$lib/constants/values';
 	import { MIN_RANGE_FREQ, MAX_RANGE_FREQ, frequency } from '$lib/stores/stores';
 	import StepControls from './StepControls.svelte';
 	import Popup from '$lib/components/Popup.svelte';
@@ -21,7 +22,6 @@
 
 	const h1ExtraClasses = 'p-8';
 	const h2ExtraClasses = 'py-2';
-	const DEFAULT_TIMEOUT_DURATION = 10000;
 
 	$: isPlaying = false;
 
@@ -51,7 +51,17 @@
 		clearTimeout(timeoutId);
 	};
 
-	const handleGenerator = (frequency = 300, duration = DEFAULT_TIMEOUT_DURATION) => {
+	const handleTimeout = () => {
+		if (isPlaying) {
+			//! stop
+			stop({ g: gain, context: audioContext });
+			showPopup({
+				message: `Period of ${DEFAULT_TIMEOUT_DURATION / 1000} secs exceeded after last action`
+			});
+		}
+	};
+
+	const handleGenerator = (frequency = 300) => {
 		if (isPlaying) {
 			//! stop
 			stop({ g: gain, context: audioContext });
@@ -74,14 +84,11 @@
 			oscillatorRef = oscillator;
 			oscillator.start(0);
 
-			timeoutId = setTimeout(() => {
-				if (isPlaying) {
-					//! stop
-					stop({ g: gain, context: audioContext });
-					showPopup({ message: `Period of ${DEFAULT_TIMEOUT_DURATION / 1000} secs exceeded` });
-				}
-			}, duration);
+			if (timeoutId) {
+				clearTimeout(timeoutId);
+			}
 
+			timeoutId = setTimeout(handleTimeout, DEFAULT_TIMEOUT_DURATION);
 			isPlaying = true;
 		}
 	};
@@ -96,6 +103,17 @@
 			}
 			return e.detail.value;
 		});
+
+		//! update time out on frequency changes
+
+		if (timeoutId) {
+			clearTimeout(timeoutId);
+		}
+
+		if (timeoutId) {
+			clearTimeout(timeoutId);
+		}
+		timeoutId = setTimeout(handleTimeout, DEFAULT_TIMEOUT_DURATION);
 	};
 
 	onDestroy(() => {
@@ -150,14 +168,22 @@
 		<div class="text-center">Wave Shape</div>
 		<!--end of first row-->
 		<div class="flex flex-col content-end mb-o">
-			<Volume bind:gain bind:volumePosition />
-		</div>
-		<div class="flex justify-center"><SearchNotes {oscillatorRef} /></div>
-		<div class="flex justify-center">
-			<StepControls />
+			<Volume bind:gain bind:volumePosition bind:timeoutId {handleTimeout} />
 		</div>
 		<div class="flex justify-center">
-			<WaveType bind:selectedType bind:oscillatorRef />
+			<SearchNotes {oscillatorRef} bind:timeoutId {handleTimeout} />
+		</div>
+		<div class="flex justify-center">
+			<StepControls bind:timeoutId {handleTimeout} />
+		</div>
+		<div class="flex justify-center">
+			<WaveType
+				bind:selectedType
+				bind:oscillatorRef
+				bind:volumePosition
+				bind:timeoutId
+				{handleTimeout}
+			/>
 		</div>
 	</div>
 

@@ -2,6 +2,10 @@
 	import Select from 'svelte-select';
 	import { hashNotesFreq } from '$lib/audio/constants';
 	import { frequency } from '$lib/stores/stores';
+	import { DEFAULT_TIMEOUT_DURATION } from '$lib/constants/values';
+
+	export let timeoutId: number;
+	export let handleTimeout: Function;
 
 	export let oscillatorRef: { [key: string]: any } = {};
 
@@ -13,6 +17,13 @@
 	});
 
 	let selectedFreq: any = { value: '440', label: 'A4' };
+
+	const handleTimeoutWrapper = () => {
+		if (timeoutId) {
+			clearTimeout(timeoutId);
+		}
+		timeoutId = setTimeout(handleTimeout, DEFAULT_TIMEOUT_DURATION);
+	};
 
 	const handleSelectFreq = (event: any) => {
 		const hasValue = typeof event.detail.value !== 'undefined';
@@ -31,6 +42,8 @@
 
 				return newFreq;
 			});
+
+			handleTimeoutWrapper();
 		}
 	};
 </script>
