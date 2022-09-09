@@ -98,15 +98,34 @@
 
 	const onStepChange = () => {};
 
+	function logslider(position) {
+		// position will be between 0 and 100
+		var minp = MIN_RANGE_FREQ;
+		var maxp = MAX_RANGE_FREQ;
+
+		// The result should be between 100 an 10000000
+		var minv = Math.log(MIN_RANGE_FREQ);
+		var maxv = Math.log(MAX_RANGE_FREQ);
+
+		// calculate adjustment factor
+		var scale = (maxv - minv) / (maxp - minp);
+
+		const ret = Math.exp(minv + scale * (position - minp));
+
+		stepValue = ret;
+		console.log('ret', ret);
+		return ret;
+	}
+
 	const onChangeFreq = (e) => {
-		const freq = e.detail.value;
+		// const freq = e.detail.value;
 
 		frequency.update((prev) => {
 			const oscillatorIsIntialized = oscillatorRef?.frequency?.value;
 			if (oscillatorIsIntialized) {
-				oscillatorRef.frequency.value = freq;
+				oscillatorRef.frequency.value = stepValue;
 			}
-			return freq;
+			return stepValue;
 		});
 
 		//! update time out on frequency changes
@@ -120,13 +139,15 @@
 		}
 		timeoutId = setTimeout(handleTimeout, DEFAULT_TIMEOUT_DURATION);
 
-		console.log('frequency', freq);
+		console.log('frequency', stepValue);
 
-		if (freq > 1000) {
-			stepValue = 100;
-		} else {
-			stepValue = 1;
-		}
+		const test = logslider(e.detail.value);
+
+		// if (freq > 1000) {
+		// 	stepValue = 100;
+		// } else {
+		// 	stepValue = 1;
+		// }
 		onStepChange();
 	};
 
@@ -136,6 +157,8 @@
 		}
 		unsubscribe();
 	});
+
+	$: console.log('step value', stepValue);
 </script>
 
 <H1 className={h1ExtraClasses}>Tone Generator</H1>

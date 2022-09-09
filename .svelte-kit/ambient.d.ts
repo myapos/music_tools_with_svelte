@@ -19,7 +19,6 @@ declare module '$env/static/private' {
 	export const npm_config_noproxy: string;
 	export const HOME: string;
 	export const CHROME_DESKTOP: string;
-	export const CONDA_SHLVL: string;
 	export const TERM_PROGRAM_VERSION: string;
 	export const DESKTOP_SESSION: string;
 	export const NVM_BIN: string;
@@ -37,7 +36,6 @@ declare module '$env/static/private' {
 	export const DBUS_SESSION_BUS_ADDRESS: string;
 	export const npm_config_engine_strict: string;
 	export const COLORTERM: string;
-	export const _CE_M: string;
 	export const GIO_LAUNCHED_DESKTOP_FILE_PID: string;
 	export const COLOR: string;
 	export const NVM_DIR: string;
@@ -54,8 +52,8 @@ declare module '$env/static/private' {
 	export const TERM: string;
 	export const npm_config_cache: string;
 	export const GNOME_DESKTOP_SESSION_ID: string;
-	export const _CE_CONDA: string;
 	export const WINDOWPATH: string;
+	export const npm_config_timeout: string;
 	export const npm_config_node_gyp: string;
 	export const PATH: string;
 	export const SESSION_MANAGER: string;
@@ -67,6 +65,7 @@ declare module '$env/static/private' {
 	export const XDG_RUNTIME_DIR: string;
 	export const GDK_BACKEND: string;
 	export const DISPLAY: string;
+	export const npm_config_fetch_retry_mintimeout: string;
 	export const LANG: string;
 	export const XDG_CURRENT_DESKTOP: string;
 	export const LC_TELEPHONE: string;
@@ -76,9 +75,9 @@ declare module '$env/static/private' {
 	export const LS_COLORS: string;
 	export const VSCODE_GIT_IPC_HANDLE: string;
 	export const TERM_PROGRAM: string;
+	export const npm_config_fetch_retry_maxtimeout: string;
 	export const npm_lifecycle_script: string;
 	export const SSH_AUTH_SOCK: string;
-	export const CONDA_PYTHON_EXE: string;
 	export const ORIGINAL_XDG_CURRENT_DESKTOP: string;
 	export const SHELL: string;
 	export const LC_NAME: string;
@@ -98,7 +97,7 @@ declare module '$env/static/private' {
 	export const PWD: string;
 	export const npm_execpath: string;
 	export const XDG_CONFIG_DIRS: string;
-	export const CONDA_EXE: string;
+	export const ANDROID_HOME: string;
 	export const NVM_CD_FLAGS: string;
 	export const XDG_DATA_DIRS: string;
 	export const npm_config_global_prefix: string;

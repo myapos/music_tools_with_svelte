@@ -15,7 +15,7 @@ export const metronomeIsPlaying = writable(false);
 //! frequency generator
 
 export const STARTING_FREQUENCY = 440;
-export const MIN_RANGE_FREQ = 0;
-export const MAX_RANGE_FREQ = 20154;
+export const MIN_RANGE_FREQ = 0.1;
+export const MAX_RANGE_FREQ = 8000;
 
 export const frequency = writable(STARTING_FREQUENCY);
