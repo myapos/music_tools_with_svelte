@@ -6,7 +6,7 @@
 </script>
 
 <div>
-	<H2 className="text-center border-b-2 mt-5">Useful Tunings</H2>
+	<div class="text-center border-b-2 mt-5 text-red-900 text-2xl p-2">Useful Tunings</div>
 	<div class="text-right text-xs pt-2 text-red-900">
 		Each tuning is referring to open strings.
 		<Link
@@ -17,35 +17,34 @@
 		/>
 	</div>
 
-	<!-- https://en.wikipedia.org/wiki/Musical_tuning -->
 	<div class="grid grid-rows-2 grid-cols-2 gap-y-0 justify-between items-center">
-		<H3 className="text-center">Instrument</H3>
-		<H3 className="text-center">Tuning</H3>
+		<div class="text-center text-red-900 border-b-2 text-2xl p-2">Instrument</div>
+		<div class="text-center text-red-900 border-b-2 text-2xl p-2">Tuning</div>
 
-		<P className="text-center border-b-2"
-			>Viola, cello, tenor banjo, mandola, mandocello, tenor guitar</P
-		>
-		<P className="text-center border-b-2 pb-6">C, G, D, A</P>
+		<div class="text-center border-b-2 p-2">
+			Viola, cello, tenor banjo, mandola, mandocello, tenor guitar
+		</div>
+		<div class="text-center border-b-2 pb-10">C, G, D, A</div>
 
-		<P className="text-center border-b-2">Double bass, mando-bass, bass guitar*</P>
-		<P className="text-center border-b-2 pb-6">(B*,) E, A, D, G, (C*)</P>
+		<div class="text-center border-b-2 p-2">Double bass, mando-bass, bass guitar*</div>
+		<div class="text-center border-b-2 p-2">(B*,) E, A, D, G, (C*)</div>
 
-		<P className="text-center border-b-2">Guitar</P>
-		<P className="text-center border-b-2">E, A, D, G, B, E</P>
+		<div class="text-center border-b-2 p-2">Guitar</div>
+		<div class="text-center border-b-2 p-2">E, A, D, G, B, E</div>
 
-		<P className="text-center border-b-2">Cretan Lyra</P>
-		<P className="text-center border-b-2">G, D, A</P>
+		<div class="text-center border-b-2 p-2">Cretan Lyra</div>
+		<div class="text-center border-b-2 p-2">G, D, A</div>
 
-		<P className="text-center border-b-2">Violin, Mandolin, Lute</P>
-		<P className="text-center border-b-2">G, D, A, E</P>
+		<div class="text-center border-b-2 p-2">Violin, Mandolin, Lute</div>
+		<div class="text-center border-b-2 p-2">G, D, A, E</div>
 
-		<P className="text-center border-b-2">Turkish oud</P>
-		<P className="text-center border-b-2">D, F#, B, E, A, D</P>
+		<div class="text-center border-b-2 p-2">Pontic Lyra</div>
+		<div class="text-center border-b-2 p-2">B, E, A</div>
 
-		<P className="text-center border-b-2">Arabic oud</P>
-		<P className="text-center border-b-2">F, A, D, G, C, F</P>
+		<div class="text-center">Arabic oud</div>
+		<div class="text-center">F, A, D, G, C, F</div>
 
-		<P className="text-center">Pontic Lyra</P>
-		<P className="text-center">B, E, A</P>
+		<div class="text-center">Turkish oud</div>
+		<div class="text-center">D, F#, B, E, A, D</div>
 	</div>
 </div>
