@@ -16,7 +16,9 @@
 		MAX_RANGE_FREQ,
 		frequency,
 		sliderPos,
-		logarithmicScale
+		logarithmicScale,
+		startingPos,
+		STARTING_FREQ
 	} from '$lib/stores/stores';
 	import Log from '$lib/utils/Log';
 	import StepControls from './StepControls.svelte';
@@ -110,8 +112,6 @@
 			return $logarithmicScale.position(val);
 		});
 
-		console.log('val', val);
-		stepValue = val;
 		frequency.update((prev) => {
 			const oscillatorIsIntialized = oscillatorRef?.frequency?.value;
 			if (oscillatorIsIntialized) {
@@ -140,28 +140,15 @@
 		unsubscribe();
 	});
 
-	$: console.log('step value', stepValue);
-
-	// let sliderPos = 0;
-
 	onMount(() => {
-		// var slider = document.getElementById('myRange');
-		// Update the current slider value (each time you drag the slider handle)
-		// slider.oninput = function (e) {
-		// 	const newSliderVal = parseInt($logarithmicScale.value(e.target.value));
-		// 	frequency.update((prev) => {
-		// 		const oscillatorIsIntialized = oscillatorRef?.frequency?.value;
-		// 		if (oscillatorIsIntialized) {
-		// 			oscillatorRef.frequency.value = newSliderVal;
-		// 		}
-		// 		return newSliderVal;
-		// 	});
-		// };
+		frequency.update((prev) => {
+			return STARTING_FREQ;
+		});
+		sliderPos.update((prev) => {
+			return startingPos;
+		});
 	});
-
 	$: rangeValues = [$sliderPos];
-
-	$: console.log('rangeValues', rangeValues[0], ' $sliderPos', $sliderPos);
 </script>
 
 <H1 className={h1ExtraClasses}>Tone Generator</H1>
@@ -201,7 +188,6 @@
 			stiffness: 0.1,
 			damping: 0.9
 		}}
-		{stepValue}
 	/>
 
 	<!-- <input
@@ -228,7 +214,7 @@
 			<SearchNotes {oscillatorRef} bind:timeoutId {handleTimeout} />
 		</div>
 		<div class="flex justify-center">
-			<StepControls bind:timeoutId {handleTimeout} />
+			<StepControls bind:timeoutId {handleTimeout} {oscillatorRef} />
 		</div>
 		<div class="flex justify-center">
 			<WaveType

@@ -10,6 +10,7 @@
 		logarithmicScale
 	} from '$lib/stores/stores';
 	import { DEFAULT_TIMEOUT_DURATION } from '$lib/constants/values';
+	export let oscillatorRef: { [key: string]: any } = {};
 
 	export let timeoutId: number;
 	export let handleTimeout: Function;
@@ -35,6 +36,11 @@
 			return $logarithmicScale.position($frequency);
 		});
 
+		const oscillatorIsIntialized = oscillatorRef?.frequency?.value;
+		if (oscillatorIsIntialized) {
+			oscillatorRef.frequency.value = $frequency;
+		}
+
 		handleTimeoutWrapper();
 	};
 
@@ -59,6 +65,11 @@
 		sliderPos.update((prev) => {
 			return $logarithmicScale.position($frequency);
 		});
+
+		const oscillatorIsIntialized = oscillatorRef?.frequency?.value;
+		if (oscillatorIsIntialized) {
+			oscillatorRef.frequency.value = $frequency;
+		}
 		handleTimeoutWrapper();
 	};
 

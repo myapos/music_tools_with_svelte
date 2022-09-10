@@ -15,11 +15,11 @@ export const metronomeIsPlaying = writable(false);
 //! frequency generator
 import Log from '$lib/utils/Log';
 
-export const STARTING_FREQUENCY = 440;
-export const MIN_RANGE_FREQ = 0;
+export const MIN_RANGE_FREQ = 150;
 export const MAX_RANGE_FREQ = 8000;
+export const STARTING_FREQ = 440;
 
-export const frequency = writable(STARTING_FREQUENCY);
+export const frequency = writable(MIN_RANGE_FREQ);
 
 export const sliderPos = writable(0);
 
@@ -31,3 +31,4 @@ const logSlider = new Log({
 });
 
 export const logarithmicScale = writable(logSlider);
+export const startingPos = logSlider.position(STARTING_FREQ);
