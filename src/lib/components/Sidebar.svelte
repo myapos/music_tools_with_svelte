@@ -22,6 +22,6 @@
 		/>
 	</div>
 	{#each links as link}
-		<Link url={link.url} description={link.description} className="p-5 md:text-2xl" />
+		<Link url={link.url} description={link.description} className="p-5 md:text-2xl" {onClick} />
 	{/each}
 </section>

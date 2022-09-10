@@ -78,8 +78,7 @@
 					});
 				} else {
 					//! start tuning
-					console.log('start tuning');
-
+					// console.log('start tuning');
 					audio(showPopup);
 					startedTuning.update((prev) => {
 						return true;
