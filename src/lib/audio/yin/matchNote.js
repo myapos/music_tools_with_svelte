@@ -7,13 +7,11 @@ const matchNote = (goalfrequency) => {
 		freq: 0,
 		deviation: 0
 	};
-
-	console.log('calculating...', goalfrequency);
+	// console.log('calculating...', goalfrequency);
 	//! search in hash map to find the nearest note
 
 	const noteExistInHash = typeof hashFreqNotes[goalfrequency] !== 'undefined';
-	console.log('noteExistInHash', noteExistInHash);
-
+	// console.log('noteExistInHash', noteExistInHash);
 	if (!noteExistInHash) {
 		//! find the nearest note to goalFrequency with deviation
 		//! calculate differences from goalFrequency
@@ -35,7 +33,6 @@ const matchNote = (goalfrequency) => {
 	const foundNote = noteInfo.note.length > 0;
 
 	if (foundNote) {
-		console.log('Nearest note is', noteInfo.note, ' with deviation ', noteInfo.deviation);
 		//! update the noteInfo to svelte store
 		stateNoteInfo.update((prev) => {
 			return noteInfo;
