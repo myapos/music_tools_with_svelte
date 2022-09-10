@@ -11,6 +11,7 @@
 	import Icon from 'svelte-icons-pack/Icon.svelte';
 	import FaSolidPlay from 'svelte-icons-pack/fa/FaSolidPlay';
 	import FaSolidStop from 'svelte-icons-pack/fa/FaSolidStop';
+	import { DEFAULT_TIMEOUT_DURATION, MINIMUM_THRESHOLD_FOR_HOLDING } from '$lib/constants/values';
 	import ControlBtn from './ControlBtn.svelte';
 
 	const MIN_RANGE_TEMPO = 20;
@@ -21,6 +22,8 @@
 	const MIN_BPM = 1;
 	const MAX_BPM = 9;
 	let countBeats = INITIALIZE_BEATS;
+
+	let timeoutId: number;
 
 	const resetTimerToInitialState = (timer: Timer) => {
 		if (timer && $metronomeIsPlaying) {
@@ -85,12 +88,38 @@
 	onDestroy(() => {
 		resetTimerToInitialState(timer);
 	});
-</script>
 
-<div class="grid grid-rows-2 grid-cols-3 gap-y-0">
-	<div class="text-center flex flex-row justify-center">
-		<ControlBtn
-			onClick={() => {
+	const onClickBtn = ({ mode }: { mode: string }) => {
+		if (mode === '-') {
+			tempo.update((prev) => {
+				const newTempo = prev - 1;
+				if (isValidTempo(newTempo)) {
+					timer.updateSpeed(calculateSpeed(newTempo));
+					return newTempo;
+				}
+
+				return prev;
+			});
+		}
+
+		if (mode === '+') {
+			tempo.update((prev) => {
+				const newTempo = prev + 1;
+				if (isValidTempo(newTempo)) {
+					timer.updateSpeed(calculateSpeed(newTempo));
+					return newTempo;
+				}
+
+				return prev;
+			});
+		}
+	};
+
+	const handleDecreaseMouseDown = ({ mode }: { mode: string }) => {
+		console.log('decrease mouse down');
+
+		timeoutId = setInterval(() => {
+			if (mode === '-') {
 				tempo.update((prev) => {
 					const newTempo = prev - 1;
 					if (isValidTempo(newTempo)) {
@@ -100,6 +129,34 @@
 
 					return prev;
 				});
+			}
+
+			if (mode === '+') {
+				tempo.update((prev) => {
+					const newTempo = prev + 1;
+					if (isValidTempo(newTempo)) {
+						timer.updateSpeed(calculateSpeed(newTempo));
+						return newTempo;
+					}
+
+					return prev;
+				});
+			}
+		}, MINIMUM_THRESHOLD_FOR_HOLDING);
+	};
+
+	const handleDecreaseMouseUp = () => {
+		clearInterval(timeoutId);
+	};
+</script>
+
+<div class="grid grid-rows-2 grid-cols-3 gap-y-0">
+	<div class="text-center flex flex-row justify-center">
+		<ControlBtn
+			handleDecreaseMouseDown={() => handleDecreaseMouseDown({ mode: '-' })}
+			{handleDecreaseMouseUp}
+			onClick={() => {
+				onClickBtn({ mode: '-' });
 			}}
 			className="text-yellow-600 text-5xl hover:text-white">-</ControlBtn
 		>
@@ -119,16 +176,10 @@
 	<div class="text-center flex flex-row justify-center">
 		<ControlBtn
 			onClick={() => {
-				tempo.update((prev) => {
-					const newTempo = prev + 1;
-					if (isValidTempo(newTempo)) {
-						timer.updateSpeed(calculateSpeed(newTempo));
-						return newTempo;
-					}
-
-					return prev;
-				});
+				onClickBtn({ mode: '+' });
 			}}
+			handleDecreaseMouseDown={() => handleDecreaseMouseDown({ mode: '+' })}
+			{handleDecreaseMouseUp}
 			className="text-yellow-600 text-5xl hover:text-white">+</ControlBtn
 		>
 	</div>

@@ -9,7 +9,7 @@
 		sliderPos,
 		logarithmicScale
 	} from '$lib/stores/stores';
-	import { DEFAULT_TIMEOUT_DURATION } from '$lib/constants/values';
+	import { DEFAULT_TIMEOUT_DURATION, MINIMUM_THRESHOLD_FOR_HOLDING } from '$lib/constants/values';
 	export let oscillatorRef: { [key: string]: any } = {};
 
 	export let timeoutId: number;
@@ -17,7 +17,6 @@
 
 	let intervalRightId: any;
 	let intervalLeftId: any;
-	const MINIMUM_THRESHOLD_FOR_HOLDING = 110;
 	let displayInput = false;
 
 	const handleTimeoutWrapper = () => {
