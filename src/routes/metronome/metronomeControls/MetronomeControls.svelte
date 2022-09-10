@@ -11,6 +11,7 @@
 	import Icon from 'svelte-icons-pack/Icon.svelte';
 	import FaSolidPlay from 'svelte-icons-pack/fa/FaSolidPlay';
 	import FaSolidStop from 'svelte-icons-pack/fa/FaSolidStop';
+	import { DEFAULT_TIMEOUT_DURATION, MINIMUM_THRESHOLD_FOR_HOLDING } from '$lib/constants/values';
 	import ControlBtn from './ControlBtn.svelte';
 
 	const MIN_RANGE_TEMPO = 20;
@@ -21,6 +22,8 @@
 	const MIN_BPM = 1;
 	const MAX_BPM = 9;
 	let countBeats = INITIALIZE_BEATS;
+
+	let timeoutId: number;
 
 	const resetTimerToInitialState = (timer: Timer) => {
 		if (timer && $metronomeIsPlaying) {
@@ -85,12 +88,36 @@
 	onDestroy(() => {
 		resetTimerToInitialState(timer);
 	});
-</script>
 
-<div class="grid grid-rows-2 grid-cols-3 gap-y-0">
-	<div class="text-center flex flex-row justify-center">
-		<ControlBtn
-			onClick={() => {
+	const onClickBtn = ({ mode }: { mode: string }) => {
+		if (mode === '-') {
+			tempo.update((prev) => {
+				const newTempo = prev - 1;
+				if (isValidTempo(newTempo)) {
+					timer.updateSpeed(calculateSpeed(newTempo));
+					return newTempo;
+				}
+
+				return prev;
+			});
+		}
+
+		if (mode === '+') {
+			tempo.update((prev) => {
+				const newTempo = prev + 1;
+				if (isValidTempo(newTempo)) {
+					timer.updateSpeed(calculateSpeed(newTempo));
+					return newTempo;
+				}
+
+				return prev;
+			});
+		}
+	};
+
+	const handleHoldingTempo = ({ mode }: { mode: string }) => {
+		timeoutId = setInterval(() => {
+			if (mode === '-') {
 				tempo.update((prev) => {
 					const newTempo = prev - 1;
 					if (isValidTempo(newTempo)) {
@@ -100,6 +127,62 @@
 
 					return prev;
 				});
+			}
+
+			if (mode === '+') {
+				tempo.update((prev) => {
+					const newTempo = prev + 1;
+					if (isValidTempo(newTempo)) {
+						timer.updateSpeed(calculateSpeed(newTempo));
+						return newTempo;
+					}
+
+					return prev;
+				});
+			}
+		}, MINIMUM_THRESHOLD_FOR_HOLDING);
+	};
+
+	const handleMouseUp = () => {
+		clearInterval(timeoutId);
+	};
+
+	const handleHoldingBpm = ({ mode }: { mode: string }) => {
+		timeoutId = setInterval(() => {
+			if (mode === '-') {
+				bpm.update((prev) => {
+					const newBpm = prev - 1;
+					if (isValidBpm(newBpm)) {
+						//! reset beats
+						countBeats = INITIALIZE_BEATS;
+						return newBpm;
+					}
+					return prev;
+				});
+			}
+
+			if (mode === '+') {
+				bpm.update((prev) => {
+					const newBpm = prev + 1;
+					if (isValidBpm(newBpm)) {
+						//! reset beats
+						countBeats = INITIALIZE_BEATS;
+						return newBpm;
+					}
+					return prev;
+				});
+			}
+		}, MINIMUM_THRESHOLD_FOR_HOLDING);
+	};
+</script>
+
+<div class="grid grid-rows-2 grid-cols-3 gap-y-0">
+	<div class="text-center flex flex-row justify-center">
+		<ControlBtn
+			handleMouseDown={() => handleHoldingTempo({ mode: '-' })}
+			{handleMouseUp}
+			onClick={() => {
+				onClickBtn({ mode: '-' });
 			}}
 			className="text-yellow-600 text-5xl hover:text-white">-</ControlBtn
 		>
@@ -119,16 +202,10 @@
 	<div class="text-center flex flex-row justify-center">
 		<ControlBtn
 			onClick={() => {
-				tempo.update((prev) => {
-					const newTempo = prev + 1;
-					if (isValidTempo(newTempo)) {
-						timer.updateSpeed(calculateSpeed(newTempo));
-						return newTempo;
-					}
-
-					return prev;
-				});
+				onClickBtn({ mode: '+' });
 			}}
+			handleMouseDown={() => handleHoldingTempo({ mode: '+' })}
+			{handleMouseUp}
 			className="text-yellow-600 text-5xl hover:text-white">+</ControlBtn
 		>
 	</div>
@@ -157,6 +234,7 @@
 <div class="beat_management flex flex-row justify-center">
 	<div class="text-center flex flex-row justify-center p-5">
 		<ControlBtn
+			handleMouseDown={() => handleHoldingBpm({ mode: '-' })}
 			onClick={() => {
 				bpm.update((prev) => {
 					const newBpm = prev - 1;
@@ -168,12 +246,14 @@
 					return prev;
 				});
 			}}
+			{handleMouseUp}
 			className="text-yellow-600 text-2xl hover:text-white w-8 h-8">-</ControlBtn
 		>
 	</div>
 	<div class="text-xl text-red-900">{$bpm}</div>
 	<div class="text-center flex flex-row justify-center p-5">
 		<ControlBtn
+			handleMouseDown={() => handleHoldingBpm({ mode: '+' })}
 			onClick={() => {
 				bpm.update((prev) => {
 					const newBpm = prev + 1;
@@ -185,6 +265,7 @@
 					return prev;
 				});
 			}}
+			{handleMouseUp}
 			className="text-yellow-600 text-2xl hover:text-white w-8 h-8">+</ControlBtn
 		>
 	</div>

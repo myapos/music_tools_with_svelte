@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onDestroy, getContext } from 'svelte';
+	import { onDestroy, getContext, onMount } from 'svelte';
 	import RangeSlider from 'svelte-range-slider-pips';
 	import SearchNotes from './SearchNotes.svelte';
 	import WaveType from './WaveType.svelte';
@@ -10,8 +10,17 @@
 	import H3 from '$lib/components/H3.svelte';
 	import P from '$lib/components/P.svelte';
 	import Link from '$lib/components/Link.svelte';
-	import { MIN_RANGE_FREQ, MAX_RANGE_FREQ, frequency } from '$lib/stores/stores';
-	import Controls from './Controls.svelte';
+	import { DEFAULT_TIMEOUT_DURATION } from '$lib/constants/values';
+	import {
+		MIN_RANGE_FREQ,
+		MAX_RANGE_FREQ,
+		frequency,
+		sliderPos,
+		logarithmicScale,
+		startingPos,
+		STARTING_FREQ
+	} from '$lib/stores/stores';
+	import StepControls from './StepControls.svelte';
 	import Popup from '$lib/components/Popup.svelte';
 
 	const { open }: any = getContext('simple-modal');
@@ -21,7 +30,6 @@
 
 	const h1ExtraClasses = 'p-8';
 	const h2ExtraClasses = 'py-2';
-	const DEFAULT_TIMEOUT_DURATION = 10000;
 
 	$: isPlaying = false;
 
@@ -30,8 +38,6 @@
 	const unsubscribe = frequency.subscribe((value) => {
 		frequencyValue = value;
 	});
-
-	onDestroy(unsubscribe);
 
 	//! globals for contenxt
 	let gain: { [key: string]: any };
@@ -53,7 +59,17 @@
 		clearTimeout(timeoutId);
 	};
 
-	const handleGenerator = (frequency = 300, duration = DEFAULT_TIMEOUT_DURATION) => {
+	const handleTimeout = () => {
+		if (isPlaying) {
+			//! stop
+			stop({ g: gain, context: audioContext });
+			showPopup({
+				message: `Period of ${DEFAULT_TIMEOUT_DURATION / 1000} secs exceeded after last action`
+			});
+		}
+	};
+
+	const handleGenerator = (frequency = 300) => {
 		if (isPlaying) {
 			//! stop
 			stop({ g: gain, context: audioContext });
@@ -76,29 +92,61 @@
 			oscillatorRef = oscillator;
 			oscillator.start(0);
 
-			timeoutId = setTimeout(() => {
-				if (isPlaying) {
-					//! stop
-					stop({ g: gain, context: audioContext });
-					showPopup({ message: `Period of ${DEFAULT_TIMEOUT_DURATION / 1000} secs exceeded` });
-				}
-			}, duration);
+			if (timeoutId) {
+				clearTimeout(timeoutId);
+			}
 
+			timeoutId = setTimeout(handleTimeout, DEFAULT_TIMEOUT_DURATION);
 			isPlaying = true;
 		}
 	};
 
-	$: rangeValues = [$frequency];
-
 	const onChangeFreq = (e) => {
+		const freq = e.detail.value;
+
+		const val = parseInt($logarithmicScale.value(freq));
+
+		sliderPos.update((prev) => {
+			return $logarithmicScale.position(val);
+		});
+
 		frequency.update((prev) => {
 			const oscillatorIsIntialized = oscillatorRef?.frequency?.value;
 			if (oscillatorIsIntialized) {
-				oscillatorRef.frequency.value = e.detail.value;
+				oscillatorRef.frequency.value = val;
 			}
-			return e.detail.value;
+			return val;
 		});
+
+		//! update time out on frequency changes
+
+		if (timeoutId) {
+			clearTimeout(timeoutId);
+		}
+
+		if (timeoutId) {
+			clearTimeout(timeoutId);
+		}
+
+		timeoutId = setTimeout(handleTimeout, DEFAULT_TIMEOUT_DURATION);
 	};
+
+	onDestroy(() => {
+		if (isPlaying) {
+			stop({ g: gain, context: audioContext });
+		}
+		unsubscribe();
+	});
+
+	onMount(() => {
+		frequency.update((prev) => {
+			return STARTING_FREQ;
+		});
+		sliderPos.update((prev) => {
+			return startingPos;
+		});
+	});
+	$: rangeValues = [$sliderPos];
 </script>
 
 <H1 className={h1ExtraClasses}>Tone Generator</H1>
@@ -130,13 +178,17 @@
 	</div>
 	<RangeSlider
 		bind:values={rangeValues}
-		float={false}
-		range={true}
 		min={MIN_RANGE_FREQ}
 		max={MAX_RANGE_FREQ}
 		hoverable
 		on:change={onChangeFreq}
+		springValues={{
+			stiffness: 0.1,
+			damping: 0.9
+		}}
 	/>
+
+	<div id="demo" />
 
 	<div class="text-tuner-color grid grid-rows-2 grid-cols-4 gap-y-0 justify-center items-end">
 		<div class="text-center">Volume {parseInt((100 * volumePosition).toFixed())} %</div>
@@ -145,13 +197,23 @@
 		<div class="text-center">Wave Shape</div>
 		<!--end of first row-->
 		<div class="flex flex-col content-end mb-o">
-			<Volume bind:gain bind:volumePosition />
+			<Volume bind:gain bind:volumePosition bind:timeoutId {handleTimeout} />
 		</div>
-		<div class="flex justify-center"><SearchNotes {oscillatorRef} /></div>
 		<div class="flex justify-center">
-			<Controls />
+			<SearchNotes {oscillatorRef} bind:timeoutId {handleTimeout} />
 		</div>
-		<div class="flex justify-center"><WaveType bind:selectedType /></div>
+		<div class="flex justify-center">
+			<StepControls bind:timeoutId {handleTimeout} {oscillatorRef} />
+		</div>
+		<div class="flex justify-center">
+			<WaveType
+				bind:selectedType
+				bind:oscillatorRef
+				bind:volumePosition
+				bind:timeoutId
+				{handleTimeout}
+			/>
+		</div>
 	</div>
 
 	<div class="w-1/2 flex flex-col items-center justify-centers mx-auto">
@@ -220,15 +282,20 @@
 		<H3>Frequency Selector</H3>
 
 		<P>
-			You can use this tone generator by using the frequency selector and clicking Play. The range
-			of the freqeuncy selector is between 0-20154 Hz.
+			You can use this tone generator by using the frequency selector and clicking <span
+				class="text-red-900">Play</span
+			>. The range of the frequency selector is between
+			<span class="text-red-900">{MIN_RANGE_FREQ}-{MAX_RANGE_FREQ} Hz</span>. The slider uses a
+			logarithmic slider focusing on the most used frequencies for tuning an instrument which is
+			between <span class="text-red-900">1000 Hz</span>. For larger frequencies you can control
+			smaller frequencies increasements by using the step controls buttons.
 		</P>
 
 		<H3>Volume Selector</H3>
 
 		<P>
-			You can change the volume of the playing tone between 0 -100%. Be aware though that the
-			generation in high volumes may damage your hearing.
+			You can change the volume of the playing tone between <span class="text-red-900">0-100%</span
+			>. Be aware though that the generation in high volumes may damage your hearing.
 		</P>
 
 		<H3>Notes Selector</H3>

@@ -1,4 +1,3 @@
-<!-- Popup.svelte -->
 <script>
 	export let message = '';
 </script>

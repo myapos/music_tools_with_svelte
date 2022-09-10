@@ -1,6 +1,10 @@
 <script lang="ts">
 	import Select from 'svelte-select';
-	export let selectedType: Object;
+	export let selectedType: { [key: string]: any };
+	export let oscillatorRef: { [key: string]: any };
+	export let timeoutId: number;
+	export let handleTimeout: Function;
+	import { DEFAULT_TIMEOUT_DURATION } from '$lib/constants/values';
 
 	let items = [
 		{ value: 'sine', label: 'Sine' },
@@ -8,8 +12,23 @@
 		{ value: 'sawtooth', label: 'Sawtooth' },
 		{ value: 'triangle', label: 'Triangle' }
 	];
+
+	const handleTimeoutWrapper = () => {
+		if (timeoutId) {
+			clearTimeout(timeoutId);
+		}
+		timeoutId = setTimeout(handleTimeout, DEFAULT_TIMEOUT_DURATION);
+	};
 	const handleSelectType = (event: any) => {
+		const oscillatorIsIntialized = oscillatorRef?.type.length > 0;
+
+		if (oscillatorIsIntialized) {
+			oscillatorRef.type = event.detail.value;
+		}
+
 		selectedType = event.detail;
+
+		handleTimeoutWrapper();
 	};
 </script>
 

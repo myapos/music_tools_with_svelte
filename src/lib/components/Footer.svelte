@@ -35,7 +35,6 @@
 
 			const observer = new IntersectionObserver((entries: any) => {
 				const footerWrapperEntry = entries[0];
-				console.log('footerWrapperEntry', footerWrapperEntry);
 
 				if (footerWrapperEntry.isIntersecting) {
 					isVisible = true;
@@ -73,7 +72,7 @@
 	<footer
 		id="footer"
 		on:click={onClickOnTheRestArea}
-		class={`flex justify-center  ${
+		class={`flex justify-center z-50  ${
 			shouldApplySticky ? '' : 'sticky bottom-0'
 		} bg-blue-600 text-blue-200 w-full md:mt-30`}
 		transition:fade
