@@ -20,7 +20,6 @@
 		startingPos,
 		STARTING_FREQ
 	} from '$lib/stores/stores';
-	import Log from '$lib/utils/Log';
 	import StepControls from './StepControls.svelte';
 	import Popup from '$lib/components/Popup.svelte';
 
@@ -36,7 +35,6 @@
 
 	let frequencyValue: number;
 	let oscillatorRef: any;
-	let stepValue: number = 1;
 	const unsubscribe = frequency.subscribe((value) => {
 		frequencyValue = value;
 	});
@@ -190,15 +188,6 @@
 		}}
 	/>
 
-	<!-- <input
-		type="range"
-		min={MIN_RANGE_FREQ}
-		max={MAX_RANGE_FREQ}
-		value={sliderPos}
-		class="slider"
-		step="20"
-		id="myRange"
-	/> -->
 	<div id="demo" />
 
 	<div class="text-tuner-color grid grid-rows-2 grid-cols-4 gap-y-0 justify-center items-end">
@@ -293,15 +282,20 @@
 		<H3>Frequency Selector</H3>
 
 		<P>
-			You can use this tone generator by using the frequency selector and clicking Play. The range
-			of the freqeuncy selector is between 0-20154 Hz.
+			You can use this tone generator by using the frequency selector and clicking <span
+				class="text-red-900">Play</span
+			>. The range of the frequency selector is between
+			<span class="text-red-900">{MIN_RANGE_FREQ}-{MAX_RANGE_FREQ} Hz</span>. The slider uses a
+			logarithmic slider focusing on the most used frequencies for tuning an instrument which is
+			between <span class="text-red-900">1000 Hz</span>. For larger frequencies you can control
+			smaller frequencies increasements by using the step controls buttons.
 		</P>
 
 		<H3>Volume Selector</H3>
 
 		<P>
-			You can change the volume of the playing tone between 0 -100%. Be aware though that the
-			generation in high volumes may damage your hearing.
+			You can change the volume of the playing tone between <span class="text-red-900">0-100%</span
+			>. Be aware though that the generation in high volumes may damage your hearing.
 		</P>
 
 		<H3>Notes Selector</H3>
