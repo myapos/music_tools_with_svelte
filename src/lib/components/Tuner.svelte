@@ -10,10 +10,12 @@
 	import { getContext } from 'svelte';
 	import Popup from '$lib/components/Popup.svelte';
 	import stopTuning from '$lib/utils/stopTuning';
+	import TuningsModal from './TuningsModal.svelte';
 
 	const { open }: { open: Function } = getContext('simple-modal');
 
 	const showPopup = ({ message }: { message: string }) => open(Popup, { message });
+	const showTuningsModal = () => open(TuningsModal);
 
 	let note_negative_50 = '-50Hz';
 	let note_negative_25 = '-25Hz';
@@ -64,29 +66,40 @@
 		<div class="note note_positive_50 bottom_50 absolute text-2xl">{note_positive_50}</div>
 	</div>
 
-	<Button
-		onClick={() => {
-			if ($startedTuning) {
-				//! if it already started and click again stop tuning
-				stopTuning({
-					startedTuningCtx: startedTuning,
-					audioContenxt: stateAudioContext,
-					isTuning: $startedTuning
-				});
-			} else {
-				//! start tuning
-				console.log('start tuning');
+	<div class="flex flex-row">
+		<Button
+			onClick={() => {
+				if ($startedTuning) {
+					//! if it already started and click again stop tuning
+					stopTuning({
+						startedTuningCtx: startedTuning,
+						audioContenxt: stateAudioContext,
+						isTuning: $startedTuning
+					});
+				} else {
+					//! start tuning
+					console.log('start tuning');
 
-				audio(showPopup);
-				startedTuning.update((prev) => {
-					return true;
-				});
-			}
-		}}
-		className="start text-xl text-center text-tuner-color cursor-pointer
+					audio(showPopup);
+					startedTuning.update((prev) => {
+						return true;
+					});
+				}
+			}}
+			className="start text-xl text-center text-tuner-color cursor-pointer
 	w-2/5 p-2 bg-black hover:bg-red-900 hover:text-black
 	rounded mx-auto mt-5">{$startedTuning ? 'Stop' : 'Start'} Tuning!</Button
-	>
+		>
+
+		<Button
+			onClick={() => {
+				showTuningsModal();
+			}}
+			className="start text-xl text-center text-tuner-color cursor-pointer
+	w-2/5 p-2 bg-black hover:bg-red-900 hover:text-black
+	rounded mx-auto mt-5">Popular Tunings</Button
+		>
+	</div>
 
 	{#if $startedTuning}
 		<DisplayNote bind:isTuned />
