@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onDestroy, getContext } from 'svelte';
+	import { onDestroy, getContext, onMount } from 'svelte';
 	import RangeSlider from 'svelte-range-slider-pips';
 	import SearchNotes from './SearchNotes.svelte';
 	import WaveType from './WaveType.svelte';
@@ -11,7 +11,14 @@
 	import P from '$lib/components/P.svelte';
 	import Link from '$lib/components/Link.svelte';
 	import { DEFAULT_TIMEOUT_DURATION } from '$lib/constants/values';
-	import { MIN_RANGE_FREQ, MAX_RANGE_FREQ, frequency } from '$lib/stores/stores';
+	import {
+		MIN_RANGE_FREQ,
+		MAX_RANGE_FREQ,
+		frequency,
+		sliderPos,
+		logarithmicScale
+	} from '$lib/stores/stores';
+	import Log from '$lib/utils/Log';
 	import StepControls from './StepControls.svelte';
 	import Popup from '$lib/components/Popup.svelte';
 
@@ -94,38 +101,23 @@
 		}
 	};
 
-	$: rangeValues = [$frequency];
-
-	const onStepChange = () => {};
-
-	function logslider(position) {
-		// position will be between 0 and 100
-		var minp = MIN_RANGE_FREQ;
-		var maxp = MAX_RANGE_FREQ;
-
-		// The result should be between 100 an 10000000
-		var minv = Math.log(MIN_RANGE_FREQ);
-		var maxv = Math.log(MAX_RANGE_FREQ);
-
-		// calculate adjustment factor
-		var scale = (maxv - minv) / (maxp - minp);
-
-		const ret = Math.exp(minv + scale * (position - minp));
-
-		stepValue = ret;
-		console.log('ret', ret);
-		return ret;
-	}
-
 	const onChangeFreq = (e) => {
-		// const freq = e.detail.value;
+		const freq = e.detail.value;
 
+		const val = parseInt($logarithmicScale.value(freq));
+
+		sliderPos.update((prev) => {
+			return $logarithmicScale.position(val);
+		});
+
+		console.log('val', val);
+		stepValue = val;
 		frequency.update((prev) => {
 			const oscillatorIsIntialized = oscillatorRef?.frequency?.value;
 			if (oscillatorIsIntialized) {
-				oscillatorRef.frequency.value = stepValue;
+				oscillatorRef.frequency.value = val;
 			}
-			return stepValue;
+			return val;
 		});
 
 		//! update time out on frequency changes
@@ -137,18 +129,8 @@
 		if (timeoutId) {
 			clearTimeout(timeoutId);
 		}
+
 		timeoutId = setTimeout(handleTimeout, DEFAULT_TIMEOUT_DURATION);
-
-		console.log('frequency', stepValue);
-
-		const test = logslider(e.detail.value);
-
-		// if (freq > 1000) {
-		// 	stepValue = 100;
-		// } else {
-		// 	stepValue = 1;
-		// }
-		onStepChange();
 	};
 
 	onDestroy(() => {
@@ -159,6 +141,27 @@
 	});
 
 	$: console.log('step value', stepValue);
+
+	// let sliderPos = 0;
+
+	onMount(() => {
+		// var slider = document.getElementById('myRange');
+		// Update the current slider value (each time you drag the slider handle)
+		// slider.oninput = function (e) {
+		// 	const newSliderVal = parseInt($logarithmicScale.value(e.target.value));
+		// 	frequency.update((prev) => {
+		// 		const oscillatorIsIntialized = oscillatorRef?.frequency?.value;
+		// 		if (oscillatorIsIntialized) {
+		// 			oscillatorRef.frequency.value = newSliderVal;
+		// 		}
+		// 		return newSliderVal;
+		// 	});
+		// };
+	});
+
+	$: rangeValues = [$sliderPos];
+
+	$: console.log('rangeValues', rangeValues[0], ' $sliderPos', $sliderPos);
 </script>
 
 <H1 className={h1ExtraClasses}>Tone Generator</H1>
@@ -190,14 +193,27 @@
 	</div>
 	<RangeSlider
 		bind:values={rangeValues}
-		float={false}
-		range={true}
 		min={MIN_RANGE_FREQ}
 		max={MAX_RANGE_FREQ}
 		hoverable
 		on:change={onChangeFreq}
-		step={stepValue}
+		springValues={{
+			stiffness: 0.1,
+			damping: 0.9
+		}}
+		{stepValue}
 	/>
+
+	<!-- <input
+		type="range"
+		min={MIN_RANGE_FREQ}
+		max={MAX_RANGE_FREQ}
+		value={sliderPos}
+		class="slider"
+		step="20"
+		id="myRange"
+	/> -->
+	<div id="demo" />
 
 	<div class="text-tuner-color grid grid-rows-2 grid-cols-4 gap-y-0 justify-center items-end">
 		<div class="text-center">Volume {parseInt((100 * volumePosition).toFixed())} %</div>

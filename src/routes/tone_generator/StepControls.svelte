@@ -2,7 +2,13 @@
 	import Icon from 'svelte-icons-pack/Icon.svelte';
 	import IoArrowBackOutline from 'svelte-icons-pack/io/IoArrowBackOutline';
 	import IoArrowForward from 'svelte-icons-pack/io/IoArrowForward';
-	import { frequency, MIN_RANGE_FREQ, MAX_RANGE_FREQ } from '$lib/stores/stores';
+	import {
+		frequency,
+		MIN_RANGE_FREQ,
+		MAX_RANGE_FREQ,
+		sliderPos,
+		logarithmicScale
+	} from '$lib/stores/stores';
 	import { DEFAULT_TIMEOUT_DURATION } from '$lib/constants/values';
 
 	export let timeoutId: number;
@@ -10,7 +16,7 @@
 
 	let intervalRightId: any;
 	let intervalLeftId: any;
-	const MINIMUM_THRESHOLD_FOR_HOLDING = 150;
+	const MINIMUM_THRESHOLD_FOR_HOLDING = 110;
 	let displayInput = false;
 
 	const handleTimeoutWrapper = () => {
@@ -23,6 +29,10 @@
 	const handleLeftClick = () => {
 		frequency.update((prev) => {
 			return prev - 1;
+		});
+
+		sliderPos.update((prev) => {
+			return $logarithmicScale.position($frequency);
 		});
 
 		handleTimeoutWrapper();
@@ -44,6 +54,10 @@
 	const handleRightMouseClick = () => {
 		frequency.update((prev) => {
 			return prev + 1;
+		});
+
+		sliderPos.update((prev) => {
+			return $logarithmicScale.position($frequency);
 		});
 		handleTimeoutWrapper();
 	};

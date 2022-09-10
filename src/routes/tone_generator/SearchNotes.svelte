@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Select from 'svelte-select';
 	import { hashNotesFreq } from '$lib/audio/constants';
-	import { frequency } from '$lib/stores/stores';
+	import { frequency, sliderPos, logarithmicScale } from '$lib/stores/stores';
 	import { DEFAULT_TIMEOUT_DURATION } from '$lib/constants/values';
 
 	export let timeoutId: number;
@@ -41,6 +41,11 @@
 				const newFreq = parseInt(value);
 
 				return newFreq;
+			});
+
+			sliderPos.update((prev) => {
+				const newFreq = parseInt(value);
+				return $logarithmicScale.position(newFreq);
 			});
 
 			handleTimeoutWrapper();
