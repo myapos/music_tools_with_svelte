@@ -14,7 +14,7 @@
 		});
 	};
 	const selectBtnClasses =
-		'text-xl text-center text-tuner-color cursor-pointer w-1/5 p-2 bg-black	hover:bg-red-900 hover:text-black rounded mx-auto mt-5';
+		'text-xl text-center text-tuner-color cursor-pointer w-1/5 md:w-2/5 p-2 bg-black	hover:bg-red-900 hover:text-black rounded mx-auto mt-5';
 
 	const isSelectedClass = 'bg-red-50';
 
