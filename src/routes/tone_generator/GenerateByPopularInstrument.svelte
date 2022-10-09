@@ -1,8 +1,9 @@
 <script lang="ts">
+	import { onDestroy, getContext, onMount } from 'svelte';
 	import analyticPopularTunings from '$lib/constants/analyticPopularTunings';
 	import Select from 'svelte-select';
 	import Button from '$lib/components/Button.svelte';
-	import { hashNotesFreq } from '$lib/audio/constants';
+	import { hashNotesFreq, hashFreqNotes } from '$lib/audio/constants';
 	import Popup from '$lib/components/Popup.svelte';
 	import { DEFAULT_TIMEOUT_DURATION } from '$lib/constants/values';
 	import { frequency } from '$lib/stores/stores';
@@ -13,6 +14,8 @@
 	let timeoutId: number;
 	let oscillatorRef: any;
 
+	const { open }: any = getContext('simple-modal');
+
 	//! convert popular tunings for usage with select
 	const tuningKeys = Object.keys(analyticPopularTunings);
 	const valuesForSelect = tuningKeys.map((key) => ({
@@ -20,15 +23,35 @@
 		value: analyticPopularTunings[key]
 	}));
 
-	$: instrumentTones = [];
+	const tones: Array<string> = [];
+	$: instrumentTones = tones;
 	$: instruments = [];
 	$: hasSelectedInstrument = instrumentTones.length > 0;
 	$: isPlaying = false;
+
+	onMount(() => {
+		instrumentTones = [];
+
+		frequency.update((prev) => {
+			const oscillatorIsIntialized = oscillatorRef?.frequency?.value;
+			if (oscillatorIsIntialized) {
+				oscillatorRef.frequency.value = 0;
+			}
+			return 0;
+		});
+	});
 
 	const handleInstrumentSelection = (event: any) => {
 		const { value, label } = event.detail;
 		instrumentTones = value.split(',');
 		instruments = label.split(',');
+		frequency.update((prev) => {
+			const oscillatorIsIntialized = oscillatorRef?.frequency?.value;
+			if (oscillatorIsIntialized) {
+				oscillatorRef.frequency.value = -1;
+			}
+			return -1;
+		});
 	};
 
 	//! event.detail will be null unless isMulti is true and user has removed a single item
@@ -40,7 +63,6 @@
 		// find frequency for instrument and tone
 		const freq: any = hashNotesFreq[tone.toString().trim()];
 
-		console.log('tone', tone, ' freq', freq);
 		frequency.update((prev) => {
 			const oscillatorIsIntialized = oscillatorRef?.frequency?.value;
 			if (oscillatorIsIntialized) {
@@ -87,7 +109,6 @@
 			gain = g;
 
 			// gain.gain.value = volumePosition;
-
 			oscillator.connect(g);
 			g.connect(context.destination);
 
@@ -105,6 +126,11 @@
 			isPlaying = true;
 		}
 	};
+
+	const toneClasses = 'm-2 cursor-pointer';
+
+	let hasSelected: boolean = false;
+	$: hasSelectedTone = typeof hashFreqNotes[$frequency] !== 'undefined';
 </script>
 
 <div
@@ -121,16 +147,26 @@
 
 	{#if hasSelectedInstrument}
 		<div class="flex flex-row">
-			{#each instrumentTones as tone, index}
-				<div class="m-2 cursor-pointer" on:click={() => handleTone(tone)}>{tone}</div>
+			{#each instrumentTones as tone}
+				<div
+					class={hashFreqNotes[$frequency] === tone.toString().trim()
+						? `${toneClasses} text-red-200`
+						: toneClasses}
+					on:click={() => handleTone(tone)}>{tone}</div>
 			{/each}
 		</div>
-		<div class="justify-centers mx-auto flex w-1/2 flex-col items-center">
-			<Button
-				onClick={() => handleGenerator($frequency)}
-				className="text-xl text-center text-tuner-color cursor-pointer w-2/5 p-2 bg-black	hover:bg-red-900 hover:text-black rounded mx-auto mt-5"
-				>{isPlaying ? 'Stop' : 'Play'}!
-			</Button>
-		</div>
+		<div>Step 2</div>
+		{#if hasSelectedTone}
+			<div class="mt-2 text-base">{$frequency} Hz</div>
+			<div class="justify-centers mx-auto flex w-1/2 flex-col items-center">
+				<Button
+					onClick={() => handleGenerator($frequency)}
+					className="text-xl text-center text-tuner-color cursor-pointer w-2/5 p-2 bg-black hover:bg-red-900 hover:text-black rounded mx-auto mt-5"
+					>{isPlaying ? 'Stop' : 'Play'}!
+				</Button>
+			</div>
+		{:else}
+			<div class="mt-2 text-sm">Please select tone</div>
+		{/if}
 	{/if}
 </div>
