@@ -1,25 +1,10 @@
 <script lang="ts">
-	import { onDestroy, getContext, onMount } from 'svelte';
-
 	import H1 from '$lib/components/H1.svelte';
 	import Button from '$lib/components/Button.svelte';
-	import { DEFAULT_TIMEOUT_DURATION } from '$lib/constants/values';
-	import {
-		MIN_RANGE_FREQ,
-		MAX_RANGE_FREQ,
-		frequency,
-		sliderPos,
-		logarithmicScale,
-		startingPos,
-		STARTING_FREQ,
-		selectedTuningMode
-	} from '$lib/stores/stores';
-	import Popup from '$lib/components/Popup.svelte';
+	import { selectedTuningMode } from '$lib/stores/stores';
 	import GenerateByFrequency from './GenerateByFrequency.svelte';
 	import GenerateByPopularInstrument from './GenerateByPopularInstrument.svelte';
 	import Instructions from './Instructions.svelte';
-
-	const { open }: any = getContext('simple-modal');
 
 	const h1ExtraClasses = 'p-8';
 
@@ -35,14 +20,17 @@
 
 	$: isInPopularInstrumentsGeneratorMode = $selectedTuningMode === 'TuneByPopularInstruments';
 	$: isInFrequencyGeneratorGeneratorMode = $selectedTuningMode === 'TuneByFrequencySelection';
+	$: shouldDisplayInitialMessage = $selectedTuningMode === '';
 </script>
 
 <H1 className={h1ExtraClasses}>Tone Generator</H1>
 <section
 	class="tools relative flex w-full flex-col justify-center bg-red-900 p-8 md:text-justify md:text-xl md:tracking-wide">
-	<div class="mx-auto w-2/5 rounded p-2 text-center text-xl text-tuner-color"
-		>Please select generation mode
-	</div>
+	{#if shouldDisplayInitialMessage}
+		<div class="mx-auto w-2/5 rounded p-2 text-center text-xl text-tuner-color"
+			>Please select generation mode
+		</div>
+	{/if}
 	<div class="flex">
 		<Button
 			onClick={() => handleSelectionMode('TuneByPopularInstruments')}

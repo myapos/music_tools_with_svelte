@@ -58,5 +58,4 @@
 	items={itemsHashNotes}
 	bind:value={selectedFreq}
 	on:select={handleSelectFreq}
-	placeholder="Search notes"
-/>
+	placeholder="Select note" />
