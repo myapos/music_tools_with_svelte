@@ -1,12 +1,12 @@
 <script lang="ts">
-	import popularTunings from '$lib/constants/popularTunings';
+	import analyticPopularTunings from '$lib/constants/analyticPopularTunings';
 	import Select from 'svelte-select';
 
 	//! convert popular tunings for usage with select
-	const tuningKeys = Object.keys(popularTunings);
+	const tuningKeys = Object.keys(analyticPopularTunings);
 	const valuesForSelect = tuningKeys.map((key) => ({
 		label: key,
-		value: popularTunings[key]
+		value: analyticPopularTunings[key]
 	}));
 
 	console.log('valuesForSelect', valuesForSelect);
@@ -29,11 +29,10 @@
 
 	const handleTone = (tone) => {
 		console.log('tone', tone);
-		// find frequenc for instrument
+		// find frequency for instrument and tone
 	};
 </script>
 
-<!-- <div class="mx-auto w-2/5 rounded p-2 text-center text-xl text-tuner-color"> -->
 <div
 	class="flex flex-col items-center justify-center rounded p-2 text-center text-xl text-tuner-color">
 	<div>Step 1</div>
@@ -49,7 +48,7 @@
 	{#if hasSelectedInstrument}
 		<div class="flex flex-row">
 			{#each instrumentTones as tone, index}
-				<div on:click={() => handleTone(tone)}>{tone}</div>
+				<div class="m-2 cursor-pointer" on:click={() => handleTone(tone)}>{tone}</div>
 			{/each}
 		</div>
 	{/if}

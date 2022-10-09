@@ -1,9 +1,9 @@
 <script lang="ts">
 	import Link from './Link.svelte';
-	import popularTunings from '$lib/constants/popularTunings';
+	import analyticPopularTunings from '$lib/constants/analyticPopularTunings';
 	import InstrumentTuning from './InstrumentTuning.svelte';
 
-	const tuningKeys = Object.keys(popularTunings);
+	const tuningKeys = Object.keys(analyticPopularTunings);
 </script>
 
 <div>
@@ -26,13 +26,11 @@
 				descriptionClassName={index === tuningKeys.length - 1
 					? 'text-center'
 					: 'border-b-2 p-2 text-center'}
-				toneClassName={index === 0
-					? 'border-b-2 pb-10 text-center'
-					: index === tuningKeys.length - 1
+				toneClassName={index === tuningKeys.length - 1
 					? 'text-center'
 					: 'border-b-2 p-2 text-center'}
 				instrument={tuningKey}
-				tone={popularTunings[tuningKey]} />
+				tone={analyticPopularTunings[tuningKey]} />
 		{/each}
 	</div>
 </div>
