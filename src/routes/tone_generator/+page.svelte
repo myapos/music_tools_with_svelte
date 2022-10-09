@@ -153,27 +153,24 @@
 <section
 	class="
 	tools 
-	md:text-xl 
-	md:text-justify 
-	md:tracking-wide
-    bg-red-900 
-	w-full 
-	flex 
-	flex-col 
-	justify-center 
 	relative 
-	p-8"
->
+	flex 
+	w-full
+    flex-col 
+	justify-center 
+	bg-red-900 
+	p-8 
+	md:text-justify 
+	md:text-xl 
+	md:tracking-wide">
 	<div
-		class="text-tuner-color 
-    w-2/5 
-    text-xl 
-    text-center 
-    p-2 
-    rounded 
-    mx-auto
-    "
-	>
+		class="mx-auto 
+		w-2/5 
+    	rounded 
+    	p-2 
+    	text-center 
+    	text-xl 
+   		text-tuner-color">
 		Frequency selector
 	</div>
 	<RangeSlider
@@ -185,18 +182,17 @@
 		springValues={{
 			stiffness: 0.1,
 			damping: 0.9
-		}}
-	/>
+		}} />
 
 	<div id="demo" />
 
-	<div class="text-tuner-color grid grid-rows-2 grid-cols-4 gap-y-0 justify-center items-end">
+	<div class="grid grid-cols-4 grid-rows-2 items-end justify-center gap-y-0 text-tuner-color">
 		<div class="text-center">Volume {parseInt((100 * volumePosition).toFixed())} %</div>
 		<div class="text-center">Search Notes</div>
 		<div class="text-center">Step Controls</div>
 		<div class="text-center">Wave Shape</div>
 		<!--end of first row-->
-		<div class="flex flex-col content-end mb-o">
+		<div class="mb-o flex flex-col content-end">
 			<Volume bind:gain bind:volumePosition bind:timeoutId {handleTimeout} />
 		</div>
 		<div class="flex justify-center">
@@ -211,43 +207,30 @@
 				bind:oscillatorRef
 				bind:volumePosition
 				bind:timeoutId
-				{handleTimeout}
-			/>
+				{handleTimeout} />
 		</div>
 	</div>
 
-	<div class="w-1/2 flex flex-col items-center justify-centers mx-auto">
+	<div class="justify-centers mx-auto flex w-1/2 flex-col items-center">
 		<Button
 			onClick={() => handleGenerator($frequency)}
-			className="start 
-			text-xl 
-			text-center
-			text-tuner-color 
-			cursor-pointer
-			w-2/5 
-			p-2
-			bg-black
-			hover:bg-red-900
-			hover:text-black
-			rounded
-			mx-auto
-			mt-5"
+			className="start text-xl text-center text-tuner-color cursor-pointer w-2/5 p-2 bg-black	hover:bg-red-900 hover:text-black rounded mx-auto mt-5"
 			>{isPlaying ? 'Stop' : 'Play'}!
 		</Button>
 	</div>
 </section>
-<section class="text-justify md:tracking-wide py-8 w-3/4 md:w-full md:py-8 md:px-4 md:text-2xl">
+<section class="w-3/4 py-8 text-justify md:w-full md:py-8 md:px-4 md:text-2xl md:tracking-wide">
 	<H2 className={h2ExtraClasses}>What is an tone generator?</H2>
 	<P>
 		A <Link
 			url="https://en.wikipedia.org/wiki/Signal_generator"
 			description="signal"
 			target="_blank"
-			className="p-0 text-red-900 hover:text-red-400"
-		/> or tone generator is one of a class of electronic devices that generates electrical signals with
-		set properties of amplitude, frequency, and wave shape. These generated signals are used as a stimulus
-		for electronic measurements, typically used in designing, testing, troubleshooting, and repairing
-		electronic or electroacoustic devices, though it often has artistic uses as well.
+			className="p-0 text-red-900 hover:text-red-400" /> or tone generator is one of a class of electronic
+		devices that generates electrical signals with set properties of amplitude, frequency, and wave shape.
+		These generated signals are used as a stimulus for electronic measurements, typically used in designing,
+		testing, troubleshooting, and repairing electronic or electroacoustic devices, though it often has
+		artistic uses as well.
 
 		<P>
 			There are many different types of signal generators with different purposes and applications
@@ -264,14 +247,13 @@
 	<H2 className={h2ExtraClasses}>How to use this tone generator?</H2>
 
 	<P className="p-5 border-2 border-red-900 rounded text-lg text-red-900"
-		>Be aware that the generation of high frequencies/volume may damage your hearing.</P
-	>
+		>Be aware that the generation of high frequencies/volume may damage your hearing.</P>
 	<P>
 		<H3>General Use</H3>
 		You can use this tone generator by selecting a frequency and clicking Play. The tone will be played
 		for a few seconds and stop by default. The frequency selection can be achieved using the following
 		controls
-		<ul class="list-disc list-inside marker:text-red-900">
+		<ul class="list-inside list-disc marker:text-red-900">
 			<li>Frequency selector</li>
 			<li>Step Controls</li>
 			<li>Notes Controls</li>
@@ -315,8 +297,7 @@
 				url="https://en.wikipedia.org/wiki/Waveform"
 				description="waveform"
 				target="_blank"
-				className="p-0 text-red-900 hover:text-red-400"
-			/>
+				className="p-0 text-red-900 hover:text-red-400" />
 			of a signal is the shape of its graph as a function of time, independent of its time and magnitude
 			scales and of any displacement in time.
 		</P>
@@ -338,8 +319,7 @@
 				url="https://support.google.com/chrome/answer/2693767?hl=en-GB&co=GENIE.Platform%3DDesktop"
 				description="Chrome"
 				target="_blank"
-				className="p-0 text-red-900 hover:text-red-400"
-			/>
+				className="p-0 text-red-900 hover:text-red-400" />
 		</H3>
 		<P>
 			Go to Settings -> Site Settings -> Microphone and allow this site to access the microphone.
@@ -349,8 +329,7 @@
 				url="https://support.mozilla.org/en-US/kb/how-manage-your-camera-and-microphone-permissions#w_use-prompts-to-allow-or-block-camera-and-microphone-permissions-for-a-site"
 				description="Firefox"
 				target="_blank"
-				className="p-0 text-red-900 hover:text-red-400"
-			/>
+				className="p-0 text-red-900 hover:text-red-400" />
 		</H3>
 		<P>
 			Go to Preferences -> click Privacy & Security -> Scroll down to permissions and select

@@ -3,6 +3,15 @@
 	"singleQuote": true,
 	"trailingComma": "none",
 	"printWidth": 100,
+	"bracketSameLine": true,
+	"htmlWhitespaceSensitivity": "strict",
 	"pluginSearchDirs": ["."],
-	"overrides": [{ "files": "*.svelte", "options": { "parser": "svelte" } }]
+	"overrides": [
+		{
+			"files": "*.svelte",
+			"options": {
+				"parser": "svelte"
+			}
+		}
+	]
 }
