@@ -7,12 +7,15 @@
 	import Popup from '$lib/components/Popup.svelte';
 	import { DEFAULT_TIMEOUT_DURATION } from '$lib/constants/values';
 	import { frequency } from '$lib/stores/stores';
+	import Volume from './Volume.svelte';
 
 	//! globals for contenxt
 	let gain: { [key: string]: any };
 	let audioContext: { [key: string]: any };
 	let timeoutId: number;
 	let oscillatorRef: any;
+	//! initial volume setting
+	let volumePosition: number = 0.1;
 
 	const { open }: any = getContext('simple-modal');
 
@@ -29,6 +32,10 @@
 	$: hasSelectedInstrument = instrumentTones.length > 0;
 	$: isPlaying = false;
 
+	// const unsubscribe = frequency.subscribe((value) => {
+	// 	frequencyValue = value;
+	// });
+
 	onMount(() => {
 		instrumentTones = [];
 
@@ -39,6 +46,13 @@
 			}
 			return 0;
 		});
+	});
+
+	onDestroy(() => {
+		if (isPlaying) {
+			stop({ g: gain, context: audioContext });
+		}
+		// unsubscribe();
 	});
 
 	const handleInstrumentSelection = (event: any) => {
@@ -108,7 +122,7 @@
 
 			gain = g;
 
-			// gain.gain.value = volumePosition;
+			gain.gain.value = volumePosition;
 			oscillator.connect(g);
 			g.connect(context.destination);
 
@@ -158,6 +172,11 @@
 		<div>Step 2</div>
 		{#if hasSelectedTone}
 			<div class="mt-2 text-base">{$frequency} Hz</div>
+			<div class="mb-o flex w-2/5 flex-col content-end">
+				<Volume bind:gain bind:volumePosition bind:timeoutId {handleTimeout} />
+			</div>
+			<div class="text-center text-sm">Volume {parseInt((100 * volumePosition).toFixed())} %</div>
+
 			<div class="justify-centers mx-auto flex w-1/2 flex-col items-center">
 				<Button
 					onClick={() => handleGenerator($frequency)}

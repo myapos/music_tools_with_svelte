@@ -19,7 +19,9 @@
 
 	const onChangeVolume = (e: any) => {
 		const { value } = e.detail;
-		if (gain) {
+		const gainIsInitialized = gain && gain.gain && gain.gain.value;
+
+		if (gainIsInitialized) {
 			gain.gain.value = value;
 		}
 
@@ -37,5 +39,4 @@
 	on:change={onChangeVolume}
 	step={0.0001}
 	min={MIN_VOLUME}
-	max={MAX_VOLUME}
-/>
+	max={MAX_VOLUME} />
