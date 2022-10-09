@@ -28,6 +28,13 @@
 			return mode;
 		});
 	};
+	const selectBtnClasses =
+		'text-xl text-center text-tuner-color cursor-pointer w-1/5 p-2 bg-black	hover:bg-red-900 hover:text-black rounded mx-auto mt-5';
+
+	const isSelectedClass = 'bg-red-50';
+
+	$: isInPopularInstrumentsGeneratorMode = $selectedTuningMode === 'TuneByPopularInstruments';
+	$: isInFrequencyGeneratorGeneratorMode = $selectedTuningMode === 'TuneByFrequencySelection';
 </script>
 
 <H1 className={h1ExtraClasses}>Tone Generator</H1>
@@ -39,17 +46,19 @@
 	<div class="flex">
 		<Button
 			onClick={() => handleSelectionMode('TuneByPopularInstruments')}
-			className="text-xl text-center text-tuner-color cursor-pointer w-1/5 p-2 bg-black	hover:bg-red-900 hover:text-black rounded mx-auto mt-5"
-			>Generate By Popular Instruments</Button>
+			className={`${selectBtnClasses} ${
+				isInPopularInstrumentsGeneratorMode ? isSelectedClass : ''
+			}`}>Generate Tones Of Popular Instruments</Button>
 		<Button
 			onClick={() => handleSelectionMode('TuneByFrequencySelection')}
-			className="text-xl text-center text-tuner-color cursor-pointer w-1/5 p-2 bg-black	hover:bg-red-900 hover:text-black rounded mx-auto mt-5"
-			>Generate By Frequency Selection</Button>
+			className={`${selectBtnClasses} ${
+				isInFrequencyGeneratorGeneratorMode ? isSelectedClass : ''
+			}`}>Generate Tones By Frequency Selection</Button>
 	</div>
 
-	{#if $selectedTuningMode === 'TuneByPopularInstruments'}
+	{#if isInPopularInstrumentsGeneratorMode}
 		<GenerateByPopularInstrument />
-	{:else if $selectedTuningMode === 'TuneByFrequencySelection'}
+	{:else if isInFrequencyGeneratorGeneratorMode}
 		<GenerateByFrequency />
 	{/if}
 </section>
