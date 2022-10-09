@@ -23,8 +23,6 @@
 		return open(Popup, { message });
 	};
 
-	const h1ExtraClasses = 'p-8';
-
 	$: isPlaying = false;
 
 	let frequencyValue: number;

@@ -12,7 +12,7 @@ const analyticPopularTunings: { [key: string]: string } = {
 	'Cretan Lyra': 'G3, D4, A4',
 	'Cretan Lute': 'G3, G2, D3, D2, A3, A2, E3, E3',
 	'Pontic Lyra': 'B4, E4, A4',
-	Mandolin: 'G4, D4, A4, E4',
+	Mandolin: 'G3, D4, A4, E5',
 	'Bouzouki - Greek Tetrachordo': 'C3, C4, F3, F4, A3, A3, D4, D4',
 	'Bouzouki - Greek Trichordo': 'D3, D4, A3, A3, D3, D4',
 	Tzouras: 'D3, D4, A3, A3, D3, D4',
