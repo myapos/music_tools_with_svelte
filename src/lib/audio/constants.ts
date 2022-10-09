@@ -1,6 +1,6 @@
 export const thresholdcolordeviation = 0.9; //if absolute deviation is smaller than threshold then color is of notestring is changing
 
-export const hashFreqNotes = {
+export const hashFreqNotes: { [key: string]: any } = {
 	49: 'G1',
 	98: 'G2',
 	110: 'A2',
@@ -109,7 +109,7 @@ export const hashFreqNotes = {
 	7902.13: 'B8'
 };
 
-export const hashNotesFreq = {
+export const hashNotesFreq: { [key: string]: any } = {
 	G1: '49',
 	G2: '98',
 	A2: '110',

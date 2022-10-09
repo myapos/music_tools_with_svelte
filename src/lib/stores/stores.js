@@ -32,3 +32,6 @@ const logSlider = new LogSlider({
 
 export const logarithmicScale = writable(logSlider);
 export const startingPos = logSlider.position(STARTING_FREQ);
+
+//! selected mode can be 'TuneByPopularInstruments' or 'TuneByFrequencySelection'
+export const selectedTuningMode = writable('');
