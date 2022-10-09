@@ -43,10 +43,11 @@
 				isInFrequencyGeneratorGeneratorMode ? isSelectedClass : ''
 			}`}>Generate Tones By Frequency Selection</Button>
 	</div>
-
 	{#if isInPopularInstrumentsGeneratorMode}
 		<GenerateByPopularInstrument />
-	{:else if isInFrequencyGeneratorGeneratorMode}
+	{/if}
+
+	{#if isInFrequencyGeneratorGeneratorMode}
 		<GenerateByFrequency />
 	{/if}
 </section>

@@ -4,7 +4,7 @@ const popularTunings: { [key: string]: string } = {
 	Guitar: 'E, A, D, G, B, E',
 	'Cretan Lyra': 'G, D, A',
 	'Pontic Lyra': 'B, E, A',
-	'Arabic oud': 'B, E, A',
+	'Arabic oud': 'F, A, D, G, C, F',
 	'Turkish oud': 'D, F#, B, E, A, D'
 };
 
