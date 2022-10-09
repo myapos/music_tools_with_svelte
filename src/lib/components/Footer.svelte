@@ -14,8 +14,8 @@
 		threshold: 0.5
 	};
 
-	onMount(() => {
-		const THRESHOLD_FOR_SHORT_SCREENS = 700;
+	const handleFooterVisibility = () => {
+		const THRESHOLD_FOR_SHORT_SCREENS = 600;
 
 		let clientHeight = Math.max(
 			document.body.offsetHeight,
@@ -49,6 +49,10 @@
 			//! it will be visible for screens with big height
 			isVisible = true;
 		}
+	};
+
+	onMount(() => {
+		handleFooterVisibility();
 	});
 
 	let parser = new UAParser();
@@ -64,6 +68,17 @@
 		blackListBrowsers.includes(browser.name) &&
 		device.type === 'mobile' &&
 		blackListOs.includes(os.name);
+
+	let portrait = window.matchMedia('(orientation: portrait)');
+
+	portrait.addEventListener('change', function (e) {
+		if (e.matches) {
+			// Portrait mode
+		} else {
+			// Landscape
+			handleFooterVisibility();
+		}
+	});
 </script>
 
 <!-- It will help to detect if the footer is visible. It has dimension 1x1 px -->
@@ -72,7 +87,7 @@
 	<footer
 		id="footer"
 		on:click={onClickOnTheRestArea}
-		class={`z-50 flex justify-center  ${
+		class={`z-50 flex justify-center ${
 			shouldApplySticky ? '' : 'sticky bottom-0'
 		} md:mt-30 w-full bg-blue-600 text-blue-200`}
 		transition:fade>
