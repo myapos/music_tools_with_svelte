@@ -8,6 +8,7 @@
 	import { DEFAULT_TIMEOUT_DURATION } from '$lib/constants/values';
 	import { frequency } from '$lib/stores/stores';
 	import Volume from './Volume.svelte';
+	import WaveType from './WaveType.svelte';
 
 	//! globals for contenxt
 	let gain: { [key: string]: any };
@@ -16,6 +17,8 @@
 	let oscillatorRef: any;
 	//! initial volume setting
 	let volumePosition: number = 0.1;
+	//! initial value of select
+	let selectedType = { value: 'sine', label: 'Sine' };
 
 	const { open }: any = getContext('simple-modal');
 
@@ -126,7 +129,7 @@
 			oscillator.connect(g);
 			g.connect(context.destination);
 
-			// oscillator.type = selectedType.value;
+			oscillator.type = selectedType.value;
 			oscillator.frequency.value = frequency;
 
 			oscillatorRef = oscillator;
@@ -171,18 +174,27 @@
 		</div>
 		<div>Step 2</div>
 		{#if hasSelectedTone}
-			<div class="mt-2 text-base">{$frequency} Hz</div>
-			<div class="mb-o flex w-2/5 flex-col content-end">
-				<Volume bind:gain bind:volumePosition bind:timeoutId {handleTimeout} />
-			</div>
-			<div class="text-center text-sm">Volume {parseInt((100 * volumePosition).toFixed())} %</div>
+			<div class="mt-2 text-base">Selected frequency {$frequency} Hz</div>
 
-			<div class="justify-centers mx-auto flex w-1/2 flex-col items-center">
+			<div class="justify-centers mx-auto flex w-1/2 flex-row items-center justify-center">
+				<div class="w-2/5">
+					<Volume bind:gain bind:volumePosition bind:timeoutId {handleTimeout} />
+					<div class="text-center text-sm"
+						>Volume {parseInt((100 * volumePosition).toFixed())} %</div>
+				</div>
 				<Button
 					onClick={() => handleGenerator($frequency)}
-					className="text-xl text-center text-tuner-color cursor-pointer w-2/5 p-2 bg-black hover:bg-red-900 hover:text-black rounded mx-auto mt-5"
+					className="text-xl text-center text-tuner-color cursor-pointer w-2/5 p-2 bg-black hover:bg-red-900 hover:text-black rounded mx-auto"
 					>{isPlaying ? 'Stop' : 'Play'}!
 				</Button>
+				<div class="ml-5 w-2/5">
+					<WaveType
+						bind:selectedType
+						bind:oscillatorRef
+						bind:volumePosition
+						bind:timeoutId
+						{handleTimeout} />
+				</div>
 			</div>
 		{:else}
 			<div class="mt-2 text-sm">Please select tone</div>

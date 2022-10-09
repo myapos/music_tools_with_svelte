@@ -15,7 +15,7 @@ const analyticPopularTunings: { [key: string]: string } = {
 	Mandolin: 'G3, D4, A4, E5',
 	'Bouzouki - Greek Tetrachordo': 'C3, C4, F3, F4, A3, A3, D4, D4',
 	'Bouzouki - Greek Trichordo': 'D3, D4, A3, A3, D4, D4',
-	Tzouras: 'D3, D4, A3, A3, D3, D4',
+	Tzouras: 'D3, D4, A3, A3, D4, D4',
 	'Arabic oud': 'D2, G2, A2, D3, G3, C4',
 	'Turkish oud': 'E3, A4, B3, A3, D3'
 };
