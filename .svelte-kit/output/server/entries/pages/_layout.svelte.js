@@ -1,7 +1,7 @@
 import { c as create_ssr_component, e as escape, i as identity, b as createEventDispatcher, o as onDestroy, d as null_to_empty, f as add_attribute, v as validate_component, m as missing_component, s as setContext } from "../../chunks/index.js";
+import UAParser from "ua-parser-js";
 import "svelte-icons-pack/fa/FaSolidBars.js";
 import "svelte-icons-pack/fa/FaSolidTimes.js";
-import "ua-parser-js";
 import "svelte-icons-pack/fa/FaCopyright.js";
 import "svelte-icons-pack/si/SiSvelte.js";
 const app = "";
@@ -284,6 +284,12 @@ const css = {
   map: null
 };
 const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let parser = new UAParser();
+  const parsed = parser.getResult();
+  const { browser, device, os } = parsed;
+  const blackListBrowsers = ["Samsung Browser", "Mobile Safari", "Firefox"];
+  const blackListOs = ["Android"];
+  blackListBrowsers.includes(browser.name) && device.type === "mobile" && blackListOs.includes(os.name);
   $$result.css.add(css);
   let $$settled;
   let $$rendered;
@@ -293,21 +299,28 @@ const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 
 
 
-${validate_component(Modal, "Modal").$$render($$result, {}, {}, {
-      default: () => {
-        return `${`<main class="${"flex justify-center items-center w-full h-screen flex-col"}">${validate_component(Circle, "Circle").$$render(
-          $$result,
-          {
-            size: "60",
-            color: "#FF3E00",
-            unit: "px",
-            duration: "1s"
-          },
-          {},
-          {}
-        )}</main>`}`;
+${validate_component(Modal, "Modal").$$render(
+      $$result,
+      {
+        styleBg: { width: "100%", height: "100%" }
+      },
+      {},
+      {
+        default: () => {
+          return `${`<main class="${"flex justify-center items-center w-full h-screen flex-col"}">${validate_component(Circle, "Circle").$$render(
+            $$result,
+            {
+              size: "60",
+              color: "#FF3E00",
+              unit: "px",
+              duration: "1s"
+            },
+            {},
+            {}
+          )}</main>`}`;
+        }
       }
-    })}`;
+    )}`;
   } while (!$$settled);
   return $$rendered;
 });

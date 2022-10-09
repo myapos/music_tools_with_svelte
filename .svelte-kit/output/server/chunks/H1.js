@@ -1,16 +1,43 @@
 import { w as writable } from "./index2.js";
-import { k as now, l as loop, p as assign, i as identity, c as create_ssr_component, f as add_attribute } from "./index.js";
-const stateNoteInfo = writable({});
+import { l as assign, p as now, q as loop, i as identity, c as create_ssr_component, f as add_attribute } from "./index.js";
+class Log {
+  constructor(opts) {
+    this.minpos = opts.minpos || 0;
+    this.maxpos = opts.maxpos || 100;
+    this.minval = Math.log(opts.minval || 1);
+    this.maxval = Math.log(opts.maxval || 9e3);
+    this.scale = (this.maxval - this.minval) / (this.maxpos - this.minpos);
+  }
+  value(position) {
+    return Math.exp((position - this.minpos) * this.scale + this.minval);
+  }
+  position(value) {
+    return this.minpos + (Math.log(value) - this.minval) / this.scale;
+  }
+}
+//! tuner
+const stateNoteInfo = writable({ note: "", deviation: 0 });
 const stateAudioContext = writable({});
+const startedTuning = writable(false);
 //! metronome
 const tempo = writable(100);
 const bpm = writable(4);
 const metronomeIsPlaying = writable(false);
-//! frequency generator
-const STARTING_FREQUENCY = 440;
-const MIN_RANGE_FREQ = 0;
-const MAX_RANGE_FREQ = 20154;
-const frequency = writable(STARTING_FREQUENCY);
+const MIN_RANGE_FREQ = 50;
+const MAX_RANGE_FREQ = 8e3;
+const STARTING_FREQ = 440;
+const frequency = writable(MIN_RANGE_FREQ);
+const sliderPos = writable(0);
+const logSlider = new Log({
+  minpos: MIN_RANGE_FREQ,
+  maxpos: MAX_RANGE_FREQ,
+  minval: MIN_RANGE_FREQ,
+  maxval: MAX_RANGE_FREQ
+});
+const logarithmicScale = writable(logSlider);
+logSlider.position(STARTING_FREQ);
+//! selected mode can be 'TuneByPopularInstruments' or 'TuneByFrequencySelection'
+const selectedTuningMode = writable("");
 function is_date(obj) {
   return Object.prototype.toString.call(obj) === "[object Date]";
 }
@@ -213,11 +240,15 @@ export {
   H1 as H,
   MIN_RANGE_FREQ as M,
   stateAudioContext as a,
-  tempo as b,
-  bpm as c,
-  spring as d,
-  MAX_RANGE_FREQ as e,
+  startedTuning as b,
+  tempo as c,
+  bpm as d,
+  spring as e,
   frequency as f,
+  sliderPos as g,
+  MAX_RANGE_FREQ as h,
+  selectedTuningMode as i,
+  logarithmicScale as l,
   metronomeIsPlaying as m,
   stateNoteInfo as s,
   tweened as t

@@ -1,9 +1,9 @@
 import { c as create_ssr_component, g as subscribe, e as escape, f as add_attribute, o as onDestroy, v as validate_component } from "../../../chunks/index.js";
-import { b as tempo, c as bpm, m as metronomeIsPlaying, H as H1 } from "../../../chunks/H1.js";
+import { c as tempo, d as bpm, m as metronomeIsPlaying, H as H1 } from "../../../chunks/H1.js";
 import { H as H2 } from "../../../chunks/H2.js";
 import { P, L as Link, H as H3 } from "../../../chunks/P.js";
 import { Howl } from "howler";
-import { R as RangeSlider, I as Icon } from "../../../chunks/RangeSlider.js";
+import { R as RangeSlider, I as Icon, M as MINIMUM_THRESHOLD_FOR_HOLDING } from "../../../chunks/values.js";
 import FaSolidPlay from "svelte-icons-pack/fa/FaSolidPlay.js";
 import FaSolidStop from "svelte-icons-pack/fa/FaSolidStop.js";
 import "../../../chunks/index2.js";
@@ -148,10 +148,18 @@ const roundedButtonClasses = `
 	`;
 const ControlBtn = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let { onClick } = $$props;
+  let { handleMouseDown = () => {
+  } } = $$props;
+  let { handleMouseUp = () => {
+  } } = $$props;
   let { className = "" } = $$props;
   const classes = `${roundedButtonClasses} ${className}`;
   if ($$props.onClick === void 0 && $$bindings.onClick && onClick !== void 0)
     $$bindings.onClick(onClick);
+  if ($$props.handleMouseDown === void 0 && $$bindings.handleMouseDown && handleMouseDown !== void 0)
+    $$bindings.handleMouseDown(handleMouseDown);
+  if ($$props.handleMouseUp === void 0 && $$bindings.handleMouseUp && handleMouseUp !== void 0)
+    $$bindings.handleMouseUp(handleMouseUp);
   if ($$props.className === void 0 && $$bindings.className && className !== void 0)
     $$bindings.className(className);
   return `<div${add_attribute("class", classes, 0)}>${slots.default ? slots.default({}) : ``}</div>`;
@@ -171,6 +179,7 @@ const MetronomeControls = create_ssr_component(($$result, $$props, $$bindings, s
   $$unsubscribe_bpm = subscribe(bpm, (value) => $bpm = value);
   $$unsubscribe_metronomeIsPlaying = subscribe(metronomeIsPlaying, (value) => $metronomeIsPlaying = value);
   let countBeats = INITIALIZE_BEATS;
+  let timeoutId;
   const resetTimerToInitialState = (timer2) => {
     if (timer2 && $metronomeIsPlaying) {
       timer2.stop();
@@ -207,15 +216,32 @@ const MetronomeControls = create_ssr_component(($$result, $$props, $$bindings, s
   onDestroy(() => {
     resetTimerToInitialState(timer);
   });
-  let $$settled;
-  let $$rendered;
-  do {
-    $$settled = true;
-    rangeValues = [$tempo];
-    $$rendered = `<div class="${"grid grid-rows-2 grid-cols-3 gap-y-0"}"><div class="${"text-center flex flex-row justify-center"}">${validate_component(ControlBtn, "ControlBtn").$$render(
-      $$result,
-      {
-        onClick: () => {
+  const onClickBtn = ({ mode }) => {
+    if (mode === "-") {
+      tempo.update((prev) => {
+        const newTempo = prev - 1;
+        if (isValidTempo(newTempo)) {
+          timer.updateSpeed(calculateSpeed(newTempo));
+          return newTempo;
+        }
+        return prev;
+      });
+    }
+    if (mode === "+") {
+      tempo.update((prev) => {
+        const newTempo = prev + 1;
+        if (isValidTempo(newTempo)) {
+          timer.updateSpeed(calculateSpeed(newTempo));
+          return newTempo;
+        }
+        return prev;
+      });
+    }
+  };
+  const handleHoldingTempo = ({ mode }) => {
+    timeoutId = setInterval(
+      () => {
+        if (mode === "-") {
           tempo.update((prev) => {
             const newTempo = prev - 1;
             if (isValidTempo(newTempo)) {
@@ -224,6 +250,65 @@ const MetronomeControls = create_ssr_component(($$result, $$props, $$bindings, s
             }
             return prev;
           });
+        }
+        if (mode === "+") {
+          tempo.update((prev) => {
+            const newTempo = prev + 1;
+            if (isValidTempo(newTempo)) {
+              timer.updateSpeed(calculateSpeed(newTempo));
+              return newTempo;
+            }
+            return prev;
+          });
+        }
+      },
+      MINIMUM_THRESHOLD_FOR_HOLDING
+    );
+  };
+  const handleMouseUp = () => {
+    clearInterval(timeoutId);
+  };
+  const handleHoldingBpm = ({ mode }) => {
+    timeoutId = setInterval(
+      () => {
+        if (mode === "-") {
+          bpm.update((prev) => {
+            const newBpm = prev - 1;
+            if (isValidBpm(newBpm)) {
+              //! reset beats
+              countBeats = INITIALIZE_BEATS;
+              return newBpm;
+            }
+            return prev;
+          });
+        }
+        if (mode === "+") {
+          bpm.update((prev) => {
+            const newBpm = prev + 1;
+            if (isValidBpm(newBpm)) {
+              //! reset beats
+              countBeats = INITIALIZE_BEATS;
+              return newBpm;
+            }
+            return prev;
+          });
+        }
+      },
+      MINIMUM_THRESHOLD_FOR_HOLDING
+    );
+  };
+  let $$settled;
+  let $$rendered;
+  do {
+    $$settled = true;
+    rangeValues = [$tempo];
+    $$rendered = `<div class="${"grid grid-rows-2 grid-cols-3 gap-y-0"}"><div class="${"text-center flex flex-row justify-center"}">${validate_component(ControlBtn, "ControlBtn").$$render(
+      $$result,
+      {
+        handleMouseDown: () => handleHoldingTempo({ mode: "-" }),
+        handleMouseUp,
+        onClick: () => {
+          onClickBtn({ mode: "-" });
         },
         className: "text-yellow-600 text-5xl hover:text-white"
       },
@@ -257,15 +342,10 @@ const MetronomeControls = create_ssr_component(($$result, $$props, $$bindings, s
       $$result,
       {
         onClick: () => {
-          tempo.update((prev) => {
-            const newTempo = prev + 1;
-            if (isValidTempo(newTempo)) {
-              timer.updateSpeed(calculateSpeed(newTempo));
-              return newTempo;
-            }
-            return prev;
-          });
+          onClickBtn({ mode: "+" });
         },
+        handleMouseDown: () => handleHoldingTempo({ mode: "+" }),
+        handleMouseUp,
         className: "text-yellow-600 text-5xl hover:text-white"
       },
       {},
@@ -329,6 +409,7 @@ ${validate_component(H2, "H2").$$render($$result, { className: "text-center mt-5
 <div class="${"beat_management flex flex-row justify-center"}"><div class="${"text-center flex flex-row justify-center p-5"}">${validate_component(ControlBtn, "ControlBtn").$$render(
       $$result,
       {
+        handleMouseDown: () => handleHoldingBpm({ mode: "-" }),
         onClick: () => {
           bpm.update((prev) => {
             const newBpm = prev - 1;
@@ -340,6 +421,7 @@ ${validate_component(H2, "H2").$$render($$result, { className: "text-center mt-5
             return prev;
           });
         },
+        handleMouseUp,
         className: "text-yellow-600 text-2xl hover:text-white w-8 h-8"
       },
       {},
@@ -353,6 +435,7 @@ ${validate_component(H2, "H2").$$render($$result, { className: "text-center mt-5
 	<div class="${"text-center flex flex-row justify-center p-5"}">${validate_component(ControlBtn, "ControlBtn").$$render(
       $$result,
       {
+        handleMouseDown: () => handleHoldingBpm({ mode: "+" }),
         onClick: () => {
           bpm.update((prev) => {
             const newBpm = prev + 1;
@@ -364,6 +447,7 @@ ${validate_component(H2, "H2").$$render($$result, { className: "text-center mt-5
             return prev;
           });
         },
+        handleMouseUp,
         className: "text-yellow-600 text-2xl hover:text-white w-8 h-8"
       },
       {},

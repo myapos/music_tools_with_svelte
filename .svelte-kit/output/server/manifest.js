@@ -1,9 +1,9 @@
 export const manifest = {
 	appDir: "_app",
-	assets: new Set(["favicon.png"]),
-	mimeTypes: {".png":"image/png"},
+	assets: new Set(["android-chrome-192x192.png","android-chrome-512x512.png","apple-touch-icon.png","browserconfig.xml","favicon-16x16.png","favicon-32x32.png","favicon.ico","favicon.png","mstile-150x150.png","site.webmanifest","service-worker.js"]),
+	mimeTypes: {".png":"image/png",".xml":"application/xml",".ico":"image/vnd.microsoft.icon",".webmanifest":"application/manifest+json"},
 	_: {
-		entry: {"file":"_app/immutable/start-4ba94ccb.js","imports":["_app/immutable/start-4ba94ccb.js","_app/immutable/chunks/index-80463ac2.js","_app/immutable/chunks/singletons-ffa1a91c.js"],"stylesheets":[]},
+		entry: {"file":"_app/immutable/start-595a1e7e.js","imports":["_app/immutable/start-595a1e7e.js","_app/immutable/chunks/index-e0c17b50.js","_app/immutable/chunks/singletons-9c55d055.js"],"stylesheets":[]},
 		nodes: [
 			() => import('./nodes/0.js'),
 			() => import('./nodes/1.js'),

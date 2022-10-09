@@ -1,5 +1,5 @@
-import { c as create_ssr_component, r as spread, t as escape_attribute_value, u as escape_object, e as escape, q as each, b as createEventDispatcher, f as add_attribute, v as validate_component, g as subscribe, n as noop } from "./index.js";
-import { d as spring } from "./H1.js";
+import { c as create_ssr_component, r as spread, t as escape_attribute_value, u as escape_object, e as escape, j as each, b as createEventDispatcher, f as add_attribute, v as validate_component, g as subscribe, n as noop } from "./index.js";
+import { e as spring } from "./H1.js";
 const Icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let { src } = $$props;
   let { size = "1em" } = $$props;
@@ -415,7 +415,11 @@ const RangeSlider = create_ssr_component(($$result, $$props, $$bindings, slots) 
 
 `;
 });
+const DEFAULT_TIMEOUT_DURATION = 6e4;
+const MINIMUM_THRESHOLD_FOR_HOLDING = 110;
 export {
+  DEFAULT_TIMEOUT_DURATION as D,
   Icon as I,
+  MINIMUM_THRESHOLD_FOR_HOLDING as M,
   RangeSlider as R
 };

@@ -6,7 +6,7 @@ import { set_prerendering } from '../../node_modules/@sveltejs/kit/src/runtime/e
 import { set_private_env } from '../../node_modules/@sveltejs/kit/src/runtime/env-private.js';
 import { set_public_env } from '../../node_modules/@sveltejs/kit/src/runtime/env-public.js';
 
-const template = ({ head, body, assets, nonce }) => "<!DOCTYPE html>\n<html lang=\"en\">\n\t<head>\n\t\t<meta charset=\"utf-8\" />\n\t\t<link rel=\"icon\" href=\"" + assets + "/favicon.png\" />\n\t\t<meta name=\"viewport\" content=\"width=device-width\" />\n\t\t" + head + "\n\t</head>\n\t<body>\n\t\t<div>" + body + "</div>\n\t</body>\n</html>\n";
+const template = ({ head, body, assets, nonce }) => "<!DOCTYPE html>\n<html lang=\"en\">\n\t<head>\n\t\t<meta charset=\"utf-8\" />\n\t\t<link rel=\"icon\" href=\"" + assets + "/favicon.png\" />\n\t\t<meta name=\"viewport\" content=\"width=device-width\" />\n\t\t<link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"/apple-touch-icon.png\" />\n\t\t<link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"/favicon-32x32.png\" />\n\t\t<link rel=\"icon\" type=\"image/png\" sizes=\"16x16\" href=\"/favicon-16x16.png\" />\n\t\t<link rel=\"manifest\" href=\"/site.webmanifest\" />\n\t\t<meta name=\"msapplication-TileColor\" content=\"#da532c\" />\n\t\t<meta name=\"theme-color\" content=\"#ffffff\" />\n\t\t" + head + "\n\t</head>\n\t<body>\n\t\t<div>" + body + "</div>\n\t</body>\n</html>\n";
 
 let read = null;
 
@@ -54,7 +54,7 @@ export class Server {
 			public_env: {},
 			read,
 			root,
-			service_worker: null,
+			service_worker: base + '/service-worker.js',
 			router: true,
 			template,
 			template_contains_nonce: false,

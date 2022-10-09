@@ -1,11 +1,11 @@
-import { c as create_ssr_component, e as escape, b as createEventDispatcher, f as add_attribute, v as validate_component, m as missing_component, q as each, r as spread, u as escape_object, t as escape_attribute_value, w as globals, g as subscribe, h as getContext, o as onDestroy } from "../../../chunks/index.js";
-import { R as RangeSlider, I as Icon } from "../../../chunks/RangeSlider.js";
-import { a as hashNotesFreq, B as Button } from "../../../chunks/Button.js";
-import { f as frequency, M as MIN_RANGE_FREQ, e as MAX_RANGE_FREQ, H as H1 } from "../../../chunks/H1.js";
-import { H as H2 } from "../../../chunks/H2.js";
-import { P, L as Link, H as H3 } from "../../../chunks/P.js";
+import { c as create_ssr_component, e as escape, b as createEventDispatcher, f as add_attribute, v as validate_component, m as missing_component, j as each, r as spread, u as escape_object, t as escape_attribute_value, w as globals, g as subscribe, h as getContext, o as onDestroy } from "../../../chunks/index.js";
+import { l as logarithmicScale, f as frequency, g as sliderPos, M as MIN_RANGE_FREQ, h as MAX_RANGE_FREQ, i as selectedTuningMode, H as H1 } from "../../../chunks/H1.js";
+import { b as hashNotesFreq, B as Button, P as Popup, a as analyticPopularTunings, h as hashFreqNotes } from "../../../chunks/analyticPopularTunings.js";
+import { R as RangeSlider, I as Icon, D as DEFAULT_TIMEOUT_DURATION } from "../../../chunks/values.js";
 import IoArrowBackOutline from "svelte-icons-pack/io/IoArrowBackOutline.js";
 import IoArrowForward from "svelte-icons-pack/io/IoArrowForward.js";
+import { P, L as Link, H as H3 } from "../../../chunks/P.js";
+import { H as H2 } from "../../../chunks/H2.js";
 import "../../../chunks/index2.js";
 import "../../../chunks/stores.js";
 function isOutOfViewport(parent, container) {
@@ -935,11 +935,19 @@ const Select = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return $$rendered;
 });
 const SearchNotes = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let $$unsubscribe_logarithmicScale;
+  $$unsubscribe_logarithmicScale = subscribe(logarithmicScale, (value) => value);
+  let { timeoutId } = $$props;
+  let { handleTimeout } = $$props;
   let { oscillatorRef = {} } = $$props;
   const itemsHashNotes = Object.keys(hashNotesFreq).map((note) => {
     return { value: hashNotesFreq[note], label: note };
   });
   let selectedFreq = { value: "440", label: "A4" };
+  if ($$props.timeoutId === void 0 && $$bindings.timeoutId && timeoutId !== void 0)
+    $$bindings.timeoutId(timeoutId);
+  if ($$props.handleTimeout === void 0 && $$bindings.handleTimeout && handleTimeout !== void 0)
+    $$bindings.handleTimeout(handleTimeout);
   if ($$props.oscillatorRef === void 0 && $$bindings.oscillatorRef && oscillatorRef !== void 0)
     $$bindings.oscillatorRef(oscillatorRef);
   let $$settled;
@@ -949,9 +957,9 @@ const SearchNotes = create_ssr_component(($$result, $$props, $$bindings, slots) 
     $$rendered = `${validate_component(Select, "Select").$$render(
       $$result,
       {
-        containerClasses: "w-3/5 p-5 rounded",
+        containerClasses: "w-3/5 lg:w-full p-5 rounded z-10",
         items: itemsHashNotes,
-        placeholder: "Search notes",
+        placeholder: "Select note",
         value: selectedFreq
       },
       {
@@ -963,10 +971,14 @@ const SearchNotes = create_ssr_component(($$result, $$props, $$bindings, slots) 
       {}
     )}`;
   } while (!$$settled);
+  $$unsubscribe_logarithmicScale();
   return $$rendered;
 });
 const WaveType = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let { selectedType } = $$props;
+  let { oscillatorRef } = $$props;
+  let { timeoutId } = $$props;
+  let { handleTimeout } = $$props;
   let items = [
     { value: "sine", label: "Sine" },
     { value: "square", label: "Square" },
@@ -975,6 +987,12 @@ const WaveType = create_ssr_component(($$result, $$props, $$bindings, slots) => 
   ];
   if ($$props.selectedType === void 0 && $$bindings.selectedType && selectedType !== void 0)
     $$bindings.selectedType(selectedType);
+  if ($$props.oscillatorRef === void 0 && $$bindings.oscillatorRef && oscillatorRef !== void 0)
+    $$bindings.oscillatorRef(oscillatorRef);
+  if ($$props.timeoutId === void 0 && $$bindings.timeoutId && timeoutId !== void 0)
+    $$bindings.timeoutId(timeoutId);
+  if ($$props.handleTimeout === void 0 && $$bindings.handleTimeout && handleTimeout !== void 0)
+    $$bindings.handleTimeout(handleTimeout);
   let $$settled;
   let $$rendered;
   do {
@@ -982,7 +1000,7 @@ const WaveType = create_ssr_component(($$result, $$props, $$bindings, slots) => 
     $$rendered = `${validate_component(Select, "Select").$$render(
       $$result,
       {
-        containerClasses: "w-3/5 md:w-4/5 p-5 rounded",
+        containerClasses: "w-3/5 md:w-4/5 p-5 rounded z-10",
         items,
         placeholder: "Select type",
         value: selectedType
@@ -1004,10 +1022,16 @@ const Volume = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let rangeVolume;
   let { gain = {} } = $$props;
   let { volumePosition } = $$props;
+  let { timeoutId } = $$props;
+  let { handleTimeout } = $$props;
   if ($$props.gain === void 0 && $$bindings.gain && gain !== void 0)
     $$bindings.gain(gain);
   if ($$props.volumePosition === void 0 && $$bindings.volumePosition && volumePosition !== void 0)
     $$bindings.volumePosition(volumePosition);
+  if ($$props.timeoutId === void 0 && $$bindings.timeoutId && timeoutId !== void 0)
+    $$bindings.timeoutId(timeoutId);
+  if ($$props.handleTimeout === void 0 && $$bindings.handleTimeout && handleTimeout !== void 0)
+    $$bindings.handleTimeout(handleTimeout);
   let $$settled;
   let $$rendered;
   do {
@@ -1035,17 +1059,29 @@ const Volume = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   } while (!$$settled);
   return $$rendered;
 });
-const Controls_svelte_svelte_type_style_lang = "";
+const StepControls_svelte_svelte_type_style_lang = "";
 const css$1 = {
   code: "input.svelte-r5cvbc::-webkit-outer-spin-button,input.svelte-r5cvbc::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}input[type='number'].svelte-r5cvbc{-moz-appearance:textfield}",
   map: null
 };
-const Controls = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+const StepControls = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $frequency, $$unsubscribe_frequency;
+  let $$unsubscribe_logarithmicScale;
   $$unsubscribe_frequency = subscribe(frequency, (value) => $frequency = value);
+  $$unsubscribe_logarithmicScale = subscribe(logarithmicScale, (value) => value);
+  let { oscillatorRef = {} } = $$props;
+  let { timeoutId } = $$props;
+  let { handleTimeout } = $$props;
+  if ($$props.oscillatorRef === void 0 && $$bindings.oscillatorRef && oscillatorRef !== void 0)
+    $$bindings.oscillatorRef(oscillatorRef);
+  if ($$props.timeoutId === void 0 && $$bindings.timeoutId && timeoutId !== void 0)
+    $$bindings.timeoutId(timeoutId);
+  if ($$props.handleTimeout === void 0 && $$bindings.handleTimeout && handleTimeout !== void 0)
+    $$bindings.handleTimeout(handleTimeout);
   $$result.css.add(css$1);
   $$unsubscribe_frequency();
-  return `<div class="${"flex flex-row justify-center items-center w-2/5"}"><div>${validate_component(Icon, "Icon").$$render(
+  $$unsubscribe_logarithmicScale();
+  return `<div class="${"flex w-2/5 flex-row items-center justify-center"}"><div>${validate_component(Icon, "Icon").$$render(
     $$result,
     {
       src: IoArrowBackOutline,
@@ -1058,7 +1094,7 @@ const Controls = create_ssr_component(($$result, $$props, $$bindings, slots) => 
     {}
   )}</div>
 
-	<div class="${"text-tuner-color w-3/5 md:w-4/5 text-xl text-center rounded mx-auto cursor-pointer"}">${`${escape($frequency)} Hz`}</div>
+	<div class="${"mx-auto w-3/5 cursor-pointer rounded text-center text-xl text-tuner-color md:w-4/5"}">${`${escape($frequency)} Hz`}</div>
 
 	<div>${validate_component(Icon, "Icon").$$render(
     $$result,
@@ -1074,36 +1110,24 @@ const Controls = create_ssr_component(($$result, $$props, $$bindings, slots) => 
   )}</div>
 </div>`;
 });
-const Popup = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { message = "" } = $$props;
-  if ($$props.message === void 0 && $$bindings.message && message !== void 0)
-    $$bindings.message(message);
-  return `
-
-
-<p>${escape(message)}</p>`;
-});
-const _page_svelte_svelte_type_style_lang = "";
-const css = {
-  code: ".tools.svelte-oj6189{background-color:var(--background-black-red);min-height:300px}",
-  map: null
-};
-const h1ExtraClasses = "p-8";
-const h2ExtraClasses = "py-2";
-const DEFAULT_TIMEOUT_DURATION = 1e4;
-const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+const GenerateByFrequency = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let isPlaying;
   let rangeValues;
+  let $sliderPos, $$unsubscribe_sliderPos;
+  let $$unsubscribe_logarithmicScale;
   let $frequency, $$unsubscribe_frequency;
+  $$unsubscribe_sliderPos = subscribe(sliderPos, (value) => $sliderPos = value);
+  $$unsubscribe_logarithmicScale = subscribe(logarithmicScale, (value) => value);
   $$unsubscribe_frequency = subscribe(frequency, (value) => $frequency = value);
   const { open } = getContext("simple-modal");
-  const showSurprise = ({ message }) => open(Popup, { message });
+  const showPopup = ({ message }) => {
+    return open(Popup, { message });
+  };
   let frequencyValue;
   let oscillatorRef;
   const unsubscribe = frequency.subscribe((value) => {
     frequencyValue = value;
   });
-  onDestroy(unsubscribe);
   //! globals for contenxt
   let gain;
   let audioContext;
@@ -1120,7 +1144,16 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     }
     clearTimeout(timeoutId);
   };
-  const handleGenerator = (frequency2 = 300, duration = DEFAULT_TIMEOUT_DURATION) => {
+  const handleTimeout = () => {
+    if (isPlaying) {
+      //! stop
+      stop({ g: gain, context: audioContext });
+      showPopup({
+        message: `Period of ${DEFAULT_TIMEOUT_DURATION / 1e3} secs exceeded after last action`
+      });
+    }
+  };
+  const handleGenerator = (frequency2 = 300) => {
     if (isPlaying) {
       //! stop
       stop({ g: gain, context: audioContext });
@@ -1137,43 +1170,34 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       oscillator.frequency.value = frequencyValue;
       oscillatorRef = oscillator;
       oscillator.start(0);
-      timeoutId = setTimeout(
-        () => {
-          if (isPlaying) {
-            //! stop
-            stop({ g: gain, context: audioContext });
-            showSurprise({
-              message: `Period of ${DEFAULT_TIMEOUT_DURATION / 1e3} secs exceeded`
-            });
-          }
-        },
-        duration
-      );
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      timeoutId = setTimeout(handleTimeout, DEFAULT_TIMEOUT_DURATION);
       isPlaying = true;
     }
   };
-  $$result.css.add(css);
+  onDestroy(() => {
+    if (isPlaying) {
+      stop({ g: gain, context: audioContext });
+    }
+    unsubscribe();
+  });
   let $$settled;
   let $$rendered;
   do {
     $$settled = true;
     isPlaying = false;
-    rangeValues = [$frequency];
-    $$rendered = `${validate_component(H1, "H1").$$render($$result, { className: h1ExtraClasses }, {}, {
-      default: () => {
-        return `Tone Generator`;
-      }
-    })}
-<section class="${"tools md:text-xl md:text-justify md:tracking-wide bg-red-900 w-full flex flex-col justify-center relative p-8 svelte-oj6189"}"><div class="${"text-tuner-color w-2/5 text-xl text-center p-2 rounded mx-auto "}">Frequency selector
+    rangeValues = [$sliderPos];
+    $$rendered = `<div><div class="${"mx-auto w-2/5 rounded p-2 text-center text-xl text-tuner-color"}">Frequency selector
 	</div>
 	${validate_component(RangeSlider, "RangeSlider").$$render(
       $$result,
       {
-        float: false,
-        range: true,
         min: MIN_RANGE_FREQ,
         max: MAX_RANGE_FREQ,
         hoverable: true,
+        springValues: { stiffness: 0.1, damping: 0.9 },
         values: rangeValues
       },
       {
@@ -1184,15 +1208,19 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       },
       {}
     )}
-
-	<div class="${"text-tuner-color grid grid-rows-2 grid-cols-4 gap-y-0 justify-center items-end"}"><div class="${"text-center"}">Volume ${escape(parseInt((100 * volumePosition).toFixed()))} %</div>
+	<div class="${"grid grid-cols-4 grid-rows-2 items-end justify-center gap-y-0 text-tuner-color"}"><div class="${"text-center"}">Volume ${escape(parseInt((100 * volumePosition).toFixed()))} %</div>
 		<div class="${"text-center"}">Search Notes</div>
 		<div class="${"text-center"}">Step Controls</div>
 		<div class="${"text-center"}">Wave Shape</div>
 		
-		<div class="${"flex flex-col content-end mb-o"}">${validate_component(Volume, "Volume").$$render(
+		<div class="${"mb-o flex flex-col content-end"}">${validate_component(Volume, "Volume").$$render(
       $$result,
-      { gain, volumePosition },
+      {
+        handleTimeout,
+        gain,
+        volumePosition,
+        timeoutId
+      },
       {
         gain: ($$value) => {
           gain = $$value;
@@ -1201,29 +1229,70 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
         volumePosition: ($$value) => {
           volumePosition = $$value;
           $$settled = false;
+        },
+        timeoutId: ($$value) => {
+          timeoutId = $$value;
+          $$settled = false;
         }
       },
       {}
     )}</div>
-		<div class="${"flex justify-center"}">${validate_component(SearchNotes, "SearchNotes").$$render($$result, { oscillatorRef }, {}, {})}</div>
-		<div class="${"flex justify-center"}">${validate_component(Controls, "Controls").$$render($$result, {}, {}, {})}</div>
+		<div class="${"flex justify-center"}">${validate_component(SearchNotes, "SearchNotes").$$render(
+      $$result,
+      { oscillatorRef, handleTimeout, timeoutId },
+      {
+        timeoutId: ($$value) => {
+          timeoutId = $$value;
+          $$settled = false;
+        }
+      },
+      {}
+    )}</div>
+		<div class="${"flex justify-center"}">${validate_component(StepControls, "StepControls").$$render(
+      $$result,
+      { handleTimeout, oscillatorRef, timeoutId },
+      {
+        timeoutId: ($$value) => {
+          timeoutId = $$value;
+          $$settled = false;
+        }
+      },
+      {}
+    )}</div>
 		<div class="${"flex justify-center"}">${validate_component(WaveType, "WaveType").$$render(
       $$result,
-      { selectedType },
+      {
+        handleTimeout,
+        selectedType,
+        oscillatorRef,
+        volumePosition,
+        timeoutId
+      },
       {
         selectedType: ($$value) => {
           selectedType = $$value;
+          $$settled = false;
+        },
+        oscillatorRef: ($$value) => {
+          oscillatorRef = $$value;
+          $$settled = false;
+        },
+        volumePosition: ($$value) => {
+          volumePosition = $$value;
+          $$settled = false;
+        },
+        timeoutId: ($$value) => {
+          timeoutId = $$value;
           $$settled = false;
         }
       },
       {}
     )}</div></div>
-
-	<div class="${"w-1/2 flex flex-col items-center justify-centers mx-auto"}">${validate_component(Button, "Button").$$render(
+	<div class="${"justify-centers mx-auto flex w-1/2 flex-col items-center"}">${validate_component(Button, "Button").$$render(
       $$result,
       {
         onClick: () => handleGenerator($frequency),
-        className: "start \n			text-xl \n			text-center\n			text-tuner-color \n			cursor-pointer\n			w-2/5 \n			p-2\n			bg-black\n			hover:bg-red-900\n			hover:text-black\n			rounded\n			mx-auto\n			mt-5"
+        className: "text-xl text-center text-tuner-color cursor-pointer w-2/5 p-2 bg-black	hover:bg-red-900 hover:text-black rounded mx-auto mt-5"
       },
       {},
       {
@@ -1232,32 +1301,218 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 		`;
         }
       }
-    )}</div></section>
-<section class="${"text-justify md:tracking-wide py-8 w-3/4 md:w-full md:py-8 md:px-4 md:text-2xl"}">${validate_component(H2, "H2").$$render($$result, { className: h2ExtraClasses }, {}, {
-      default: () => {
-        return `What is an tone generator?`;
+    )}</div></div>`;
+  } while (!$$settled);
+  $$unsubscribe_sliderPos();
+  $$unsubscribe_logarithmicScale();
+  $$unsubscribe_frequency();
+  return $$rendered;
+});
+const toneClasses = "m-2 cursor-pointer";
+const GenerateByPopularInstrument = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let instrumentTones;
+  let hasSelectedInstrument;
+  let isPlaying;
+  let hasSelectedTone;
+  let $frequency, $$unsubscribe_frequency;
+  $$unsubscribe_frequency = subscribe(frequency, (value) => $frequency = value);
+  //! globals for contenxt
+  let gain;
+  let audioContext;
+  let timeoutId;
+  let oscillatorRef;
+  //! initial volume setting
+  let volumePosition = 0.1;
+  //! initial value of select
+  let selectedType = { value: "sine", label: "Sine" };
+  const { open } = getContext("simple-modal");
+  //! convert popular tunings for usage with select
+  const tuningKeys = Object.keys(analyticPopularTunings);
+  const valuesForSelect = tuningKeys.map((key) => ({
+    label: key,
+    value: analyticPopularTunings[key]
+  }));
+  const tones = [];
+  onDestroy(() => {
+    if (isPlaying) {
+      stop({ g: gain, context: audioContext });
+    }
+  });
+  const stop = ({ g, context }) => {
+    isPlaying = false;
+    g.gain.exponentialRampToValueAtTime(1e-5, context.currentTime + 0.04);
+    if (audioContext.state === "running") {
+      audioContext.close();
+    }
+    clearTimeout(timeoutId);
+  };
+  const showPopup = ({ message }) => {
+    return open(Popup, { message });
+  };
+  const handleTimeout = () => {
+    if (isPlaying) {
+      //! stop
+      stop({ g: gain, context: audioContext });
+      showPopup({
+        message: `Period of ${DEFAULT_TIMEOUT_DURATION / 1e3} secs exceeded after last action`
+      });
+    }
+  };
+  const handleGenerator = (frequency2 = 300) => {
+    if (isPlaying) {
+      //! stop
+      stop({ g: gain, context: audioContext });
+    } else {
+      const context = new AudioContext();
+      audioContext = context;
+      const oscillator = context.createOscillator();
+      const g = context.createGain();
+      gain = g;
+      gain.gain.value = volumePosition;
+      oscillator.connect(g);
+      g.connect(context.destination);
+      oscillator.type = selectedType.value;
+      oscillator.frequency.value = frequency2;
+      oscillatorRef = oscillator;
+      oscillator.start(0);
+      if (timeoutId) {
+        clearTimeout(timeoutId);
       }
-    })}
+      timeoutId = setTimeout(handleTimeout, DEFAULT_TIMEOUT_DURATION);
+      isPlaying = true;
+    }
+  };
+  let $$settled;
+  let $$rendered;
+  do {
+    $$settled = true;
+    instrumentTones = tones;
+    hasSelectedInstrument = instrumentTones.length > 0;
+    isPlaying = false;
+    hasSelectedTone = typeof hashFreqNotes[$frequency] !== "undefined";
+    $$rendered = `<div class="${"flex flex-col items-center justify-center rounded p-2 text-center text-xl text-tuner-color"}"><div>Step 1</div>
+	<div class="${"mt-2 text-sm"}">Please select instrument</div>
+	<div class="${"mt-5 w-1/5 p-5 lg:w-2/5"}">${validate_component(Select, "Select").$$render(
+      $$result,
+      {
+        containerClasses: "p-5 mt-5 rounded z-10",
+        items: valuesForSelect,
+        placeholder: "Select instrument"
+      },
+      {},
+      {}
+    )}</div>
+
+	${hasSelectedInstrument ? `<div class="${"flex flex-row"}">${each(instrumentTones, (tone) => {
+      return `<div${add_attribute(
+        "class",
+        hashFreqNotes[$frequency] === tone.toString().trim() ? `${toneClasses} text-red-200` : toneClasses,
+        0
+      )}>${escape(tone)}</div>`;
+    })}</div>
+		<div>Step 2</div>
+		${hasSelectedTone ? `<div class="${"mt-2 text-base"}">Selected frequency ${escape($frequency)} Hz</div>
+
+			<div class="${"justify-centers mx-auto flex w-1/2 flex-row items-center justify-center lg:w-full"}"><div class="${"w-2/5 lg:w-3/5"}">${validate_component(Volume, "Volume").$$render(
+      $$result,
+      {
+        handleTimeout,
+        gain,
+        volumePosition,
+        timeoutId
+      },
+      {
+        gain: ($$value) => {
+          gain = $$value;
+          $$settled = false;
+        },
+        volumePosition: ($$value) => {
+          volumePosition = $$value;
+          $$settled = false;
+        },
+        timeoutId: ($$value) => {
+          timeoutId = $$value;
+          $$settled = false;
+        }
+      },
+      {}
+    )}
+					<div class="${"text-center text-sm"}">Volume ${escape(parseInt((100 * volumePosition).toFixed()))} %</div></div>
+				${validate_component(Button, "Button").$$render(
+      $$result,
+      {
+        onClick: () => handleGenerator($frequency),
+        className: "text-xl text-center text-tuner-color cursor-pointer w-2/5 lg:w-3/5 p-2 bg-black hover:bg-red-900 hover:text-black rounded mx-auto"
+      },
+      {},
+      {
+        default: () => {
+          return `${escape(isPlaying ? "Stop" : "Play")}!
+				`;
+        }
+      }
+    )}
+				<div class="${"ml-5 w-2/5 lg:w-3/5"}">${validate_component(WaveType, "WaveType").$$render(
+      $$result,
+      {
+        handleTimeout,
+        selectedType,
+        oscillatorRef,
+        volumePosition,
+        timeoutId
+      },
+      {
+        selectedType: ($$value) => {
+          selectedType = $$value;
+          $$settled = false;
+        },
+        oscillatorRef: ($$value) => {
+          oscillatorRef = $$value;
+          $$settled = false;
+        },
+        volumePosition: ($$value) => {
+          volumePosition = $$value;
+          $$settled = false;
+        },
+        timeoutId: ($$value) => {
+          timeoutId = $$value;
+          $$settled = false;
+        }
+      },
+      {}
+    )}</div></div>` : `<div class="${"mt-2 text-sm"}">Please select tone</div>`}` : ``}</div>`;
+  } while (!$$settled);
+  $$unsubscribe_frequency();
+  return $$rendered;
+});
+const h2ExtraClasses = "py-2";
+const Instructions = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  return `<section class="${"w-3/4 py-8 text-justify md:w-full md:py-8 md:px-4 md:text-2xl md:tracking-wide"}">${validate_component(H2, "H2").$$render($$result, { className: h2ExtraClasses }, {}, {
+    default: () => {
+      return `What is an tone generator?`;
+    }
+  })}
 	${validate_component(P, "P").$$render($$result, {}, {}, {
-      default: () => {
-        return `A ${validate_component(Link, "Link").$$render(
-          $$result,
-          {
-            url: "https://en.wikipedia.org/wiki/Signal_generator",
-            description: "signal",
-            target: "_blank",
-            className: "p-0 text-red-900 hover:text-red-400"
-          },
-          {},
-          {}
-        )} or tone generator is one of a class of electronic devices that generates electrical signals with
-		set properties of amplitude, frequency, and wave shape. These generated signals are used as a stimulus
-		for electronic measurements, typically used in designing, testing, troubleshooting, and repairing
-		electronic or electroacoustic devices, though it often has artistic uses as well.
+    default: () => {
+      return `A ${validate_component(Link, "Link").$$render(
+        $$result,
+        {
+          url: "https://en.wikipedia.org/wiki/Signal_generator",
+          description: "signal",
+          target: "_blank",
+          className: "p-0 text-red-900 hover:text-red-400"
+        },
+        {},
+        {}
+      )} or tone generator is one of a class of electronic
+		devices that generates electrical signals with set properties of amplitude, frequency, and wave shape.
+		These generated signals are used as a stimulus for electronic measurements, typically used in designing,
+		testing, troubleshooting, and repairing electronic or electroacoustic devices, though it often has
+		artistic uses as well.
 
 		${validate_component(P, "P").$$render($$result, {}, {}, {
-          default: () => {
-            return `There are many different types of signal generators with different purposes and applications
+        default: () => {
+          return `There are many different types of signal generators with different purposes and applications
 			and at varying levels of expense. These types include function generators, RF and microwave
 			signal generators, pitch generators, arbitrary waveform generators, digital pattern
 			generators, and frequency generators. In general, no device is suitable for all possible
@@ -1267,193 +1522,253 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 			may also permit control from a personal computer. Signal generators may be free-standing
 			self-contained instruments, or may be incorporated into more complex automatic test systems.
 		`;
-          }
-        })}`;
-      }
-    })}
+        }
+      })}`;
+    }
+  })}
 	${validate_component(H2, "H2").$$render($$result, { className: h2ExtraClasses }, {}, {
-      default: () => {
-        return `How to use this tone generator?`;
-      }
-    })}
+    default: () => {
+      return `How to use this tone generator?`;
+    }
+  })}
 
 	${validate_component(P, "P").$$render(
-      $$result,
-      {
-        className: "p-5 border-2 border-red-900 rounded text-lg text-red-900"
-      },
-      {},
-      {
-        default: () => {
-          return `Be aware that the generation of high frequencies/volume may damage your hearing.`;
-        }
-      }
-    )}
-	${validate_component(P, "P").$$render($$result, {}, {}, {
+    $$result,
+    {
+      className: "p-5 border-2 border-red-900 rounded text-lg text-red-900"
+    },
+    {},
+    {
       default: () => {
-        return `${validate_component(H3, "H3").$$render($$result, {}, {}, {
-          default: () => {
-            return `General Use`;
-          }
-        })}
+        return `Be aware that the generation of high frequencies/volume may damage your hearing.`;
+      }
+    }
+  )}
+	${validate_component(P, "P").$$render($$result, {}, {}, {
+    default: () => {
+      return `${validate_component(H3, "H3").$$render($$result, {}, {}, {
+        default: () => {
+          return `General Use`;
+        }
+      })}
 		You can use this tone generator by selecting a frequency and clicking Play. The tone will be played
 		for a few seconds and stop by default. The frequency selection can be achieved using the following
 		controls
-		<ul class="${"list-disc list-inside marker:text-red-900"}"><li>Frequency selector</li>
+		<ul class="${"list-inside list-disc marker:text-red-900"}"><li>Frequency selector</li>
 			<li>Step Controls</li>
 			<li>Notes Controls</li></ul>
 
 		${validate_component(P, "P").$$render($$result, {}, {}, {
-          default: () => {
-            return `Below is a more detailed explanation of each option.`;
-          }
-        })}
+        default: () => {
+          return `Below is a more detailed explanation of each option.`;
+        }
+      })}
 
 		${validate_component(H3, "H3").$$render($$result, {}, {}, {
-          default: () => {
-            return `Frequency Selector`;
-          }
-        })}
+        default: () => {
+          return `Frequency Selector`;
+        }
+      })}
 
 		${validate_component(P, "P").$$render($$result, {}, {}, {
-          default: () => {
-            return `You can use this tone generator by using the frequency selector and clicking Play. The range
-			of the freqeuncy selector is between 0-20154 Hz.
+        default: () => {
+          return `You can use this tone generator by using the frequency selector and clicking <span class="${"text-red-900"}">Play</span>. The range of the frequency selector is between
+			<span class="${"text-red-900"}">${escape(MIN_RANGE_FREQ)}-${escape(MAX_RANGE_FREQ)} Hz</span>. The slider uses a
+			logarithmic slider focusing on the most used frequencies for tuning an instrument which is
+			between <span class="${"text-red-900"}">1000 Hz</span>. For larger frequencies you can control
+			smaller frequencies increasements by using the step controls buttons.
 		`;
-          }
-        })}
+        }
+      })}
 
 		${validate_component(H3, "H3").$$render($$result, {}, {}, {
-          default: () => {
-            return `Volume Selector`;
-          }
-        })}
+        default: () => {
+          return `Volume Selector`;
+        }
+      })}
 
 		${validate_component(P, "P").$$render($$result, {}, {}, {
-          default: () => {
-            return `You can change the volume of the playing tone between 0 -100%. Be aware though that the
-			generation in high volumes may damage your hearing.
+        default: () => {
+          return `You can change the volume of the playing tone between <span class="${"text-red-900"}">0-100%</span>. Be aware though that the generation in high volumes may damage your hearing.
 		`;
-          }
-        })}
+        }
+      })}
 
 		${validate_component(H3, "H3").$$render($$result, {}, {}, {
-          default: () => {
-            return `Notes Selector`;
-          }
-        })}
+        default: () => {
+          return `Notes Selector`;
+        }
+      })}
 		${validate_component(P, "P").$$render($$result, {}, {}, {
-          default: () => {
-            return `You can search for the frequency of a specific tone in a octave by using the notes selector
+        default: () => {
+          return `You can search for the frequency of a specific tone in a octave by using the notes selector
 			dropdown.
 		`;
-          }
-        })}
+        }
+      })}
 
 		${validate_component(H3, "H3").$$render($$result, {}, {}, {
-          default: () => {
-            return `Step Controls`;
-          }
-        })}
+        default: () => {
+          return `Step Controls`;
+        }
+      })}
 		${validate_component(P, "P").$$render($$result, {}, {}, {
-          default: () => {
-            return `You can fine tune the desired frequency by using the arrows left/right for step by step
+        default: () => {
+          return `You can fine tune the desired frequency by using the arrows left/right for step by step
 			increasements/decreasements of a specific tone. Each step has a value of 1Hz.
 		`;
-          }
-        })}
+        }
+      })}
 		${validate_component(H3, "H3").$$render($$result, {}, {}, {
-          default: () => {
-            return `Wave Shape`;
-          }
-        })}
+        default: () => {
+          return `Wave Shape`;
+        }
+      })}
 		${validate_component(P, "P").$$render($$result, {}, {}, {
-          default: () => {
-            return `In electronics, acoustics, and related fields, the ${validate_component(Link, "Link").$$render(
-              $$result,
-              {
-                url: "https://en.wikipedia.org/wiki/Waveform",
-                description: "waveform",
-                target: "_blank",
-                className: "p-0 text-red-900 hover:text-red-400"
-              },
-              {},
-              {}
-            )}
+        default: () => {
+          return `In electronics, acoustics, and related fields, the ${validate_component(Link, "Link").$$render(
+            $$result,
+            {
+              url: "https://en.wikipedia.org/wiki/Waveform",
+              description: "waveform",
+              target: "_blank",
+              className: "p-0 text-red-900 hover:text-red-400"
+            },
+            {},
+            {}
+          )}
 			of a signal is the shape of its graph as a function of time, independent of its time and magnitude
 			scales and of any displacement in time.
 		`;
-          }
-        })}
+        }
+      })}
 		${validate_component(P, "P").$$render($$result, {}, {}, {
-          default: () => {
-            return `In this tone generator the wave shapes that are supported are <span class="${"font-semibold text-red-900"}">Sine, Square, Sawtooth and Triangle</span>. You can select and use them before playing from the wave shape selector.
+        default: () => {
+          return `In this tone generator the wave shapes that are supported are <span class="${"font-semibold text-red-900"}">Sine, Square, Sawtooth and Triangle</span>. You can select and use them before playing from the wave shape selector.
 		`;
-          }
-        })}`;
-      }
-    })}
+        }
+      })}`;
+    }
+  })}
 
 	${validate_component(H2, "H2").$$render($$result, { className: h2ExtraClasses }, {}, {
-      default: () => {
-        return `Granting Microphone Access`;
-      }
-    })}
+    default: () => {
+      return `Granting Microphone Access`;
+    }
+  })}
 
 	${validate_component(P, "P").$$render($$result, {}, {}, {
-      default: () => {
-        return `This tuner will require mic access through your web browser. If you have disabled it in the
+    default: () => {
+      return `This tuner will require mic access through your web browser. If you have disabled it in the
 		past, then the tuner will not work. It is recommended to be used with Chrome or Firefox browsers
 
 		${validate_component(H3, "H3").$$render($$result, {}, {}, {
-          default: () => {
-            return `${validate_component(Link, "Link").$$render(
-              $$result,
-              {
-                url: "https://support.google.com/chrome/answer/2693767?hl=en-GB&co=GENIE.Platform%3DDesktop",
-                description: "Chrome",
-                target: "_blank",
-                className: "p-0 text-red-900 hover:text-red-400"
-              },
-              {},
-              {}
-            )}`;
-          }
-        })}
+        default: () => {
+          return `${validate_component(Link, "Link").$$render(
+            $$result,
+            {
+              url: "https://support.google.com/chrome/answer/2693767?hl=en-GB&co=GENIE.Platform%3DDesktop",
+              description: "Chrome",
+              target: "_blank",
+              className: "p-0 text-red-900 hover:text-red-400"
+            },
+            {},
+            {}
+          )}`;
+        }
+      })}
 		${validate_component(P, "P").$$render($$result, {}, {}, {
-          default: () => {
-            return `Go to Settings -&gt; Site Settings -&gt; Microphone and allow this site to access the microphone.
+        default: () => {
+          return `Go to Settings -&gt; Site Settings -&gt; Microphone and allow this site to access the microphone.
 		`;
-          }
-        })}
+        }
+      })}
 		${validate_component(H3, "H3").$$render($$result, {}, {}, {
-          default: () => {
-            return `${validate_component(Link, "Link").$$render(
-              $$result,
-              {
-                url: "https://support.mozilla.org/en-US/kb/how-manage-your-camera-and-microphone-permissions#w_use-prompts-to-allow-or-block-camera-and-microphone-permissions-for-a-site",
-                description: "Firefox",
-                target: "_blank",
-                className: "p-0 text-red-900 hover:text-red-400"
-              },
-              {},
-              {}
-            )}`;
-          }
-        })}
+        default: () => {
+          return `${validate_component(Link, "Link").$$render(
+            $$result,
+            {
+              url: "https://support.mozilla.org/en-US/kb/how-manage-your-camera-and-microphone-permissions#w_use-prompts-to-allow-or-block-camera-and-microphone-permissions-for-a-site",
+              description: "Firefox",
+              target: "_blank",
+              className: "p-0 text-red-900 hover:text-red-400"
+            },
+            {},
+            {}
+          )}`;
+        }
+      })}
 		${validate_component(P, "P").$$render($$result, {}, {}, {
-          default: () => {
-            return `Go to Preferences -&gt; click Privacy &amp; Security -&gt; Scroll down to permissions and select
+        default: () => {
+          return `Go to Preferences -&gt; click Privacy &amp; Security -&gt; Scroll down to permissions and select
 			Settings. Search this site and select Allow.
 		`;
-          }
-        })}`;
+        }
+      })}`;
+    }
+  })}</section>`;
+});
+const _page_svelte_svelte_type_style_lang = "";
+const css = {
+  code: ".tools.svelte-oj6189{background-color:var(--background-black-red);min-height:300px}",
+  map: null
+};
+const h1ExtraClasses = "p-8";
+const selectBtnClasses = "text-xl text-center text-tuner-color cursor-pointer w-1/5 lg:w-2/5 p-2 bg-black	hover:bg-red-900 hover:text-black rounded mx-auto mt-5";
+const isSelectedClass = "bg-red-50";
+const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let isInPopularInstrumentsGeneratorMode;
+  let isInFrequencyGeneratorGeneratorMode;
+  let shouldDisplayInitialMessage;
+  let $selectedTuningMode, $$unsubscribe_selectedTuningMode;
+  $$unsubscribe_selectedTuningMode = subscribe(selectedTuningMode, (value) => $selectedTuningMode = value);
+  const handleSelectionMode = (mode) => {
+    selectedTuningMode.update((prev) => {
+      return mode;
+    });
+  };
+  $$result.css.add(css);
+  isInPopularInstrumentsGeneratorMode = $selectedTuningMode === "TuneByPopularInstruments";
+  isInFrequencyGeneratorGeneratorMode = $selectedTuningMode === "TuneByFrequencySelection";
+  shouldDisplayInitialMessage = $selectedTuningMode === "";
+  $$unsubscribe_selectedTuningMode();
+  return `${validate_component(H1, "H1").$$render($$result, { className: h1ExtraClasses }, {}, {
+    default: () => {
+      return `Tone Generator`;
+    }
+  })}
+<section class="${"tools relative flex w-full flex-col justify-center bg-red-900 p-8 md:text-justify md:text-xl md:tracking-wide svelte-oj6189"}">${shouldDisplayInitialMessage ? `<div class="${"mx-auto w-2/5 rounded p-2 text-center text-xl text-tuner-color"}">Please select generation mode
+		</div>` : ``}
+	<div class="${"flex"}">${validate_component(Button, "Button").$$render(
+    $$result,
+    {
+      onClick: () => handleSelectionMode("TuneByPopularInstruments"),
+      className: `${selectBtnClasses} ${isInPopularInstrumentsGeneratorMode ? isSelectedClass : ""}`
+    },
+    {},
+    {
+      default: () => {
+        return `Generate Tones Of Popular Instruments`;
       }
-    })}
-</section>`;
-  } while (!$$settled);
-  $$unsubscribe_frequency();
-  return $$rendered;
+    }
+  )}
+		${validate_component(Button, "Button").$$render(
+    $$result,
+    {
+      onClick: () => handleSelectionMode("TuneByFrequencySelection"),
+      className: `${selectBtnClasses} ${isInFrequencyGeneratorGeneratorMode ? isSelectedClass : ""}`
+    },
+    {},
+    {
+      default: () => {
+        return `Generate Tones By Frequency Selection`;
+      }
+    }
+  )}</div>
+	${isInPopularInstrumentsGeneratorMode ? `${validate_component(GenerateByPopularInstrument, "GenerateByPopularInstrument").$$render($$result, {}, {}, {})}` : ``}
+
+	${isInFrequencyGeneratorGeneratorMode ? `${validate_component(GenerateByFrequency, "GenerateByFrequency").$$render($$result, {}, {}, {})}` : ``}</section>
+${validate_component(Instructions, "Instructions").$$render($$result, {}, {}, {})}`;
 });
 export {
   Page as default

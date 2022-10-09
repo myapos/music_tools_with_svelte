@@ -106,4 +106,5 @@ declare module '$env/static/private' {
 	export const LC_PAPER: string;
 	export const INIT_CWD: string;
 	export const EDITOR: string;
+	export const NODE_ENV: string;
 }

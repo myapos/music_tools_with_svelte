@@ -1,8 +1,9 @@
-import { c as create_ssr_component, g as subscribe, e as escape, j as set_store_value, v as validate_component, n as noop } from "../../chunks/index.js";
-import { s as stateNoteInfo, a as stateAudioContext, t as tweened, H as H1 } from "../../chunks/H1.js";
-import { h as hashFreqNotes, m as minimumThreshold, B as Button } from "../../chunks/Button.js";
+import { c as create_ssr_component, g as subscribe, e as escape, f as add_attribute, v as validate_component, j as each, h as getContext, k as set_store_value, n as noop, o as onDestroy, d as null_to_empty } from "../../chunks/index.js";
+import UAParser from "ua-parser-js";
+import { s as stateNoteInfo, a as stateAudioContext, b as startedTuning, t as tweened, H as H1 } from "../../chunks/H1.js";
+import { h as hashFreqNotes, m as minimumThreshold, a as analyticPopularTunings, B as Button, P as Popup } from "../../chunks/analyticPopularTunings.js";
+import { L as Link, P, H as H3 } from "../../chunks/P.js";
 import { H as H2 } from "../../chunks/H2.js";
-import { P, L as Link, H as H3 } from "../../chunks/P.js";
 import "../../chunks/index2.js";
 import "../../chunks/stores.js";
 function cubicOut(t) {
@@ -15,10 +16,8 @@ const matchNote = (goalfrequency) => {
     freq: 0,
     deviation: 0
   };
-  console.log("calculating...", goalfrequency);
   //! search in hash map to find the nearest note
   const noteExistInHash = typeof hashFreqNotes[goalfrequency] !== "undefined";
-  console.log("noteExistInHash", noteExistInHash);
   if (!noteExistInHash) {
     //! find the nearest note to goalFrequency with deviation
     //! calculate differences from goalFrequency
@@ -37,7 +36,6 @@ const matchNote = (goalfrequency) => {
   }
   const foundNote = noteInfo.note.length > 0;
   if (foundNote) {
-    console.log("Nearest note is", noteInfo.note, " with deviation ", noteInfo.deviation);
     //! update the noteInfo to svelte store
     stateNoteInfo.update((prev) => {
       return noteInfo;
@@ -168,10 +166,12 @@ function gotStream({ stream, audioContext }) {
   microphone.connect(myPCMProcessingNode);
   myPCMProcessingNode.connect(audioContext.destination);
 }
-const didntGetStream = (err) => {
-  console.error("Stream generation failed.", err);
+const didntGetStream = (err, showPopup) => {
+  const msg = "Stream generation failed." + err + ".Please try again with Chrome or Firefox";
+  showPopup({ message: msg });
+  console.error(msg);
 };
-const audio = () => {
+const audio = (showPopup) => {
   //! globals for pitch detection
   let audioContext = null;
   window.craicAudioContext = function() {
@@ -184,7 +184,7 @@ const audio = () => {
     });
     //! keep in store audioContext
   } catch (e) {
-    alert("Web Audio API is not supported in this browser", e);
+    showPopup({ message: "Web Audio API is not supported in this browser" + e });
   }
   //! get the input audio stream and set up the nodes
   try {
@@ -194,7 +194,7 @@ const audio = () => {
         audioContext
       });
     }).catch((err) => {
-      didntGetStream(err);
+      didntGetStream(err, showPopup);
     });
   } catch (e) {
     console.error("webkitGetUserMedia threw exception :" + e);
@@ -215,6 +215,70 @@ const DisplayNote = create_ssr_component(($$result, $$props, $$bindings, slots) 
   ].join(" ").trim()}">${escape(hasNote ? "Not detected" : $stateNoteInfo.note)}
 </div>`;
 });
+const stopTuning = ({ startedTuningCtx, audioContenxt, isTuning }) => {
+  if (isTuning) {
+    audioContenxt.update((ctx) => {
+      try {
+        ctx.close();
+        return ctx;
+      } catch (e) {
+        console.error("error", e);
+      }
+    });
+    startedTuningCtx.update((prev) => {
+      return false;
+    });
+  }
+};
+const InstrumentTuning = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { descriptionClassName } = $$props;
+  let { toneClassName } = $$props;
+  let { instrument } = $$props;
+  let { tone } = $$props;
+  if ($$props.descriptionClassName === void 0 && $$bindings.descriptionClassName && descriptionClassName !== void 0)
+    $$bindings.descriptionClassName(descriptionClassName);
+  if ($$props.toneClassName === void 0 && $$bindings.toneClassName && toneClassName !== void 0)
+    $$bindings.toneClassName(toneClassName);
+  if ($$props.instrument === void 0 && $$bindings.instrument && instrument !== void 0)
+    $$bindings.instrument(instrument);
+  if ($$props.tone === void 0 && $$bindings.tone && tone !== void 0)
+    $$bindings.tone(tone);
+  return `<div${add_attribute("class", descriptionClassName, 0)}>${escape(instrument)}</div>
+<div${add_attribute("class", toneClassName, 0)}>${escape(tone)}</div>`;
+});
+const TuningsModal = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  const tuningKeys = Object.keys(analyticPopularTunings);
+  return `<div><div class="${"mt-5 border-b-2 p-2 text-center text-2xl text-red-900"}">Useful Tunings</div>
+	<div class="${"pt-2 text-right text-xs text-red-900"}">Each tuning is referring to open strings.
+		${validate_component(Link, "Link").$$render(
+    $$result,
+    {
+      url: "https://en.wikipedia.org/wiki/Musical_tuning",
+      description: "More Info",
+      target: "_blank",
+      className: "p-0  hover:text-red-400"
+    },
+    {},
+    {}
+  )}</div>
+
+	<div class="${"grid grid-cols-2 grid-rows-2 items-center justify-between gap-y-0"}"><div class="${"border-b-2 p-2 text-center text-2xl text-red-900"}">Instrument</div>
+		<div class="${"border-b-2 p-2 text-center text-2xl text-red-900"}">Tuning</div>
+
+		${each(tuningKeys, (tuningKey, index) => {
+    return `${validate_component(InstrumentTuning, "InstrumentTuning").$$render(
+      $$result,
+      {
+        descriptionClassName: index === tuningKeys.length - 1 ? "text-center" : "border-b-2 p-2 text-center",
+        toneClassName: index === tuningKeys.length - 1 ? "text-center" : "border-b-2 p-2 text-center",
+        instrument: tuningKey,
+        tone: analyticPopularTunings[tuningKey]
+      },
+      {},
+      {}
+    )}`;
+  })}</div></div>`;
+});
 const Tuner_svelte_svelte_type_style_lang = "";
 const css$1 = {
   code: ".tuned.svelte-99g30b{border-color:var(--tuned) transparent transparent transparent !important}.bottom_25.svelte-99g30b{bottom:10rem}.bottom_50.svelte-99g30b{bottom:-1rem}.note.svelte-99g30b{color:var(--tuner-color)}.note_negative_50.svelte-99g30b{left:0px}.note_negative_25.svelte-99g30b{left:-5px}.note_positive_50.svelte-99g30b{left:90%}.note_positive_25.svelte-99g30b{right:0}.note_0.svelte-99g30b{left:46%;bottom:13rem}.indicator.svelte-99g30b{width:10px;height:160px;border-radius:5px;left:50%;bottom:1rem;transform-origin:bottom}.arc.svelte-99g30b{width:500px;height:200px;border:solid 25px;border-color:var(--tuner-color) transparent transparent transparent;border-radius:75%/300px 300px 0 0;margin-top:2rem}",
@@ -231,31 +295,20 @@ const Tuner = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let degreesOffset;
   let rotate;
   let isTuned;
+  let $startedTuning, $$unsubscribe_startedTuning;
   let $rotate, $$unsubscribe_rotate = noop, $$subscribe_rotate = () => ($$unsubscribe_rotate(), $$unsubscribe_rotate = subscribe(rotate, ($$value) => $rotate = $$value), rotate);
   let $stateNoteInfo, $$unsubscribe_stateNoteInfo;
+  $$unsubscribe_startedTuning = subscribe(startedTuning, (value) => $startedTuning = value);
   $$unsubscribe_stateNoteInfo = subscribe(stateNoteInfo, (value) => $stateNoteInfo = value);
-  let startedTuning = false;
-  let stopTuning = () => {
-    if (startedTuning) {
-      stateAudioContext.update((ctx) => {
-        try {
-          ctx.close();
-          return ctx;
-        } catch (e) {
-          console.error("error", e);
-        }
-      });
-    }
-  };
+  const { open } = getContext("simple-modal");
+  const showPopup = ({ message }) => open(Popup, { message });
+  const showTuningsModal = () => open(TuningsModal);
   const tweenConfig = { duration: 400, easing: cubicOut };
   $$result.css.add(css$1);
   let $$settled;
   let $$rendered;
   do {
     $$settled = true;
-    {
-      console.log("stateNoteInfo", $stateNoteInfo);
-    }
     degreesOffset = 90 / minimumThreshold * $stateNoteInfo.deviation;
     $$subscribe_rotate(rotate = tweened(0, tweenConfig));
     {
@@ -263,7 +316,7 @@ const Tuner = create_ssr_component(($$result, $$props, $$bindings, slots) => {
         set_store_value(rotate, $rotate = degreesOffset, $rotate);
       }
     }
-    isTuned = startedTuning && Math.abs(degreesOffset) < tunedDeviation;
+    isTuned = $startedTuning && Math.abs(degreesOffset) < tunedDeviation;
     $$rendered = `<div><div class="${"relative flex flex-col"}"><div class="${["arc svelte-99g30b", isTuned ? "tuned" : ""].join(" ").trim()}"></div>
 		<div class="${"indicator absolute bg-tuner-color svelte-99g30b"}" style="${"transform: rotate(" + escape($rotate, true) + "deg);"}"></div>
 		<div class="${"note note_negative_50 bottom_50 absolute text-2xl svelte-99g30b"}">${escape(note_negative_50)}</div>
@@ -272,32 +325,52 @@ const Tuner = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 		<div class="${"note note_positive_25 bottom_25 absolute text-2xl svelte-99g30b"}">${escape(note_positive_25)}</div>
 		<div class="${"note note_positive_50 bottom_50 absolute text-2xl svelte-99g30b"}">${escape(note_positive_50)}</div></div>
 
-	${validate_component(Button, "Button").$$render(
+	<div class="${"flex flex-row"}">${validate_component(Button, "Button").$$render(
       $$result,
       {
         onClick: () => {
-          if (startedTuning) {
+          if ($startedTuning) {
             //! if it already started and click again stop tuning
-            console.log("stop tuning");
-            stopTuning();
+            stopTuning({
+              startedTuningCtx: startedTuning,
+              audioContenxt: stateAudioContext,
+              isTuning: $startedTuning
+            });
           } else {
             //! start tuning
-            console.log("start tuning");
-            audio();
+            audio(showPopup);
+            startedTuning.update((prev) => {
+              return true;
+            });
           }
-          startedTuning = !startedTuning;
         },
         className: "start text-xl text-center text-tuner-color cursor-pointer\n	w-2/5 p-2 bg-black hover:bg-red-900 hover:text-black\n	rounded mx-auto mt-5"
       },
       {},
       {
         default: () => {
-          return `${escape(startedTuning ? "Stop" : "Start")} Tuning!`;
+          return `${escape($startedTuning ? "Stop" : "Start")} Tuning!`;
         }
       }
     )}
 
-	${startedTuning ? `${validate_component(DisplayNote, "DisplayNote").$$render(
+		${validate_component(Button, "Button").$$render(
+      $$result,
+      {
+        onClick: () => {
+          showTuningsModal();
+        },
+        className: "start text-xl text-center text-tuner-color cursor-pointer\n	w-2/5 p-2 bg-black hover:bg-red-900 hover:text-black\n	rounded mx-auto mt-5"
+      },
+      {},
+      {
+        default: () => {
+          return `Popular Tunings`;
+        }
+      }
+    )}</div>
+
+	${$startedTuning ? `${validate_component(DisplayNote, "DisplayNote").$$render(
       $$result,
       { isTuned },
       {
@@ -310,26 +383,59 @@ const Tuner = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     )}` : ``}
 </div>`;
   } while (!$$settled);
+  $$unsubscribe_startedTuning();
   $$unsubscribe_rotate();
   $$unsubscribe_stateNoteInfo();
   return $$rendered;
 });
 const _page_svelte_svelte_type_style_lang = "";
 const css = {
-  code: ".tools.svelte-v6ih00{background-color:var(--background-black-red);min-height:550px}",
+  code: ".setBackground.svelte-16z0t2p{background-color:var(--background-black-red)}.tools.svelte-16z0t2p{min-height:300px}.extraHeight.svelte-16z0t2p{min-height:550px}",
   map: null
 };
 const h1ExtraClasses = "p-8";
 const h2ExtraClasses = "py-2";
 const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let $startedTuning, $$unsubscribe_startedTuning;
+  $$unsubscribe_startedTuning = subscribe(startedTuning, (value) => $startedTuning = value);
+  let parser = new UAParser();
+  const parsed = parser.getResult();
+  let shouldApplyExtraHeight = false;
+  const { browser, device, os } = parsed;
+  const blackListBrowsers = ["Samsung Browser", "Mobile Safari", "Firefox"];
+  const blackListOs = ["Android"];
+  shouldApplyExtraHeight = blackListBrowsers.includes(browser.name) && device.type === "mobile" && blackListOs.includes(os.name);
+  onDestroy(() => {
+    stopTuning({
+      startedTuningCtx: startedTuning,
+      audioContenxt: stateAudioContext,
+      isTuning: $startedTuning
+    });
+  });
   $$result.css.add(css);
+  $$unsubscribe_startedTuning();
   return `${validate_component(H1, "H1").$$render($$result, { className: h1ExtraClasses }, {}, {
     default: () => {
       return `Instrument tuner`;
     }
   })}
 
-<section class="${"tools md:text-xl md:text-justify md:tracking-wide bg-red-900 w-full flex justify-center items-center relative p-8 svelte-v6ih00"}">${validate_component(Tuner, "Tuner").$$render($$result, {}, {}, {})}</section>
+<section class="${escape(
+    null_to_empty(`
+	setBackground
+	${shouldApplyExtraHeight ? "extraHeight" : "tools"} 
+	md:text-xl 
+	md:text-justify 
+	md:tracking-wide 
+	bg-red-900 
+	w-full 
+	flex 
+	justify-center 
+	items-center 
+	relative 
+	p-8`),
+    true
+  ) + " svelte-16z0t2p"}">${validate_component(Tuner, "Tuner").$$render($$result, {}, {}, {})}</section>
 
 <section class="${"text-justify md:tracking-wide py-8 w-3/4 md:w-full md:py-8 md:px-4 md:text-2xl"}">${validate_component(H2, "H2").$$render($$result, { className: h2ExtraClasses }, {}, {
     default: () => {

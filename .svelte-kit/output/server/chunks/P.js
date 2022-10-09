@@ -4,11 +4,15 @@ const Link = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let isActive;
   let $$unsubscribe_page;
   $$unsubscribe_page = subscribe(page, (value) => value);
+  let { onClick = () => {
+  } } = $$props;
   let { url = "" } = $$props;
   let { description = "" } = $$props;
   let { target = "" } = $$props;
   let { className = "" } = $$props;
   let classes = `${className}`;
+  if ($$props.onClick === void 0 && $$bindings.onClick && onClick !== void 0)
+    $$bindings.onClick(onClick);
   if ($$props.url === void 0 && $$bindings.url && url !== void 0)
     $$bindings.url(url);
   if ($$props.description === void 0 && $$bindings.description && description !== void 0)

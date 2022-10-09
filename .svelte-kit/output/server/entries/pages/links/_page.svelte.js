@@ -1,4 +1,4 @@
-import { c as create_ssr_component, v as validate_component, q as each, f as add_attribute } from "../../../chunks/index.js";
+import { c as create_ssr_component, v as validate_component, j as each, f as add_attribute } from "../../../chunks/index.js";
 import { H as H3, P, L as Link } from "../../../chunks/P.js";
 import "../../../chunks/stores.js";
 const usefulLinks = [

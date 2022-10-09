@@ -4,15 +4,28 @@
 		<meta charset="utf-8" />
 		<link rel="icon" href="/favicon.png" />
 		<meta name="viewport" content="width=device-width" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+		<link rel="manifest" href="/site.webmanifest" />
+		<meta name="msapplication-TileColor" content="#da532c" />
+		<meta name="theme-color" content="#ffffff" />
 		<meta http-equiv="content-security-policy" content="">
-	<link rel="modulepreload" href="/_app/immutable/start-4ba94ccb.js">
-	<link rel="modulepreload" href="/_app/immutable/chunks/index-80463ac2.js">
-	<link rel="modulepreload" href="/_app/immutable/chunks/singletons-ffa1a91c.js">
+	<link rel="modulepreload" href="/_app/immutable/start-595a1e7e.js">
+	<link rel="modulepreload" href="/_app/immutable/chunks/index-e0c17b50.js">
+	<link rel="modulepreload" href="/_app/immutable/chunks/singletons-9c55d055.js">
+			<script>
+		if ('serviceWorker' in navigator) {
+			addEventListener('load', function () {
+				navigator.serviceWorker.register('/service-worker.js');
+			});
+		}
+	</script>
 	</head>
 	<body>
 		<div>
 		<script type="module" data-sveltekit-hydrate="45h">
-		import { set_public_env, start } from "/_app/immutable/start-4ba94ccb.js";
+		import { set_public_env, start } from "/_app/immutable/start-595a1e7e.js";
 
 		set_public_env({});
 

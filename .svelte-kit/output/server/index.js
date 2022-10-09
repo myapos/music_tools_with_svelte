@@ -1815,7 +1815,7 @@ function set_paths(paths) {
   base = paths.base;
   assets = paths.assets || base;
 }
-const template = ({ head, body, assets: assets2, nonce }) => '<!DOCTYPE html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<link rel="icon" href="' + assets2 + '/favicon.png" />\n		<meta name="viewport" content="width=device-width" />\n		' + head + "\n	</head>\n	<body>\n		<div>" + body + "</div>\n	</body>\n</html>\n";
+const template = ({ head, body, assets: assets2, nonce }) => '<!DOCTYPE html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<link rel="icon" href="' + assets2 + '/favicon.png" />\n		<meta name="viewport" content="width=device-width" />\n		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />\n		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />\n		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />\n		<link rel="manifest" href="/site.webmanifest" />\n		<meta name="msapplication-TileColor" content="#da532c" />\n		<meta name="theme-color" content="#ffffff" />\n		' + head + "\n	</head>\n	<body>\n		<div>" + body + "</div>\n	</body>\n</html>\n";
 let read = null;
 set_paths({ "base": "", "assets": "" });
 let default_protocol = "https";
@@ -1853,7 +1853,7 @@ class Server {
       public_env: {},
       read,
       root: Root,
-      service_worker: null,
+      service_worker: base + "/service-worker.js",
       router: true,
       template,
       template_contains_nonce: false,
