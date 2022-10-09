@@ -19,7 +19,7 @@ const config = {
 			// these options are set automatically — see below
 			pages: 'public',
 			assets: 'public',
-			fallback: null,
+			fallback: true,
 			precompress: false
 		})
 		// prerender: {
