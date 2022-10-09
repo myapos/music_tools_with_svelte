@@ -35,10 +35,6 @@
 	$: hasSelectedInstrument = instrumentTones.length > 0;
 	$: isPlaying = false;
 
-	// const unsubscribe = frequency.subscribe((value) => {
-	// 	frequencyValue = value;
-	// });
-
 	onMount(() => {
 		instrumentTones = [];
 
@@ -55,7 +51,6 @@
 		if (isPlaying) {
 			stop({ g: gain, context: audioContext });
 		}
-		// unsubscribe();
 	});
 
 	const handleInstrumentSelection = (event: any) => {
@@ -65,6 +60,8 @@
 		frequency.update((prev) => {
 			const oscillatorIsIntialized = oscillatorRef?.frequency?.value;
 			if (oscillatorIsIntialized) {
+				//! -1 will trigger the selected frequency to be undefined
+				//! on changing the instrument so the user will have to select a note
 				oscillatorRef.frequency.value = -1;
 			}
 			return -1;
