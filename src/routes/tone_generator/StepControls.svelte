@@ -44,6 +44,13 @@
 	};
 
 	const handleLeftMouseDown = () => {
+		if (intervalLeftId) {
+			clearInterval(intervalLeftId);
+		}
+		if (intervalRightId) {
+			clearInterval(intervalRightId);
+		}
+
 		intervalLeftId = setInterval(() => {
 			frequency.update((prev) => {
 				return prev - 1;
@@ -53,7 +60,13 @@
 	};
 
 	const handleLeftMouseUp = () => {
-		clearInterval(intervalLeftId);
+		console.log('mouse up');
+		if (intervalLeftId) {
+			clearInterval(intervalLeftId);
+		}
+		if (intervalRightId) {
+			clearInterval(intervalRightId);
+		}
 	};
 
 	const handleRightMouseClick = () => {
@@ -73,6 +86,13 @@
 	};
 
 	const handleRightMouseDown = () => {
+		if (intervalLeftId) {
+			clearInterval(intervalLeftId);
+		}
+		if (intervalRightId) {
+			clearInterval(intervalRightId);
+		}
+
 		intervalRightId = setInterval(() => {
 			frequency.update((prev) => {
 				return prev + 1;
@@ -82,7 +102,12 @@
 	};
 
 	const handleRightMouseUp = () => {
-		clearInterval(intervalRightId);
+		if (intervalLeftId) {
+			clearInterval(intervalLeftId);
+		}
+		if (intervalRightId) {
+			clearInterval(intervalRightId);
+		}
 	};
 
 	const enableDisplayInput = () => {
@@ -100,29 +125,31 @@
 	};
 </script>
 
-<div class="flex flex-row justify-center items-center w-2/5">
-	<div on:click={handleLeftClick} on:mousedown={handleLeftMouseDown} on:mouseup={handleLeftMouseUp}>
+<div class="flex w-2/5 flex-row items-center justify-center">
+	<div
+		on:click={handleLeftClick}
+		on:mousedown={handleLeftMouseDown}
+		on:touchstart={handleLeftMouseDown}
+		on:touchend={handleLeftMouseUp}
+		on:mouseup={handleLeftMouseUp}>
 		<Icon
 			src={IoArrowBackOutline}
 			size="2rem"
 			color="var(--tuner-color)"
 			title="decrease frequency"
-			className="cursor-pointer hover:brightness-150"
-		/>
+			className="cursor-pointer hover:brightness-150" />
 	</div>
 
 	<div
-		class="text-tuner-color w-3/5 md:w-4/5 text-xl text-center  rounded mx-auto cursor-pointer"
-		on:dblclick={enableDisplayInput}
-	>
+		class="mx-auto w-3/5 cursor-pointer rounded text-center  text-xl text-tuner-color md:w-4/5"
+		on:dblclick={enableDisplayInput}>
 		{#if displayInput}<input
 				type="number"
 				min={MIN_RANGE_FREQ}
 				max={MAX_RANGE_FREQ}
 				bind:value={$frequency}
 				on:keypress={disableDisplayInputOnEnter}
-				on:blur={disableDisplayInput}
-			/>{:else}
+				on:blur={disableDisplayInput} />{:else}
 			{$frequency} Hz
 		{/if}
 	</div>
@@ -131,14 +158,14 @@
 		on:click={handleRightMouseClick}
 		on:mousedown={handleRightMouseDown}
 		on:mouseup={handleRightMouseUp}
-	>
+		on:touchstart={handleRightMouseDown}
+		on:touchend={handleRightMouseUp}>
 		<Icon
 			src={IoArrowForward}
 			size="2rem"
 			color="var(--tuner-color)"
 			title="increase frequency"
-			className="cursor-pointer hover:brightness-150"
-		/>
+			className="cursor-pointer hover:brightness-150" />
 	</div>
 </div>
 

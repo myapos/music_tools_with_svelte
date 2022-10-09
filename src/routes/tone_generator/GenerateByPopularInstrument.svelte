@@ -150,9 +150,9 @@
 	class="flex flex-col items-center justify-center rounded p-2 text-center text-xl text-tuner-color">
 	<div>Step 1</div>
 	<div class="mt-2 text-sm">Please select instrument</div>
-	<div class="mt-5 w-1/5 p-5 md:w-2/5"
+	<div class="mt-5 w-1/5 p-5 lg:w-2/5"
 		><Select
-			containerClasses="p-5 mt-5 rounded"
+			containerClasses="p-5 mt-5 rounded z-10"
 			items={valuesForSelect}
 			on:clear={handleClear}
 			on:select={handleInstrumentSelection}
@@ -173,18 +173,18 @@
 			<div class="mt-2 text-base">Selected frequency {$frequency} Hz</div>
 
 			<div
-				class="justify-centers mx-auto flex w-1/2 flex-row items-center justify-center md:w-full">
-				<div class="w-2/5 md:w-3/5">
+				class="justify-centers mx-auto flex w-1/2 flex-row items-center justify-center lg:w-full">
+				<div class="w-2/5 lg:w-3/5">
 					<Volume bind:gain bind:volumePosition bind:timeoutId {handleTimeout} />
 					<div class="text-center text-sm"
 						>Volume {parseInt((100 * volumePosition).toFixed())} %</div>
 				</div>
 				<Button
 					onClick={() => handleGenerator($frequency)}
-					className="text-xl text-center text-tuner-color cursor-pointer w-2/5 md:w-3/5 p-2 bg-black hover:bg-red-900 hover:text-black rounded mx-auto"
+					className="text-xl text-center text-tuner-color cursor-pointer w-2/5 lg:w-3/5 p-2 bg-black hover:bg-red-900 hover:text-black rounded mx-auto"
 					>{isPlaying ? 'Stop' : 'Play'}!
 				</Button>
-				<div class="ml-5 w-2/5 md:w-3/5">
+				<div class="ml-5 w-2/5 lg:w-3/5">
 					<WaveType
 						bind:selectedType
 						bind:oscillatorRef

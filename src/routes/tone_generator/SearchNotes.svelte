@@ -54,7 +54,7 @@
 </script>
 
 <Select
-	containerClasses="w-3/5 p-5 rounded"
+	containerClasses="w-3/5 lg:w-full p-5 rounded z-10"
 	items={itemsHashNotes}
 	bind:value={selectedFreq}
 	on:select={handleSelectFreq}

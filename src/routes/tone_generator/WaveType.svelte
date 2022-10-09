@@ -33,9 +33,8 @@
 </script>
 
 <Select
-	containerClasses="w-3/5 md:w-4/5 p-5 rounded"
+	containerClasses="w-3/5 md:w-4/5 p-5 rounded z-10"
 	{items}
 	bind:value={selectedType}
 	on:select={handleSelectType}
-	placeholder="Select type"
-/>
+	placeholder="Select type" />
