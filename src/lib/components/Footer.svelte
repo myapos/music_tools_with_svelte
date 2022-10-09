@@ -15,7 +15,7 @@
 	};
 
 	onMount(() => {
-		const THRESHOLD_FOR_SHORT_SCREENS = 600;
+		const THRESHOLD_FOR_SHORT_SCREENS = 700;
 
 		let clientHeight = Math.max(
 			document.body.offsetHeight,
@@ -67,32 +67,29 @@
 </script>
 
 <!-- It will help to detect if the footer is visible. It has dimension 1x1 px -->
-<div id="footerWrapper" class="w-px h-px" />
+<div id="footerWrapper" class="h-px w-px" />
 {#if isVisible}
 	<footer
 		id="footer"
 		on:click={onClickOnTheRestArea}
-		class={`flex justify-center z-50  ${
+		class={`z-50 flex justify-center  ${
 			shouldApplySticky ? '' : 'sticky bottom-0'
-		} bg-blue-600 text-blue-200 w-full md:mt-30`}
-		transition:fade
-	>
+		} md:mt-30 w-full bg-blue-600 text-blue-200`}
+		transition:fade>
 		<div class="flex items-center">
 			<Icon
 				src={FaCopyright}
 				size="1rem"
 				color="var(--menu-text-blue-200)"
 				title="copyright"
-				className="mr-2"
-			/>
+				className="mr-2" />
 			2022
 
 			<Link
 				url="mailto:myapos@gmail.com"
 				description="Myron Apostolakis"
 				target="_blank"
-				className="p-5 cursor"
-			/>
+				className="p-5 cursor" />
 
 			Created with
 			<div class="flex items-center">
