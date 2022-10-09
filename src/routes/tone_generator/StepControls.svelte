@@ -60,7 +60,6 @@
 	};
 
 	const handleLeftMouseUp = () => {
-		console.log('mouse up');
 		if (intervalLeftId) {
 			clearInterval(intervalLeftId);
 		}
@@ -129,9 +128,9 @@
 	<div
 		on:click={handleLeftClick}
 		on:mousedown={handleLeftMouseDown}
+		on:mouseup={handleLeftMouseUp}
 		on:touchstart={handleLeftMouseDown}
-		on:touchend={handleLeftMouseUp}
-		on:mouseup={handleLeftMouseUp}>
+		on:touchend={handleLeftMouseUp}>
 		<Icon
 			src={IoArrowBackOutline}
 			size="2rem"
