@@ -66,7 +66,7 @@
 		<div class="note note_50 absolute left-full text-2xl">{note_positive_50}</div>
 		<div class="note note_25 absolute right-full text-2xl">{note_negative_25}</div>
 		<div class="note note_25 absolute left-full text-2xl">{note_positive_25}</div>
-		<div class="note absolute left-2/4 text-2xl">{note_0}</div>
+		<div class="note note_0 absolute left-2/4 text-2xl">{note_0}</div>
 	</div>
 
 	<div class="flex flex-row">
@@ -120,6 +120,10 @@
 
 	.note_25 {
 		top: 50%;
+	}
+
+	.note_0 {
+		left: 45%;
 	}
 
 	.indicator {
